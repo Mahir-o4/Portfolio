@@ -4,7 +4,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer id="contacts" className="ml-20 bg-gradient-to-b from-slate-900 to-slate-950 border-t border-slate-700/30 py-16">
+    <footer id="contacts" className="ml-20 bg-linear-to-b from-slate-900 to-slate-950 border-t border-slate-700/30 py-16">
       <div className="max-w-6xl mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-12">
           {/* Left Section */}

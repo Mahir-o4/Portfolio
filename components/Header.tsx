@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import { Github, Twitter, Linkedin } from "lucide-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,30 +12,33 @@ export default function Header() {
       {/* Left Sidebar */}
       <div className="fixed left-0 top-0 h-screen w-20 bg-linear-to-b from-slate-900 via-slate-900 to-slate-950 border-r border-slate-700/50 flex flex-col items-center py-8 gap-8 z-40">
         {/* Logo */}
-        <div className="text-2xl font-bold text-accent-purple">◆</div>
+        <div className="text-2xl font-bold text-accent-purple border rounded-3xl border-[#B026FF] bg-black p-2">
+          <Image src="/logo.jpg" alt="logo" width={26} height={26}/>
+        </div>
 
         {/* Social Links */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           <a
-            href="#"
-            className="text-slate-400 hover:text-accent-cyan transition-colors text-lg"
+            href="https://github.com/Mahir-o4/"
+            target="_blank"
+            className="text-slate-400 hover:text-slate-600 transition-colors text-lg"
             title="GitHub"
           >
-            ◯
+            <Github />
           </a>
           <a
             href="#"
-            className="text-slate-400 hover:text-accent-cyan transition-colors text-lg"
+            className="text-slate-400 hover:text-slate-600 transition-colors text-lg"
             title="Twitter"
           >
-            @
+            <Twitter />
           </a>
           <a
             href="#"
-            className="text-slate-400 hover:text-accent-cyan transition-colors text-lg"
+            className="text-slate-400 hover:text-slate-600 transition-colors text-lg"
             title="LinkedIn"
           >
-            ⌘
+           <Linkedin />
           </a>
         </div>
       </div>
@@ -64,7 +69,7 @@ export default function Header() {
                 @work
               </a>
               <a
-                href="#about"
+                href="#about-me"
                 className="text-slate-300 hover:text-accent-cyan transition-colors border-b-2 border-transparent hover:border-accent-cyan"
               >
                 ~about-me

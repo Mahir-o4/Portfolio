@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-gradient-to-b from-slate-950 via-black to-slate-950 overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-linear-to-b from-slate-950 via-black to-slate-950 overflow-x-hidden`}
       >
         {children}
       </body>
