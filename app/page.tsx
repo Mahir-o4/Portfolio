@@ -5,6 +5,7 @@ import SkillsSection from "@/components/SkillsSection";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
 import PixelBlast from "@/components/PixelBlast";
+import NewsArticles from "@/components/NewsArticles";
 
 export default function Home() {
   return (
@@ -36,8 +37,9 @@ export default function Home() {
         <Header />
         <HeroSection />
         <AboutSection />
-        <ProjectsSection />
         <SkillsSection />
+        <NewsArticles />
+        <ProjectsSection />
         <Footer />
       </div>
     </main>

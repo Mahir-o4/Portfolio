@@ -62,7 +62,7 @@ export default function HeroSection() {
             {/* CTA Button */}
             <a
               href="#contacts"
-              className="inline-block px-6 py-3 border border-accent-purple text-slate-100 bg-slate-950/70 hover:bg-accent-purple hover:text-slate-600 active:scale-95 transition-all duration-200 code-text text-sm font-semibold transform hover:scale-105"
+              className="inline-block px-6 py-3 border border-accent-purple text-slate-100 bg-slate-950/70 hover:text-[#00d9ff] active:scale-95 transition-all duration-200 code-text text-sm font-semibold transform hover:scale-105"
             >
               &gt; Contact me !!
             </a>

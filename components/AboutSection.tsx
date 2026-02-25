@@ -12,9 +12,8 @@ export default function AboutSection() {
         <div className={`mb-16 ${isVisible ? 'fade-in-up' : 'opacity-0'}`}>
           <div className="flex items-center gap-4 mb-4">
             <div className="accent-line-left"></div>
-            <h2 className="text-4xl font-bold code-text">
-              <span className="text-accent-purple">~</span>
-              <span className="text-slate-300">about-me</span>
+            <h2 className="text-4xl font-bold text-accent-cyan">
+              ~about-me
             </h2>
           </div>
         </div>
