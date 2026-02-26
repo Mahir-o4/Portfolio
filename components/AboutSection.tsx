@@ -40,9 +40,9 @@ export default function AboutSection() {
             {/* Quote */}
             <div className="card-minimal rounded-none p-6 border-l-4 border-accent-cyan mt-8">
               <p className="text-slate-300 italic code-text text-sm mb-3">
-                "The great power of a string of lights is that it creates conviviality — the feeling of community."
+                "Keep trying untill oneday you give up on your own."
               </p>
-              <p className="text-accent-purple code-text text-xs">— Mahir</p>
+              <p className="text-accent code-text text-xs">— Mahir</p>
             </div>
           </div>
 

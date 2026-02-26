@@ -12,7 +12,7 @@ export default function QuoteCard() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/qoute')
+    fetch('/api/quote')
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch quote");
         return res.json();
@@ -31,7 +31,7 @@ export default function QuoteCard() {
         <span className="absolute -top-4 left-3 text-4xl leading-none text-slate-200/90">
           “
         </span>
-        <p className="pr-6 text-base md:text-md font-semibold tracking-normal text-slate-100 leading-relaxed">
+        <p className="pr-6 italic text-base md:text-md tracking-normal text-slate-100 leading-relaxed">
           {quote.quote}
         </p>
       </div>
