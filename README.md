@@ -39,6 +39,9 @@ Set up the project locally in your System.
 ```bash
 git clone https://github.com/Mahir-o4/Portfolio.git
 ```
+```bash
+cd Portfolio
+```
 
 ### 2) Install dependencies
 
@@ -51,7 +54,7 @@ npm install
 Create a `.env` file in the project root.
 
 ```bash
-cp .env.example .env
+cp env.example .env
 ```
 
 ### 4) Run the development server
