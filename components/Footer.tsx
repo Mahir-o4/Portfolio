@@ -132,7 +132,7 @@ export default function Footer() {
             <p>© {currentYear} Mahir. All rights reserved.</p>
             <div className="flex gap-6 mt-4 md:mt-0">
               <a
-                href="https://github.com/Mahir-o4"
+                href="https://github.com/Mahir-o4/Portfolio?tab=MIT-1-ov-file"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-accent-cyan transition-colors"
