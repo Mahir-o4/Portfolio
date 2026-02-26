@@ -35,7 +35,7 @@ import { useEffect, useRef, useState } from 'react';
          }, 260);
        },
        {
-         threshold: [0.25, 0.45, 0.6, 0.75],
+         threshold: 0.35,
          rootMargin: '-20% 0px -35% 0px',
        }
      );
