@@ -54,7 +54,7 @@ npm install
 Create a `.env` file in the project root.
 
 ```bash
-cp env.example .env
+cp .env.example .env
 ```
 
 ### 4) Run the development server
