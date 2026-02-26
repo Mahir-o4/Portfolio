@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import TextType from "./TextType";
 import SplitText from "./SplitText";
-import QuoteCard from "./QouteCard";
+import QuoteCard from "./QuoteCard";
 
 
 export default function HeroSection() {
@@ -59,7 +59,7 @@ export default function HeroSection() {
                   <QuoteCard />
             </div>
 
-            {/* CTA Button */}
+            {/* Contact Button */}
             <a
               href="#contacts"
               className="inline-block px-6 py-3 border border-accent-purple text-slate-100 bg-slate-950/70 hover:text-[#00d9ff] active:scale-95 transition-all duration-200 code-text text-sm font-semibold transform hover:scale-105"
@@ -84,7 +84,7 @@ export default function HeroSection() {
               {/* Decorative Elements */}
               <div className="absolute top-10 right-0 w-16 h-16 border border-[#B026FF]/70"></div>
               <div className="absolute bottom-20 left-0 w-20 h-20 border border-[#B026FF]/70"></div>
-              <div className="absolute top-70 right-4 w-32 h-32 border border-[#B026FF]/80"></div>
+              <div className="absolute top-72 right-4 w-32 h-32 border border-[#B026FF]/80"></div>
             </div>
 
             {/* Status Badge */}

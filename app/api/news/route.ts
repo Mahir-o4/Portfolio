@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const NEWSDATA_BASE_URL = "https://newsdata.io/api/1/latest";
-const API_KEY = process.env.NEWSDATA_API_KEY ?? process.env.NEXT_PUBLIC_NEWS_API;
+const API_KEY = process.env.NEWS_API ;
 const TECH_QUERY = "(technology OR tech OR AI OR software OR cybersecurity OR startup OR gadgets OR cloud)";
 
 type NewsDataArticle = {

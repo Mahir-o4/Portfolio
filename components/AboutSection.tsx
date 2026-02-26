@@ -8,6 +8,7 @@ export default function AboutSection() {
   return (
     <section ref={ref} id="about-me" className="py-20 ml-20 relative">
       <div className="max-w-6xl mx-auto px-8">
+
         {/* Section Header */}
         <div className={`mb-16 ${isVisible ? 'fade-in-up' : 'opacity-0'}`}>
           <div className="flex items-center gap-4 mb-4">
@@ -19,19 +20,20 @@ export default function AboutSection() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Text Content */}
+
+          {/* Brainstorming things about me */}
           <div className={`${isVisible ? 'slide-in-left' : 'opacity-0'}`} style={{ animationDelay: '0.2s' }}>
-            <div className="space-y-4 text-slate-400 code-text text-sm leading-relaxed">
+            <div className="space-y-4 code-text leading-relaxed text-shadow-md font-semibold">
               <p>
-                I'm a passionate web designer and front-end developer with a keen eye for creating beautiful, functional digital experiences.
+                I am an unapologetic fanatic about AI and Machine Learning, and I spend most of my waking hours tumbling down the rabbit hole of Deep Learning. My absolute favorite thing to do is struggle with GenAI and develop practical AI solutions that actually work as they are intended to, rather than just pretending to know what they are doing.
               </p>
 
               <p>
-                My journey in web development began with a curiosity about how things work on the internet. This curiosity evolved into a career where I combine design thinking with technical expertise.
+                When I am not training models or deploying updates to my Hugging Face repositories, I build full-stack websites. In developer speak, this means that I build pixel-perfect, beautiful front-ends that users adore, all while desperately trying to figure out how to connect the back-end without everything falling apart.
               </p>
 
               <p>
-                When I'm not coding or designing, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the community.
+               My typical day is a crazy and exhilarating combination of soaking up whatever new tech just landed on the web, coming up with more and more creative ways to get my AI models to go faster and cheaper, and trying to get my neural nets to play nice. I am on a never-ending quest to create the most intelligent web apps possible, completely dedicated to pushing the frontiers of applied machine learning—assuming, of course, that my server doesn’t suddenly crash.
               </p>
             </div>
 
@@ -40,26 +42,26 @@ export default function AboutSection() {
               <p className="text-slate-300 italic code-text text-sm mb-3">
                 "The great power of a string of lights is that it creates conviviality — the feeling of community."
               </p>
-              <p className="text-accent-purple code-text text-xs">— Elias</p>
+              <p className="text-accent-purple code-text text-xs">— Mahir</p>
             </div>
           </div>
 
-          {/* Stats / Info */}
+          {/* My top motivations */}
           <div className={`${isVisible ? 'slide-in-right' : 'opacity-0'}`} style={{ animationDelay: '0.3s' }}>
             <div className="grid grid-cols-1 gap-6">
-              <div className="card-minimal rounded-none p-6 border-l-4 border-accent-purple">
-                <div className="text-3xl font-bold text-accent-purple code-text mb-2">50+</div>
-                <p className="text-slate-400 text-sm code-text">Projects Completed</p>
+              <div className="card-minimal rounded-none p-6 border-l-4 border-accent">
+                <div className="text-3xl font-bold text-accent code-text mb-2">Gotta Learn AI before it's bubble burst.</div>
+                <p className="text-slate-400 text-sm code-text">Still working on AI projects, it surely takes time.</p>
               </div>
 
               <div className="card-minimal rounded-none p-6 border-l-4 border-accent-cyan">
-                <div className="text-3xl font-bold text-accent-cyan code-text mb-2">30+</div>
-                <p className="text-slate-400 text-sm code-text">Happy Clients</p>
+                <div className="text-3xl font-bold text-accent-cyan code-text mb-2">Designing and Polishing for Eyes</div>
+                <p className="text-slate-400 text-sm code-text">Wrote much more Frontend than I can bear, with "0" design language.</p>
               </div>
 
               <div className="card-minimal rounded-none p-6 border-l-4 border-accent-pink">
-                <div className="text-3xl font-bold text-accent-pink code-text mb-2">5+</div>
-                <p className="text-slate-400 text-sm code-text">Years Experience</p>
+                <div className="text-3xl font-bold text-accent-pink code-text mb-2">5+ years of pain</div>
+                <p className="text-slate-400 text-sm code-text">Technology is now changing faster than people. (naah people still wins!!)</p>
               </div>
             </div>
           </div>

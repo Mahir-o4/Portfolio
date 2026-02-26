@@ -42,17 +42,16 @@ export default function SkillsSection() {
   ];
 
   return (
-    <section ref={ref} id="skills" className="py-20 ml-20 relative">
+    <section ref={ref} id="skills" className="py-20 ml-20 relative mx-20">
       <div className={`max-w-6xl mx-auto px-8 ${isVisible ? "scale-in" : "opacity-0"}`} style={{ animationDelay: '0.2s' }}>
         {/* Section Header */}
         <div className={`mb-16 `}>
           <div className="flex items-center gap-4 mb-4">
-            <div className="accent-line-left"></div>
             <h2 className="text-4xl font-bold text-accent-cyan">
               #skills
             </h2>
           </div>
-          <p className="text-slate-400 text-xl ml-8 mt-2 text-accent">
+          <p className="text-slate-400 text-xl ml-8 mt-2 text-accent code-text font-bold">
             Technologies I work with
           </p>
         </div>

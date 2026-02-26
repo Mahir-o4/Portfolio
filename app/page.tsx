@@ -38,8 +38,8 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <SkillsSection />
-        <NewsArticles />
         <ProjectsSection />
+        <NewsArticles />
         <Footer />
       </div>
     </main>

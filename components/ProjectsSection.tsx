@@ -1,52 +1,50 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import ProjectCard from './ProjectCard';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 export default function ProjectsSection() {
-  const [isVisible, setIsVisible] = useState(false);
+const {ref, isVisible} = useScrollAnimation();
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const projects = [
     {
-      title: 'Node.js Server',
-      description: 'High-performance backend server built with Node.js and Express. Real-time WebSocket integration.',
+      title: 'OuraCode',
+      description: 'OuraCode is a real-time collaborative coding platform with an integrated cloud terminal and context-aware AI assistance.',
       accent: '#b66bff',
-      icon: '⚙️',
-      technologies: ['Node.js', 'Express', 'WebSocket'],
+      gifSrc: '/CodingGIF.mp4',
+      technologies: ['React.js', 'Express', 'WebSocket', 'Redis', 'Docker'],
+      link: "https://github.com/Mahir-o4/OuraCode"
     },
     {
-      title: 'React CMS',
-      description: 'Content management system with drag-and-drop interface and real-time collaboration.',
+      title: 'Cross Platform Student Management System',
+      description: 'A cross-platform app for managing student credentials and organizational data on Android and iOS devices.',
       accent: '#00d9ff',
-      icon: '🎨',
-      technologies: ['React', 'TypeScript', 'Firebase'],
+      gifSrc: '/StudentDebtDegreeGIF.mp4',
+      technologies: ['React.js', 'Express', 'MongoDB', 'Flutter'],
+      link:"https://github.com/Mahir-o4/Cross-Platform-Student-Management-App"
     },
     {
-      title: 'Kshoot Platform',
-      description: 'Interactive learning platform with gamification and personalized recommendations.',
+      title: 'RAG WEB',
+      description: 'An AI-driven cinephile that scouts the web to fetch movie insights, answering your deepest film queries with real-time precision.',
       accent: '#00ff88',
-      icon: '🚀',
-      technologies: ['Next.js', 'Python', 'PostgreSQL'],
+      gifSrc: '/AiGeneratedAiGIF.mp4',
+      technologies: ['Python', 'Ollama', 'Streamlit', 'GenAI'],
+      link:"https://github.com/Mahir-o4/RAG_Web"
     },
   ];
 
   return (
-    <section id="work" className="py-20 ml-20 relative">
+    <section ref={ref} id="work" className="py-20 ml-20 relative mb-10">
       <div className="max-w-6xl mx-auto px-8">
         {/* Section Header */}
-        <div className={`mb-16 ${isVisible ? 'fade-in-up' : 'opacity-0'}`}>
+        <div className={`mb-16 ${isVisible? 'pop-in': 'opacity-0'}`} style={{animationDelay:'0.2s'}}>
           <div className="flex items-center gap-4 mb-4">
-            <div className="accent-line-left"></div>
-            <h2 className="text-4xl font-bold code-text">
-              <span className="text-accent-purple">#</span>
-              <span className="text-slate-300">projects</span>
+            <h2 className=" text-4xl font-bold text-accent-cyan">
+              @work
             </h2>
           </div>
-          <p className="text-slate-400 text-sm code-text ml-8 mt-2">
+          <p className="text-accent font-bold text-sm code-text ml-8 mt-2">
             A curated collection of innovative work
           </p>
         </div>
@@ -57,11 +55,11 @@ export default function ProjectsSection() {
             <div
               key={project.title}
               className={`${isVisible ? 'scroll-element' : 'opacity-0'}`}
-              style={{ animationDelay: `${index * 100}ms` }}
+              style={{ animationDelay: `${index * 500}ms` }}
             >
               <ProjectCard
                 {...project}
-                delay={index * 100}
+                delay={index * 500}
               />
             </div>
           ))}
@@ -70,8 +68,9 @@ export default function ProjectsSection() {
         {/* View All Link */}
         <div className={`mt-12 text-right ${isVisible ? 'fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '0.4s' }}>
           <a
-            href="#"
-            className="text-accent-cyan hover:text-accent-purple transition-colors text-sm code-text font-semibold inline-flex items-center gap-2"
+            href="https://github.com/Mahir-o4?tab=repositories"
+            target="_blank"
+            className=" hover:text-[#00ff88] transition-colors text-sm code-text font-semibold inline-flex items-center gap-2"
           >
             view all →
           </a>

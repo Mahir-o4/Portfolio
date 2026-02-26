@@ -72,12 +72,14 @@ const NewsArticles = () => {
             src={item.image}
             alt={item.title}
             className="h-44 w-full object-cover shrink-0"
+            draggable={false}
+            onDragStart={(event) => event.preventDefault()}
           />
         ) : (
           <div className="h-44 w-full bg-slate-800 shrink-0" />
         )}
         <div className="flex-1 min-h-0 p-3 flex flex-col gap-2">
-          <h3 className="text-md font-semibold leading-snug line-clamp-2">
+          <h3 className="text-md font-semibold leading-snug line-clamp-4">
             {item.title}
           </h3>
           <p className="text-sm text-slate-300 leading-relaxed flex-1 min-h-0 overflow-y-auto no-scrollbar pr-1">
@@ -93,7 +95,7 @@ const NewsArticles = () => {
               rel="noopener noreferrer"
               className="text-xs font-medium text-violet-300 hover:text-violet-200"
             >
-              Read more
+              Read more...
             </a>
           </div>
         </div>
@@ -104,12 +106,13 @@ const NewsArticles = () => {
   return (
     <div
       ref={ref}
-      className="w-full min-h-1/2 flex items-center justify-around px-16"
+      id = "articles"
+      className="w-full min-h-screen flex items-center justify-around px-16 mb-20"
     >
       <div
         className={`flex flex-col gap-5 ${isVisible ? "slide-in-left" : "opacity-0"}`} style={{animationDelay:'0.2s'}}
       >
-        <h1 className="text-6xl text-accent-pink"> News Article</h1>
+        <h1 className="text-6xl text-accent-pink">News Articles</h1>
         <p>Check out what's going on around the world!!</p>
       </div>
       <div className={`${isVisible ? 'slide-in-right' : 'opacity-0'}`}  style={{animationDelay:'0.2s'}}>
