@@ -67,6 +67,7 @@ export default function HeroSection() {
 
           {/* Right Content - Decorative */}
           <div
+          title="Hello There!! ~Pikachu"
             className={`relative ${isVisible ? "slide-in-right" : "opacity-0"}`}
             style={{ animationDelay: "0.2s" }}
           >
