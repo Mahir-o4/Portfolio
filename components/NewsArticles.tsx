@@ -71,29 +71,29 @@ const NewsArticles = () => {
           <img
             src={item.image}
             alt={item.title}
-            className="h-44 w-full object-cover shrink-0"
+            className="h-44 max-md:h-32 w-full object-cover shrink-0"
             draggable={false}
             onDragStart={(event) => event.preventDefault()}
           />
         ) : (
-          <div className="h-44 w-full bg-slate-800 shrink-0" />
+          <div className="h-44 max-md:h-32 w-full bg-slate-800 shrink-0" />
         )}
-        <div className="flex-1 min-h-0 p-3 flex flex-col gap-2">
-          <h3 className="text-md font-semibold leading-snug line-clamp-4">
+        <div className="flex-1 min-h-0 p-3 max-md:p-2.5 flex flex-col gap-2 max-md:gap-1.5">
+          <h3 className="text-md max-md:text-sm font-semibold leading-snug line-clamp-4">
             {item.title}
           </h3>
-          <p className="text-sm text-slate-300 leading-relaxed flex-1 min-h-0 overflow-y-auto no-scrollbar pr-1">
+          <p className="text-sm max-md:text-xs text-slate-300 leading-relaxed flex-1 min-h-0 overflow-y-auto no-scrollbar pr-1">
             {item.snippet}
           </p>
           <div className="mt-auto flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-wide text-accent-cyan">
+            <span className="text-[10px] max-md:text-[9px] uppercase tracking-wide text-accent-cyan">
               {item.source || "Tech"}
             </span>
             <a
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-medium text-violet-300 hover:text-violet-200"
+              className="text-xs max-md:text-[11px] font-medium text-violet-300 hover:text-violet-200"
             >
               Read more...
             </a>
@@ -107,20 +107,20 @@ const NewsArticles = () => {
     <div
       ref={ref}
       id = "articles"
-      className="w-full min-h-screen flex items-center justify-around px-16 mb-20"
+      className="w-full md:min-h-screen max-h-screen flex items-center md:justify-around justify-center px-16 max-md:px-4 max-md:flex-col max-md:gap-8 mb-10 max-md:mb-16"
     >
       <div
         className={`flex flex-col gap-5 ${isVisible ? "slide-in-left" : "opacity-0"}`} style={{animationDelay:'0.2s'}}
       >
-        <h1 className="text-6xl text-accent-pink">News Articles</h1>
-        <p>Check out what's going on around the world!!</p>
+        <h1 className="text-6xl max-md:text-3xl text-accent-pink">News Articles</h1>
+        <p className="max-md:text-sm">Check out what's going on around the world!!</p>
       </div>
       <div className={`${isVisible ? 'slide-in-right' : 'opacity-0'}`}  style={{animationDelay:'0.2s'}}>
         {error ? <p className="mb-2 text-xs text-rose-300">{error}</p> : null}
         {isLoading ? (
-          <p className="text-sm text-slate-300">Loading articles...</p>
+          <p className="text-sm max-md:text-xs text-slate-300">Loading articles...</p>
         ) : cards.length ? (
-          <div style={{ width: 380, height: 460 }}>
+          <div className="w-95 h-115 max-md:w-80 max-md:h-95">
             <Stack
               randomRotation={false}
               sensitivity={200}
@@ -132,7 +132,7 @@ const NewsArticles = () => {
             />
           </div>
         ) : (
-          <p className="text-sm text-slate-300">No articles available.</p>
+          <p className="text-sm max-md:text-xs text-slate-300">No articles available.</p>
         )}
       </div>
     </div>

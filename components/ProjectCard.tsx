@@ -21,7 +21,7 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   return (
     <div
-      className="card-minimal h-125 w-full max-w-[320px] rounded-none p-6 overflow-hidden
+      className="card-minimal h-auto md:h-125 w-full max-w-70 md:max-w-80 rounded-none p-4 md:p-6 overflow-hidden
              flex flex-col group cursor-pointer border-l-2
              transform-gpu transition-all duration-300 ease-out
              hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/30"
@@ -32,7 +32,7 @@ export default function ProjectCard({
       }}
     >
       {/* GIF */}
-      <div className="mb-4 w-fit h-60 overflow-hidden border border-slate-700/60 bg-slate-900 mx-auto">
+      <div className="mb-3 md:mb-4 w-full h-44 md:h-60 overflow-hidden border border-slate-700/60 bg-slate-900 mx-auto">
         <Image
           src={gifSrc}
           alt={`${title} preview`}
@@ -44,21 +44,21 @@ export default function ProjectCard({
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-bold text-slate-100 mb-2 code-text">
+      <h3 className="text-base md:text-lg font-bold text-slate-100 mb-2 code-text leading-snug">
         {title}
       </h3>
 
       {/* Description */}
-      <p className="text-slate-400 text-xs mb-4 code-text leading-relaxed">
+      <p className="text-slate-400 text-[11px] md:text-xs mb-3 md:mb-4 code-text leading-relaxed">
         {description}
       </p>
 
       {/* Technologies */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
         {technologies.map((tech) => (
           <span
             key={tech}
-            className="text-xs px-2 py-1 bg-slate-800 text-slate-300 border border-slate-600/50 rounded-lg"
+            className="text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 md:py-1 bg-slate-800 text-slate-300 border border-slate-600/50 rounded-lg"
           >
             {tech}
           </span>
@@ -70,7 +70,7 @@ export default function ProjectCard({
         href={link}
         target="_blank"
         rel="noopener noreffer"
-        className="inline-flex items-center text-accent-purple hover:text-[#00d9ff] transition-colors text-xs font-semibold code-text group/link"
+        className="inline-flex items-center text-accent-purple hover:text-[#00d9ff] active:text-[#00d9ff] transition-colors text-[11px] md:text-xs font-semibold code-text group/link"
       >
         view_project →
       </a>

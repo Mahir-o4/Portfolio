@@ -35,22 +35,22 @@ const {ref, isVisible} = useScrollAnimation();
   ];
 
   return (
-    <section ref={ref} id="work" className="py-20 ml-20 relative mb-10">
-      <div className="max-w-6xl mx-auto px-8">
+    <section ref={ref} id="work" className="py-14 md:py-20 md:ml-20 relative mb-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* Section Header */}
-        <div className={`mb-16 ${isVisible? 'pop-in': 'opacity-0'}`} style={{animationDelay:'0.2s'}}>
-          <div className="flex items-center gap-4 mb-4">
-            <h2 className=" text-4xl font-bold text-accent-cyan">
+        <div className={`mb-10 md:mb-16 ${isVisible? 'pop-in': 'opacity-0'}`} style={{animationDelay:'0.2s'}}>
+          <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-accent-cyan">
               @work
             </h2>
           </div>
-          <p className="text-accent font-bold text-sm code-text ml-8 mt-2">
+          <p className="text-accent font-bold text-xs md:text-sm code-text ml-2 md:ml-8 mt-2">
             A curated collection of innovative work
           </p>
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 justify-items-center md:justify-items-stretch">
           {projects.map((project, index) => (
             <div
               key={project.title}
@@ -70,7 +70,8 @@ const {ref, isVisible} = useScrollAnimation();
           <a
             href="https://github.com/Mahir-o4?tab=repositories"
             target="_blank"
-            className=" hover:text-[#00ff88] transition-colors text-sm code-text font-semibold inline-flex items-center gap-2"
+            rel="noopener noreferrer"
+            className="hover:text-[#00ff88] active:text-[#00ff88] transition-colors text-xs md:text-sm code-text font-semibold inline-flex items-center gap-2"
           >
             view all →
           </a>
