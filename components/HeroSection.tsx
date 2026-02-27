@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import TextType from "./TextType";
 import SplitText from "./SplitText";
 import QuoteCard from "./QuoteCard";
-
+import Spline from "@splinetool/react-spline";
 
 export default function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
-  
 
   useEffect(() => {
     setIsVisible(true);
@@ -22,41 +21,39 @@ export default function HeroSection() {
       <div className="max-w-6xl mx-auto px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Content */}
-          <div
-            className={`${isVisible ? "slide-in-left" : "opacity-0"}`}
-          >
+          <div className={`${isVisible ? "slide-in-left" : "opacity-0"}`}>
             {/* Main Heading */}
             <div className="py-8">
-            <SplitText
-              text="Sk Mahir Ashef"
-              className="text-6xl md:text-5xl font-extrabold text-center text-[#9D00FF]"
-              delay={50}
-              duration={1.25}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.1}
-              rootMargin="-100px"
-              textAlign="center"
-            />
+              <SplitText
+                text="Sk Mahir Ashef"
+                className="text-6xl md:text-5xl font-extrabold text-center text-[#9D00FF]"
+                delay={50}
+                duration={1.25}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="center"
+              />
             </div>
             <div className="mb-6">
-            <TextType
-              text={["Hello There", "Let's Build Something"]}
-              className="text-4xl md:text-4xl font-semibold text-slate-100"
-              typingSpeed={75}
-              pauseDuration={1500}
-              showCursor
-              cursorCharacter="_"
-              deletingSpeed={50}
-              cursorBlinkDuration={0.5}
-            />
+              <TextType
+                text={["Hello There", "Let's Build Something"]}
+                className="text-4xl md:text-4xl font-semibold text-slate-100"
+                typingSpeed={75}
+                pauseDuration={1500}
+                showCursor
+                cursorCharacter="_"
+                deletingSpeed={50}
+                cursorBlinkDuration={0.5}
+              />
             </div>
 
             {/* Description */}
             <div className="text-slate-100 p-8 code-text mt-8 mb-10 leading-relaxed max-w-lg rounded-md">
-                  <QuoteCard />
+              <QuoteCard />
             </div>
 
             {/* Contact Button */}
@@ -73,22 +70,21 @@ export default function HeroSection() {
             className={`relative ${isVisible ? "slide-in-right" : "opacity-0"}`}
             style={{ animationDelay: "0.2s" }}
           >
-            <div className="relative h-96 w-96 mx-auto flex items-center justify-center">
-              {/* Avatar Placeholder */}
-              <div className="relative z-10">
-                <div className="w-48 h-64 bg-linear-to-b from-slate-700 to-slate-900 rounded-lg flex items-center justify-center border border-accent-cyan/30 shadow-2xl">
-                  <div className="text-8xl">👨‍💻</div>
-                </div>
+            <div className="relative w-96 h-96 mx-auto">
+              <div className="absolute inset-0 w-[210%] h-[110%] -bottom-10 -right-100 pointer-events-none z-10">
+                <Spline
+                  scene="https://prod.spline.design/BDKt1U0VJWvVasvk/scene.splinecode"
+                  style={{ width: "100%", height: "100%" }}
+                />
               </div>
-
               {/* Decorative Elements */}
-              <div className="absolute top-10 right-0 w-16 h-16 border border-[#B026FF]/70"></div>
-              <div className="absolute bottom-20 left-0 w-20 h-20 border border-[#B026FF]/70"></div>
-              <div className="absolute top-72 right-4 w-32 h-32 border border-[#B026FF]/80"></div>
+              <div className="absolute top-5 right-0 w-16 h-16 border border-[#B026FF]/70"></div>
+              <div className="absolute bottom-10  w-20 h-20 border border-[#B026FF]/70"></div>
+              <div className="absolute top-80 right-4 w-32 h-32 border border-[#B026FF]/80"></div>
             </div>
 
             {/* Status Badge */}
-            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-slate-950/85 border border-accent-purple/60 px-6 py-3 code-text text-sm">
+            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-slate-950/85 border border-accent-purple/60 px-6 py-3 code-text text-sm z-20">
               <span className="text-accent-purple">■</span>
               <span className="text-slate-100 ml-2">Currently working on</span>
               <span className="text-accent-cyan ml-2">Portfolio</span>
