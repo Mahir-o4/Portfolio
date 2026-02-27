@@ -69,9 +69,9 @@ export default function ProjectCard({
       <a
         href={link}
         target="_blank"
-        rel="noopener noreffer"
+        rel="noopener noreferrer"
         className="inline-flex items-center text-accent-purple hover:text-[#00d9ff] active:text-[#00d9ff] transition-colors text-[11px] md:text-xs font-semibold code-text group/link"
-      >
+      >      
         view_project →
       </a>
     </div>
