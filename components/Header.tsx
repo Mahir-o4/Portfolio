@@ -36,7 +36,7 @@ export default function Header() {
       <div className="fixed left-0 top-0 h-screen w-20 bg-linear-to-b from-slate-900 via-slate-900 to-slate-950 border-r border-slate-700/50 flex flex-col items-center py-8 gap-8 z-40">
         {/* Logo */}
         <div className="text-2xl font-bold text-accent-purple border rounded-3xl border-[#B026FF] bg-black p-2">
-          <Image src="/logo.jpg" alt="logo" width={26} height={26} />
+          <Image src="/logo.JPG" alt="logo" width={26} height={26} />
         </div>
 
         {/* Social Links */}
