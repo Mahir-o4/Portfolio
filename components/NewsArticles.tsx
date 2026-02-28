@@ -71,14 +71,14 @@ const NewsArticles = () => {
           <img
             src={item.image}
             alt={item.title}
-            className="h-44 max-md:h-32 w-full object-cover shrink-0"
+            className="h-44 max-md:h-28 w-full object-cover shrink-0"
             draggable={false}
             onDragStart={(event) => event.preventDefault()}
           />
         ) : (
-          <div className="h-44 max-md:h-32 w-full bg-slate-800 shrink-0" />
+          <div className="h-44 max-md:h-28 w-full bg-slate-800 shrink-0" />
         )}
-        <div className="flex-1 min-h-0 p-3 max-md:p-2.5 flex flex-col gap-2 max-md:gap-1.5">
+        <div className="flex-1 min-h-0 p-3 max-md:p-2 flex flex-col gap-2 max-md:gap-1">
           <h3 className="text-md max-md:text-sm font-semibold leading-snug line-clamp-4">
             {item.title}
           </h3>
@@ -120,7 +120,7 @@ const NewsArticles = () => {
         {isLoading ? (
           <p className="text-sm max-md:text-xs text-slate-300">Loading articles...</p>
         ) : cards.length ? (
-          <div className="w-95 h-115 max-md:w-80 max-md:h-95">
+          <div className="w-95 h-115 max-md:w-72 max-md:h-86">
             <Stack
               randomRotation={false}
               sensitivity={200}
