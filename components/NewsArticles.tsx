@@ -79,21 +79,21 @@ const NewsArticles = () => {
           <div className="h-44 max-md:h-28 w-full bg-slate-800 shrink-0" />
         )}
         <div className="flex-1 min-h-0 p-3 max-md:p-2 flex flex-col gap-2 max-md:gap-1">
-          <h3 className="text-md max-md:text-sm font-semibold leading-snug line-clamp-4">
+          <h3 className="text-md max-md:text-xs font-semibold leading-snug line-clamp-4">
             {item.title}
           </h3>
-          <p className="text-sm max-md:text-xs text-slate-300 leading-relaxed flex-1 min-h-0 overflow-y-auto no-scrollbar pr-1">
+          <p className="text-sm max-md:text-[10px] text-slate-300 leading-relaxed flex-1 min-h-0 overflow-y-auto no-scrollbar pr-1">
             {item.snippet}
           </p>
           <div className="mt-auto flex items-center justify-between">
-            <span className="text-[10px] max-md:text-[9px] uppercase tracking-wide text-accent-cyan">
+            <span className="text-[10px] max-md:text-[6px] uppercase tracking-wide text-accent-cyan">
               {item.source || "Tech"}
             </span>
             <a
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs max-md:text-[11px] font-medium text-violet-300 hover:text-violet-200"
+              className="text-xs max-md:text-[8px] font-medium text-violet-300 hover:text-violet-200"
             >
               Read more...
             </a>
@@ -120,7 +120,7 @@ const NewsArticles = () => {
         {isLoading ? (
           <p className="text-sm max-md:text-xs text-slate-300">Loading articles...</p>
         ) : cards.length ? (
-          <div className="w-95 h-115 max-md:w-72 max-md:h-86">
+          <div className="w-95 h-115 max-md:w-60 max-md:h-80">
             <Stack
               randomRotation={false}
               sensitivity={200}

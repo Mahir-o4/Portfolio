@@ -23,7 +23,7 @@ export default function HeroSection() {
           {/* Left Content */}
           <div className={`${isVisible ? "slide-in-left" : "opacity-0"}`}>
             {/* Main Heading */}
-            <div className="py-8 min-w-screen text-left">
+            <div className="py-8 w-full min-w-0 text-left">
               <SplitText
                 text="Sk Mahir Ashef"
                 className="text-[35px] md:text-5xl font-extrabold text-center text-[#9D00FF]"
@@ -71,7 +71,7 @@ export default function HeroSection() {
             className={`relative ${isVisible ? "slide-in-right" : "opacity-0"}`}
             style={{ animationDelay: "0.2s" }}
           >
-            <div className="relative w-94 h-72 md:w-120 md:h-106 mx-auto">
+            <div className="relative w-full max-w-88 h-72 md:w-120 md:h-106 mx-auto">
               <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
                 <div className="absolute -inset-24 md:-inset-20 md:left-8 top-8 left-16">
                   <Spline
@@ -87,7 +87,7 @@ export default function HeroSection() {
             </div>
 
             {/* Status Badge */}
-            <div className="absolute bottom-0 md:bottom-1 left-40 md:left-52 transform -translate-x-1/2 bg-slate-950/85 border border-accent/60 px-3 md:px-6 py-2 md:py-3 code-text text-xs md:text-sm z-20 ">
+            <div className="absolute bottom-0 md:bottom-1 left-1/2 md:left-52 transform -translate-x-1/2 bg-slate-950/85 border border-accent/60 px-3 md:px-6 py-2 md:py-3 code-text text-xs md:text-sm z-20 max-w-[calc(100%-1rem)] whitespace-nowrap">
               <span className="text-accent-purple">■</span>
               <span className="text-slate-100 ml-2">Currently working on</span>
               <span className="text-accent-cyan ml-2">Portfolio</span>
