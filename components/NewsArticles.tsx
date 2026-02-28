@@ -126,8 +126,8 @@ const NewsArticles = () => {
               sensitivity={200}
               sendToBackOnClick={false}
               cards={cards}
-              autoplay={false}
-              autoplayDelay={3000}
+              autoplay={typeof window !== 'undefined' && window.innerWidth < 768}
+              autoplayDelay={5000}
               pauseOnHover={true}
             />
           </div>

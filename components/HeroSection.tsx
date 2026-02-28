@@ -23,10 +23,10 @@ export default function HeroSection() {
           {/* Left Content */}
           <div className={`${isVisible ? "slide-in-left" : "opacity-0"}`}>
             {/* Main Heading */}
-            <div className="py-8 min-w-screen text-center md:text-left">
+            <div className="py-8 min-w-screen text-left">
               <SplitText
                 text="Sk Mahir Ashef"
-                className="text-[40px] md:text-5xl font-extrabold text-center text-[#9D00FF]"
+                className="text-[35px] md:text-5xl font-extrabold text-center text-[#9D00FF]"
                 delay={50}
                 duration={1.25}
                 ease="power3.out"
