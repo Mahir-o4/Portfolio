@@ -121,7 +121,7 @@ export default function Footer() {
           </p>
           <a
             href="mailto:skmahirashef04@gmail.com"
-            className="flex justify-around align-middle px-4 md:px-6 w-48 py-2 border border-accent-purple text-accent-purple hover:bg-accent-purple hover:text-[#00ff88] code-text text-[11px] md:text-xs font-semibold transition-all active:text-[#00ff88]"
+            className="flex justify-around items-center px-4 md:px-6 w-48 py-2 border border-accent-purple text-accent-purple hover:bg-accent-purple hover:text-[#00ff88] code-text text-[11px] md:text-xs font-semibold transition-all active:text-[#00ff88]"
           >
             send message <Send size={18} />
           </a>

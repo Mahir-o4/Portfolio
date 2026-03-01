@@ -40,7 +40,7 @@ export default function AboutSection() {
             {/* Quote */}
             <div className="card-minimal rounded-none p-4 md:p-6 border-l-4 border-accent-cyan mt-6 md:mt-8">
               <p className="text-slate-300 italic code-text text-sm mb-3">
-                "Keep trying untill oneday you give up on your own."
+                "Keep trying until oneday you give up on your own."
               </p>
               <p className="text-accent code-text text-xs">— Mahir</p>
             </div>
