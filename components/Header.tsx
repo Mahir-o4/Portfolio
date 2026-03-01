@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Github, Twitter, Linkedin, Menu, X } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const navItems = [
   { id: "home", label: "#home" },
@@ -17,6 +17,26 @@ export default function Header() {
   const activeSection = useActiveSection(navItems.map((item) => item.id));
   const [isArtVis, setIsArtVis] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio('/fahhh.mp3');
+    audioRef.current.preload = 'auto';
+
+    return () => {
+      if (!audioRef.current) return;
+      audioRef.current.pause();
+      audioRef.current.src = '';
+      audioRef.current.load();
+      audioRef.current = null;
+    };
+  }, []);
+
+  const handleArticlesClick = useCallback(() => {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(() => {});
+  }, []);
 
   useEffect(() => {
     const el = document.getElementById("articles");
@@ -126,6 +146,7 @@ export default function Header() {
             <a
               href="#articles"
               title="Majik Btn"
+              onClick={handleArticlesClick}
               className={`
                 ${isArtVis ? "text-[#00d9ff]": "text-slate-500"}
                 hidden md:block px-4 py-2 border hover:bg-accent-purple hover:text-[#00d9ff] transition-all code-text text-xs font-semibold`}

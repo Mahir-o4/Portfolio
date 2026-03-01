@@ -39,7 +39,7 @@ const NewsArticles = () => {
         }
 
         if (isMounted) {
-          setNews(Array.isArray(data.news) ? data.news.slice(0, 5) : []);
+          setNews(Array.isArray(data.news) ? data.news : []);
           setError("");
         }
       } catch (err) {
@@ -107,7 +107,7 @@ const NewsArticles = () => {
     <div
       ref={ref}
       id = "articles"
-      className="w-full md:min-h-screen max-h-screen flex items-center md:justify-around justify-center px-16 max-md:px-4 max-md:flex-col max-md:gap-8 mb-10 max-md:mb-16"
+      className="w-full md:min-h-screen min-h-auto flex items-center md:justify-around justify-center px-16 max-md:px-4 max-md:flex-col max-md:gap-8 mb-10 max-md:mb-16"
     >
       <div
         className={`flex flex-col gap-5 ${isVisible ? "slide-in-left" : "opacity-0"}`} style={{animationDelay:'0.2s'}}
@@ -126,8 +126,8 @@ const NewsArticles = () => {
               sensitivity={200}
               sendToBackOnClick={false}
               cards={cards}
-              autoplay={typeof window !== 'undefined' && window.innerWidth < 768}
-              autoplayDelay={5000}
+              autoplay={true}
+              autoplayDelay={7000}
               pauseOnHover={true}
             />
           </div>

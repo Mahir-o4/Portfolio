@@ -61,7 +61,7 @@ export default function SkillsSection() {
           <div className="md:hidden">
             <LogoLoop
               logos={skillCategories}
-              speed={100}
+              speed={60}
               direction="left"
               logoHeight={60}
               gap={36}

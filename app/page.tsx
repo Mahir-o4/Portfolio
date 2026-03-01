@@ -10,7 +10,7 @@ import NewsArticles from "@/components/NewsArticles";
 export default function Home() {
   return (
     <main className="relative min-h-screen">
-      <div className="fixed inset-0 z-0">
+      <div className="fixed inset-0 z-0 hidden md:block">
         <PixelBlast
           variant="diamond"
           pixelSize={4}
@@ -31,8 +31,14 @@ export default function Home() {
           transparent
         />
       </div>
-      <div className="fixed inset-0 z-10 pointer-events-none bg-slate-950/60 backdrop-blur-[1px]" aria-hidden="true">
-      </div>
+      <div
+        className="hidden md:block fixed inset-0 z-10 pointer-events-none bg-slate-950/60 backdrop-blur-[1px]"
+        aria-hidden="true"
+      ></div>
+      <div
+        className="fixed inset-0 z-10 pointer-events-none md:hidden bg-linear-to-b from-slate-950 via-slate-950/80 to-transparent"
+        aria-hidden="true"
+      ></div>
       <div className="relative z-20">
         <Header />
         <HeroSection />
