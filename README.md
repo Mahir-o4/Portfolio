@@ -12,6 +12,7 @@ A high-performance, responsive personal portfolio built with the Next.js App Rou
 - [TypeScript](https://www.typescriptlang.org/) – Static type checking for robust code.
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development.
 - [Vercel](https://vercel.com/) – Deployment and hosting platform.
+- [Spline](https://spline.design/) - An interactive WebGL engine powering models and animations.
 
 ---
 
