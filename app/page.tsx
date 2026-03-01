@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ProjectsSection from "@/components/ProjectsSection";
@@ -5,9 +7,15 @@ import SkillsSection from "@/components/SkillsSection";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
 import PixelBlast from "@/components/PixelBlast";
-import NewsArticles from "@/components/NewsArticles";
+import dynamic from "next/dynamic";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
+
+const NewsArticles = dynamic(() => import("@/components/NewsArticles"), {
+  ssr: false,
+});
 
 export default function Home() {
+  const isDesktop = useIsDesktop();
   return (
     <main className="relative min-h-screen">
       <div className="fixed inset-0 z-0 hidden md:block">
@@ -45,7 +53,7 @@ export default function Home() {
         <AboutSection />
         <SkillsSection />
         <ProjectsSection />
-        <NewsArticles />
+        {isDesktop && <NewsArticles />}
         <Footer />
       </div>
     </main>
