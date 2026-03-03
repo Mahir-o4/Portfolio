@@ -1,4 +1,5 @@
 import { Send } from "lucide-react";
+import ContactForm from "./ContactForm";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -112,20 +113,7 @@ export default function Footer() {
         </div>
 
         {/* Contact CTA */}
-        <div className="card-minimal rounded-none p-5 md:p-8 border-l-4 border-accent-purple mb-10 md:mb-12">
-          <h3 className="text-lg md:text-xl font-bold text-slate-100 code-text mb-3">
-            ready to <span className="text-accent-cyan">collaborate</span>?
-          </h3>
-          <p className="text-slate-400 text-xs md:text-sm code-text mb-5 md:mb-6">
-            Let's create something amazing together. Feel free to reach out!
-          </p>
-          <a
-            href="mailto:skmahirashef04@gmail.com"
-            className="flex justify-around items-center px-4 md:px-6 w-48 py-2 border border-accent-purple text-accent-purple hover:bg-accent-purple hover:text-[#00ff88] code-text text-[11px] md:text-xs font-semibold transition-all active:text-[#00ff88]"
-          >
-            send message <Send size={18} />
-          </a>
-        </div>
+        <ContactForm />
 
         {/* Divider */}
         <div className="border-t border-slate-700/30 pt-6 md:pt-8">
