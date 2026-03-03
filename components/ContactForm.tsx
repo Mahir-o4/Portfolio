@@ -47,7 +47,7 @@ export default function ContactForm() {
       setSt("err");
       return;
     }
-    // 
+    
     const handleAuth = async (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
 
