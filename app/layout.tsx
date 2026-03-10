@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -11,6 +11,12 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const jetBrains = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  display: 'swap'
+})
 
 export const metadata: Metadata = {
   title: "Mahir",
@@ -25,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-linear-to-b from-slate-950 via-black to-slate-950 overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} ${jetBrains.variable} bg-linear-to-b from-slate-950 via-black to-slate-950 overflow-x-hidden`}
       >
         {children}
       </body>

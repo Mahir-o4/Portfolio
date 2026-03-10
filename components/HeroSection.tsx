@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import TextType from "./TextType";
 import SplitText from "./SplitText";
 import QuoteCard from "./QuoteCard";
