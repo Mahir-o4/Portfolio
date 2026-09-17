@@ -2,33 +2,12 @@
 
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { Send } from "lucide-react";
-
- /**
-   * Handles the form submission for contact form with Google authentication.
-   * 
-   * Opens a popup window for OAuth authentication, then polls for session confirmation.
-   * Once authenticated, sends the contact message via POST request to `/api/mail`.
-   * 
-   * Flow:
-   * 1. Prevents default form submission and sets state to "verifying"
-   * 2. Opens a centered popup window for authentication
-   * 3. Initiates Google OAuth sign-in with social provider
-   * 4. Sets up message event listener for auth success confirmation
-   * 5. Polls every 1.5s to check if user session is established
-   * 6. On successful authentication, sends contact message and signs out user
-   * 7. Handles popup closure and resets state accordingly
-   * 
-   * @param e - The React form event triggered on form submission
-   * @returns Promise that resolves when authentication and message sending completes
-   */
-  
+import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 export default function ContactForm() {
   const [msg, setMsg] = useState("");
-  const [st, setSt] = useState("idle");
+  const [st, setSt] = useState<"idle" | "verifying" | "sending" | "ok" | "err">("idle");
 
- 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSt("verifying");
@@ -47,7 +26,7 @@ export default function ContactForm() {
       setSt("err");
       return;
     }
-    
+
     const handleAuth = async (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
 
@@ -132,41 +111,68 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="card-minimal rounded-none p-5 md:p-8 border-l-4 border-accent-purple mb-10">
-      <h3 className="text-lg md:text-xl font-bold text-slate-100 code-text mb-3">
-        ready to <span className="text-accent-cyan">collaborate</span>?
-      </h3>
-      <p className="text-slate-400 text-xs md:text-sm code-text mb-5 md:mb-6">
-        Let's create something amazing together. Feel free to reach out!
-      </p>
+    <div className="relative rounded-2xl sm:rounded-3xl bg-[#06070a] border border-white/[0.08] p-6 sm:p-8 shadow-[0_24px_70px_rgba(0,0,0,0.95)] overflow-hidden">
+      {/* Sleek top ambient hairline */}
+      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
 
-      <form
-        onSubmit={submit}
-        className="flex flex-col gap-3 max-w-md code-text"
-      >
-        <textarea
-          required
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-          placeholder="your_message..."
-          rows={6}
-          className="bg-slate-950/50 border border-slate-700 p-2 text-slate-200 outline-none focus:border-[#b66bff] transition-colors resize-none min-h-20"
-        />
+      <div className="mb-6">
+        <h3 className="type-heading text-xl sm:text-2xl text-[#f8fafc] mb-2 tracking-tight">
+          Ready to <span className="text-[var(--accent)]">collaborate</span>?
+        </h3>
+        <p className="text-[#94a3b8] font-sans text-sm leading-relaxed">
+          Send a direct message. Verified via Google OAuth, delivered directly to my inbox.
+        </p>
+      </div>
 
-        <button
-          type="submit"
-          disabled={st != "idle"}
-          className={`flex justify-around items-center px-4 md:px-6 w-48 py-2 mt-2 border border-accent-purple text-accent-purple ${st === "idle" ? "hover:bg-accent-purple hover:text-[#00ff88]" : ""} font-semibold transition-all disabled:opacity-50`}
-        >
-          {st === "verifying"
-        ? "verifying..."
-        : st === "sending"
-          ? "sending..."
-          : st === "ok"
-            ? "message sent!"
-            : "send message"}
-          {st === "idle" && <Send size={18} />}
-        </button>
+      <form onSubmit={submit} className="flex flex-col gap-4 font-sans">
+        <div className="relative">
+          <label htmlFor="contact-msg" className="sr-only">
+            Your message
+          </label>
+          <textarea
+            id="contact-msg"
+            required
+            value={msg}
+            onChange={(e) => {
+              setMsg(e.target.value);
+              if (st === "err") setSt("idle");
+            }}
+            placeholder="Tell me about your project, team, or opportunity..."
+            rows={5}
+            className="w-full rounded-xl sm:rounded-2xl bg-[#0a0c11] border border-white/[0.08] p-4 text-[#f8fafc] placeholder-[#94a3b8] outline-none focus:border-[var(--accent)] focus:bg-[#0d1017] transition-all resize-none text-sm leading-relaxed shadow-inner"
+          />
+        </div>
+
+        <div className="flex items-center justify-between flex-wrap gap-3 pt-1">
+          <p role="status" aria-live="polite" className="code-text text-xs text-[#64748b]">
+            {st === "verifying" && "Authenticating with Google..."}
+            {st === "sending" && "Dispatching message to Mahir..."}
+            {st === "ok" && "Delivered successfully! I will reply soon."}
+            {st === "err" && "Send failed — popup blocked or network error. Allow popups and try again."}
+            {st === "idle" && "Google 1-click verified • Anti-spam protected"}
+          </p>
+
+          <button
+            type="submit"
+            disabled={st === "verifying" || st === "sending" || !msg.trim()}
+            className="btn-primary flex items-center gap-2 py-3 px-6 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_4px_20px_rgba(61,252,202,0.25)] hover:shadow-[0_6px_28px_rgba(61,252,202,0.4)]"
+          >
+            {st === "verifying" && <Loader2 size={16} className="animate-spin" />}
+            {st === "sending" && <Loader2 size={16} className="animate-spin" />}
+            {st === "ok" && <CheckCircle2 size={16} className="text-[#08090d]" />}
+            {st === "err" && <AlertCircle size={16} />}
+            {st === "idle" && <Send size={16} />}
+            <span>
+              {st === "verifying"
+                ? "Verifying..."
+                : st === "sending"
+                  ? "Sending..."
+                  : st === "ok"
+                    ? "Sent!"
+                    : "Send Message"}
+            </span>
+          </button>
+        </div>
       </form>
     </div>
   );

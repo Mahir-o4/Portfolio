@@ -1,26 +1,32 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Syne, Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const jetBrains = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
-  display: 'swap'
-})
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Mahir",
-  description: "A Portfolio describing my skill sets and my projects",
+  title: "Mahir — AI Engineer & Builder",
+  description:
+    "Portfolio of Sk Mahir Ashef — AI/ML engineer and full-stack developer building intelligent web applications.",
 };
 
 export default function RootLayout({
@@ -31,7 +37,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jetBrains.variable} bg-linear-to-b from-slate-950 via-black to-slate-950 overflow-x-hidden`}
+        className={`${syne.variable} ${inter.variable} ${jetBrains.variable}`}
+        style={{ overflowX: "clip" }}
       >
         {children}
       </body>

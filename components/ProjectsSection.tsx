@@ -1,80 +1,97 @@
-'use client';
+"use client";
 
-import ProjectCard from './ProjectCard';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { motion, useReducedMotion, type Transition } from "motion/react";
+import ProjectCard from "./ProjectCard";
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+const projects = [
+  {
+    title: "OuraCode",
+    description: "Real-time collaborative coding platform with integrated cloud terminal and context-aware AI assistance.",
+    gifSrc: "/CodingGIF.mp4",
+    technologies: ["React.js", "Express", "WebSocket", "Redis", "Docker"],
+    link: "https://github.com/Mahir-o4/OuraCode",
+  },
+  {
+    title: "Cross Platform Student Management System",
+    description: "Cross-platform app for managing student credentials and organisational data on Android and iOS.",
+    gifSrc: "/StudentDebtDegreeGIF.mp4",
+    technologies: ["React.js", "Express", "MongoDB", "Flutter"],
+    link: "https://github.com/Mahir-o4/Cross-Platform-Student-Management-App",
+  },
+  {
+    title: "RAG Web",
+    description: "AI cinephile that scouts the web for movie insights, answering film queries with real-time precision.",
+    gifSrc: "/AiGeneratedAiGIF.mp4",
+    technologies: ["Python", "Ollama", "Streamlit", "GenAI"],
+    link: "https://github.com/Mahir-o4/RAG_Web",
+  },
+];
 
 export default function ProjectsSection() {
-const {ref, isVisible} = useScrollAnimation();
+  const reduced = useReducedMotion();
 
-
-  const projects = [
-    {
-      title: 'OuraCode',
-      description: 'OuraCode is a real-time collaborative coding platform with an integrated cloud terminal and context-aware AI assistance.',
-      accent: '#b66bff',
-      gifSrc: '/CodingGIF.mp4',
-      technologies: ['React.js', 'Express', 'WebSocket', 'Redis', 'Docker'],
-      link: "https://github.com/Mahir-o4/OuraCode"
-    },
-    {
-      title: 'Cross Platform Student Management System',
-      description: 'A cross-platform app for managing student credentials and organizational data on Android and iOS devices.',
-      accent: '#00d9ff',
-      gifSrc: '/StudentDebtDegreeGIF.mp4',
-      technologies: ['React.js', 'Express', 'MongoDB', 'Flutter'],
-      link:"https://github.com/Mahir-o4/Cross-Platform-Student-Management-App"
-    },
-    {
-      title: 'RAG WEB',
-      description: 'An AI-driven cinephile that scouts the web to fetch movie insights, answering your deepest film queries with real-time precision.',
-      accent: '#00ff88',
-      gifSrc: '/AiGeneratedAiGIF.mp4',
-      technologies: ['Python', 'Ollama', 'Streamlit', 'GenAI'],
-      link:"https://github.com/Mahir-o4/RAG_Web"
-    },
-  ];
+  const reveal = (delay: number) => ({
+    initial: reduced ? {} : { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.6, delay, ease: EASE } satisfies Transition,
+  });
 
   return (
-    <section ref={ref} id="work" className="py-14 md:py-20 md:ml-20 relative mb-10">
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
-        {/* Section Header */}
-        <div className={`mb-10 md:mb-16 ${isVisible? 'pop-in': 'opacity-0'}`} style={{animationDelay:'0.2s'}}>
-          <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-accent-cyan">
-              @work
-            </h2>
-          </div>
-          <p className="text-accent font-bold text-xs md:text-sm code-text ml-2 md:ml-8 mt-2">
-            A curated collection of innovative work
-          </p>
-        </div>
+    <section id="work" className="py-24 md:py-36 relative">
+      {/* Subtle glow behind section */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 60% 40% at 50% 40%, rgba(61,252,202,0.04) 0%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 justify-items-center md:justify-items-stretch">
-          {projects.map((project, index) => (
-            <div
-              key={project.title}
-              className={`${isVisible ? 'scroll-element' : 'opacity-0'}`}
-              style={{ animationDelay: `${index * 500}ms` }}
-            >
-              <ProjectCard
-                {...project}
-                delay={index * 500}
-              />
-            </div>
-          ))}
-        </div>
+      <div className="container-page relative">
+        <motion.p {...reveal(0)} className="code-text text-xs mb-8" style={{ color: "var(--text-dim)" }}>
+          @work
+        </motion.p>
 
-        {/* View All Link */}
-        <div className={`mt-12 text-right ${isVisible ? 'fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '0.4s' }}>
+        <motion.div {...reveal(0.05)} className="flex items-end justify-between mb-2 flex-wrap gap-4">
+          <h2
+            className="type-heading"
+            style={{ fontSize: "clamp(2rem, 4.5vw, 4rem)", color: "var(--text)" }}
+          >
+            Selected work.
+          </h2>
           <a
             href="https://github.com/Mahir-o4?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#00ff88] active:text-[#00ff88] transition-colors text-xs md:text-sm code-text font-semibold inline-flex items-center gap-2"
+            className="code-text text-xs transition-colors duration-150"
+            style={{ color: "var(--text-muted)" }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--accent)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-muted)")}
           >
             view all →
           </a>
+        </motion.div>
+
+        {/* Top rule */}
+        <motion.div {...reveal(0.1)} className="rule-accent mb-0" />
+
+        <div>
+          {projects.map((project, i) => (
+            <motion.div
+              key={project.title}
+              initial={reduced ? {} : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.55, delay: 0.1 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ProjectCard index={i} {...project} />
+            </motion.div>
+          ))}
+          {/* Bottom rule */}
+          <div style={{ borderBottom: "1px solid var(--border-subtle)" }} />
         </div>
       </div>
     </section>
