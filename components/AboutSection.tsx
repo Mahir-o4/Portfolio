@@ -2,22 +2,23 @@
 
 import { motion, useReducedMotion, type Transition } from "motion/react";
 import { Terminal, Cpu, Layers } from "lucide-react";
+import { useState, useEffect } from "react";
 
-const SPRING_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const FLUID_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
 const STATEMENTS = [
   {
-    icon: <Cpu size={16} className="text-(--accent)" />,
+    icon: <Cpu size={16} strokeWidth={1.5} className="text-[#FFFFFF]" />,
     label: "Focus",
     text: "Making AI practical — creating models and agentic workflows that deliver real-world utility in production.",
   },
   {
-    icon: <Layers size={16} className="text-(--accent)" />,
+    icon: <Layers size={16} strokeWidth={1.5} className="text-[#FFFFFF]" />,
     label: "Craft",
     text: "Frontend people actually want to interact with, paired with robust backend architectures that stay resilient.",
   },
   {
-    icon: <Terminal size={16} className="text-(--accent)" />,
+    icon: <Terminal size={16} strokeWidth={1.5} className="text-[#FFFFFF]" />,
     label: "Pace",
     text: "Years of shipping software, debugging relentlessly, and turning complex abstractions into elegant tools.",
   },
@@ -25,72 +26,92 @@ const STATEMENTS = [
 
 export default function AboutSection() {
   const reduced = useReducedMotion();
+  const [quote, setQuote] = useState<{ quote: string; author: string } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/quote")
+      .then((r) => r.json())
+      .then((d) => { if (d.quote && d.author) setQuote(d); })
+      .catch(() => { });
+  }, []);
 
   const reveal = (delay: number) => ({
-    initial: reduced ? {} : { opacity: 0, y: 24 },
-    whileInView: { opacity: 1, y: 0 },
+    initial: reduced ? {} : { opacity: 0, y: 64, filter: "blur(12px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
     viewport: { once: true, amount: 0.2 },
-    transition: { duration: 0.7, delay, ease: SPRING_EASE } satisfies Transition,
+    transition: { duration: 0.9, delay, ease: FLUID_EASE } satisfies Transition,
   });
 
   return (
-    <section id="about-me" className="py-28 md:py-40 relative">
-      {/* Subtle section glow */}
+    <section id="about-me" className="py-28 md:py-40 relative cv-auto">
+      {/* Faint neutral wash */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 50% 40%, rgba(99, 102, 241, 0.08) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 50% at 50% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />
 
+      {/* Faint colonnade elevation — the single statement texture, static */}
+      <svg
+        className="absolute right-0 top-1/2 -translate-y-1/2 h-[80%] w-auto pointer-events-none hidden lg:block"
+        viewBox="0 0 400 600"
+        fill="none"
+        stroke="#FFFFFF"
+        strokeOpacity="0.08"
+        strokeWidth="1.5"
+        aria-hidden="true"
+      >
+        <path d="M40 120 L200 40 L360 120" />
+        <path d="M55 120 L55 480 M120 120 L120 480 M200 120 L200 480 M280 120 L280 480 M345 120 L345 480" />
+        <path d="M40 140 L360 140 M30 480 L370 480 M20 505 L380 505 M10 530 L390 530" />
+        <path d="M55 160 L55 180 M120 160 L120 180 M200 160 L200 180 M280 160 L280 180 M345 160 L345 180" />
+      </svg>
+
       <div className="container-page relative">
-        {/* Section label */}
+        {/* Sheet header: eyebrow badge + rule + path code */}
         <motion.div {...reveal(0)} className="flex items-center gap-3 mb-12">
-          <span className="code-text text-xs text-(--accent) font-mono">
+          <span className="eyebrow eyebrow-ink">
             ~about
           </span>
-          <span className="w-12 h-px bg-white/15" />
-          <span className="code-text text-xs text-[#94a3b8] uppercase tracking-wider">
+          <span className="h-px flex-1 max-w-12 bg-[rgba(255,255,255,0.25)]" />
+          <span className="code-text text-xs text-(--text-muted) uppercase tracking-wider">
             Philosophy & Engineering
+          </span>
+          <span className="ml-auto code-text text-xs" style={{ color: "var(--text-dim)" }}>
+            ~/about
           </span>
         </motion.div>
 
         {/* Asymmetric grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-14 lg:gap-20 items-start">
-          {/* Left — pull quote + photographic companion showcase */}
+          {/* Left — pull quote + principle card + stats */}
           <div className="flex flex-col gap-8">
             <motion.div {...reveal(0.1)}>
-              <blockquote className="type-heading text-2xl sm:text-3xl lg:text-4xl text-[#f8fafc] leading-tight">
-                &ldquo;I build the layer between human intent and machine
-                intelligence.&rdquo;
-              </blockquote>
-              <p className="code-text text-sm mt-4 text-(--accent) font-semibold">
-                — Sk Mahir Ashef
-              </p>
-            </motion.div>
-
-            {/* Architectural Engineering Philosophy Card */}
-            <motion.div
-              {...reveal(0.2)}
-              className="relative rounded-2xl overflow-hidden glass-card p-6 flex flex-col gap-3 group border border-white/10"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-(--accent) animate-pulse" />
-                  <span className="code-text text-xs text-[#f8fafc] font-semibold">
-                    Core Engineering Principle
-                  </span>
+              {quote ? (
+                <>
+                  <blockquote className="type-heading text-2xl sm:text-3xl lg:text-4xl leading-tight" style={{ color: "var(--text)" }}>
+                    &ldquo;{quote.quote}&rdquo;
+                  </blockquote>
+                  <p className="code-text text-sm mt-4 font-semibold" style={{ color: "var(--text)" }}>
+                    — {quote.author}
+                  </p>
+                </>
+              ) : (
+                <div className="flex flex-col gap-4 animate-pulse" aria-hidden="true">
+                  <div className="h-8 rounded-lg bg-[rgba(255,255,255,0.1)] w-full" />
+                  <div className="h-8 rounded-lg bg-[rgba(255,255,255,0.1)] w-4/5" />
+                  <div className="h-8 rounded-lg bg-[rgba(255,255,255,0.1)] w-3/5" />
+                  <div className="h-4 rounded-lg bg-[rgba(255,255,255,0.1)] w-1/3 mt-2" />
                 </div>
-                <span className="code-text text-[11px] text-[#94a3b8]">01 // CRAFT</span>
-              </div>
-              <p className="text-sm text-[#cbd5e1] leading-relaxed font-sans">
-                Complexity is not a feature. True engineering mastery lies in hiding distributed neural orchestrations behind responsive, intuitive tactile interfaces.
-              </p>
+              )}
             </motion.div>
 
-            {/* Quick stats bento pills */}
+
+
+            {/* Quick stats */}
             <motion.div
               {...reveal(0.3)}
               className="grid grid-cols-3 gap-3 pt-2"
@@ -100,16 +121,15 @@ export default function AboutSection() {
                 { value: "10+", label: "Projects Built" },
                 { value: "100%", label: "Focus & Craft" },
               ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="glass-card p-3 text-center flex flex-col items-center justify-center rounded-xl"
-                >
-                  <span className="type-display text-xl text-(--accent) font-bold">
-                    {stat.value}
-                  </span>
-                  <span className="text-[11px] text-[#94a3b8] font-sans mt-0.5">
-                    {stat.label}
-                  </span>
+                <div key={stat.label} className="bezel">
+                  <div className="bezel-core p-3 text-center flex flex-col items-center justify-center">
+                    <span className="type-display text-xl font-bold" style={{ color: "var(--text)" }}>
+                      {stat.value}
+                    </span>
+                    <span className="code-text text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                      {stat.label}
+                    </span>
+                  </div>
                 </div>
               ))}
             </motion.div>
@@ -118,33 +138,49 @@ export default function AboutSection() {
           {/* Right — bio + statements */}
           <div className="flex flex-col gap-10">
             <motion.div {...reveal(0.15)} className="flex flex-col gap-5">
-              <p className="text-base md:text-lg leading-relaxed text-[#cbd5e1] font-normal font-sans">
-                I&apos;m an AI/ML engineer who immersed into modern full-stack development
-                because I wanted world-class interfaces for my deep learning models. Now,
-                I engineer both ends of the stack with equal precision.
+              <p
+                className="text-base md:text-lg leading-relaxed font-normal font-sans max-w-[65ch]"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                I like building things that sit between intelligence and interaction.
+                I&apos;ve explored AI/ML, full-stack development, and modern web
+                technologies, mostly by turning ideas that should probably have
+                stayed ideas into working software.
               </p>
-              <p className="text-base leading-relaxed text-[#94a3b8] font-normal font-sans">
-                My daily work bridges neural networks, LLM agent orchestrations,
-                and high-performance web applications with React 19 and Next.js. I care deeply
-                about direct manipulation, fast feedback loops, and software that feels alive.
+
+              <p
+                className="text-base leading-relaxed font-normal font-sans max-w-[65ch]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                From deep learning models and LLM systems to real-time applications
+                and polished interfaces, I enjoy moving between the layers of a
+                product. I care about understanding what happens underneath,
+                while making sure what happens on the surface feels effortless.
               </p>
             </motion.div>
 
             {/* Statements list */}
-            <div className="border-t border-white/10">
+            <div className="border-t border-[rgba(255,255,255,0.14)]">
               {STATEMENTS.map((s, i) => (
                 <motion.div
                   key={s.label}
                   {...reveal(0.25 + i * 0.08)}
-                  className="py-6 grid grid-cols-[100px_1fr] gap-4 items-start border-b border-white/10 hover:bg-white/2 transition-colors px-2 rounded-lg"
+                  className="py-6 grid grid-cols-[100px_1fr] gap-4 items-start border-b border-[rgba(255,255,255,0.14)] hover:bg-[rgba(255,255,255,0.04)] transition-[background-color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] px-2 rounded-lg"
                 >
                   <div className="flex items-center gap-2 pt-0.5">
                     {s.icon}
-                    <span className="code-text text-xs text-[#f8fafc] font-semibold">
+                    <span
+                      className="code-text text-xs font-semibold"
+                      style={{ color: "var(--text)" }}
+                    >
                       {s.label}
                     </span>
                   </div>
-                  <p className="text-sm sm:text-base leading-relaxed text-[#cbd5e1] font-sans">
+
+                  <p
+                    className="text-sm sm:text-base leading-relaxed font-sans max-w-[60ch]"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
                     {s.text}
                   </p>
                 </motion.div>

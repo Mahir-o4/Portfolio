@@ -18,15 +18,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 // One master choreography: a pinned editorial sequence. Person holds the
 // foreground, the name climbs behind them and yields upward, then the role
-// statement rises in accent type with a CTA on either side. Scrub-driven,
+// statement rises in ink type with a CTA on either side. Scrub-driven,
 // no autoplay, no decorative loops.
 const SCROLL_DISTANCE = "600svh";
 
 function useMagnetic(strength = 0.2) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 240, damping: 24 });
-  const sy = useSpring(y, { stiffness: 240, damping: 24 });
+  // Near-critically-damped pointer follow (Apple move/reposition table):
+  // tracks the finger with no bounce, settles clean on release.
+  const sx = useSpring(x, { stiffness: 240, damping: 30 });
+  const sy = useSpring(y, { stiffness: 240, damping: 30 });
   const ref = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -120,13 +122,7 @@ export default function HeroSection() {
     mouseY.set(0);
   };
 
-  // ── Master scroll choreography ──
-  // progress 0.00 → person alone on an empty stage
-  // progress 0.15 → "SK MAHIR" rises from below, behind the person
-  // progress 0.40 → "ASHEF" rises to complete the name
-  // progress 0.55 → the name exits upward and out as one block
-  // progress 0.62 → role statement + flanking CTAs rise into place
-  // progress 1.00 → final composition, sticky releases
+
   useGSAP(
     () => {
       if (reduced) {
@@ -193,8 +189,8 @@ export default function HeroSection() {
       id="home"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full overflow-x-clip bg-[#08080a]"
-      style={{ height: SCROLL_DISTANCE }}
+      className="relative w-full overflow-x-clip"
+      style={{ height: SCROLL_DISTANCE, backgroundColor: "var(--bg)" }}
     >
       {/* ── Pinned Full-Screen Stage ─────────────────────────── */}
       <div className="sticky top-0 h-svh w-full overflow-hidden flex items-center justify-center">
@@ -211,7 +207,7 @@ export default function HeroSection() {
           {/* Subtle bottom fade into page background */}
           <div
             className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-20"
-            style={{ background: "linear-gradient(to top, #08080a 20%, transparent 100%)" }}
+            style={{ background: "linear-gradient(to top, var(--bg) 20%, transparent 100%)" }}
           />
         </div>
 
@@ -243,21 +239,19 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* ── ROLE LAYER: Accent Statement + Flanking CTAs ── */}
+        {/* ── ROLE LAYER: Ink Statement + Flanking CTAs ── */}
         <div className="absolute inset-0 z-5 pointer-events-none select-none overflow-hidden">
           <div ref={roleRef} className="relative w-full h-full will-change-transform" style={{ transform: "translateY(75vh)", opacity: 0 }}>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 max-md:justify-start max-md:pt-[11svh]">
               <h2
                 className="text-giant-bg"
                 style={{
-                  fontSize: "clamp(2.5rem, 9vw, 11rem)",
-                  color: "var(--accent)",
-                  textShadow: "0 12px 50px rgba(0, 0, 0, 0.85)",
+                  fontSize: "clamp(3.5rem, 13vw, 11rem)",
                 }}
               >
                 <span className="block">AI ENGINEER</span>
                 <span className="block mt-[-1vw]">FULL-STACK</span>
-                <span className="block mt-[-1vw]">ARCHITECT</span>
+                <span className="block mt-[-1vw]">DEVELOPER</span>
               </h2>
             </div>
             {/* CTAs ride with the role block: flanks on desktop, one docked row on mobile */}
@@ -267,27 +261,33 @@ export default function HeroSection() {
                 ref={ctaRef}
                 href="#contacts"
                 style={{ x: sx, y: sy }}
-                className="group inline-flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-full bg-(--accent) text-[#06080b] font-semibold text-xs transition-all duration-300 hover:shadow-[0_0_24px_rgba(61,252,202,0.4)] active:scale-[0.97]"
+                className="group inline-flex items-center gap-2 pl-5 pr-2 py-2 rounded-full bg-[#000000] text-[#F3F0E9] font-semibold text-sm transition-[box-shadow,background-color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_24px_60px_-18px_rgba(22,19,14,0.45)] active:scale-[0.98]"
                 aria-label="Get in touch"
                 id="hero-cta"
               >
                 <span>Let&apos;s talk</span>
-                <span className="w-6 h-6 rounded-full bg-black/15 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                  <ArrowUpRight size={13} strokeWidth={2.2} />
+                <span className="btn-circle">
+                  <ArrowUpRight size={15} strokeWidth={1.5} />
                 </span>
               </motion.a>
             </div>
             <div className="md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 pointer-events-auto">
               <a
                 href="#work"
-                className="inline-flex items-center px-4 py-2 rounded-full border border-white/10 bg-white/3 text-xs font-medium text-[#cbd5e1] hover:text-white hover:border-white/20 hover:bg-white/6 transition-all duration-200 active:scale-[0.97]"
+                className="group inline-flex items-center gap-2 pl-6 pr-2 py-2 rounded-full border border-[rgba(22,19,14,0.16)] bg-transparent text-sm font-medium text-[#4A463D] hover:text-[#000000] hover:border-[#000000] hover:bg-[rgba(22,19,14,0.05)] transition-[border-color,background-color,color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"
               >
-                View Work
+                <span>View Work</span>
+                <span className="btn-circle btn-circle-ghost">
+                  <ArrowDown size={14} strokeWidth={1.5} />
+                </span>
               </a>
             </div>
             </div>
           </div>
         </div>
+
+        {/* Warm floor shadow grounding the figure */}
+        <div className="absolute inset-x-0 bottom-0 h-[32%] z-9 pointer-events-none hero-floor-shadow" aria-hidden="true" />
 
         {/* ── FRONT LAYER: Uncarded Transparent PNG Cutout ── */}
         <div ref={personRef} className="relative z-10 will-change-transform">
@@ -302,7 +302,7 @@ export default function HeroSection() {
             }}
           >
             {/* Transparent cutout, no frame/box, ample headroom below navbar, gentle floor feather */}
-            <div className="relative h-[78vh] max-h-[720px] aspect-9/16 sm:aspect-10/16 md:h-[86vh] md:max-h-[820px] md:aspect-3/4 mb-0 mask-feather-bottom">
+            <div className="relative h-[84svh] max-h-180 aspect-9/16 sm:aspect-10/16 md:h-[86vh] md:max-h-205 md:aspect-3/4 mb-0 mask-feather-bottom">
               <Image
                 src="/myimage.png"
                 alt="Sk Mahir Ashef"
@@ -318,8 +318,8 @@ export default function HeroSection() {
 
         {/* ── Availability micro-label (static, no pulse) ── */}
         <div className="absolute left-6 md:left-12 bottom-7 z-20 pointer-events-none">
-          <span className="code-text text-[10px] tracking-widest uppercase text-[#64748b]">
-            Available for Q3/Q4
+          <span className="code-text text-[10px] tracking-widest uppercase" style={{ color: "var(--text-dim)" }}>
+            Available for Q1–Q4
           </span>
         </div>
 
@@ -328,15 +328,15 @@ export default function HeroSection() {
           ref={cueRef}
           className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-1.5"
         >
-          <span className="code-text text-[10px] tracking-widest uppercase text-[#64748b]">
+          <span className="code-text text-[10px] tracking-widest uppercase" style={{ color: "var(--text-dim)" }}>
             Scroll
           </span>
           <motion.span
             animate={reduced ? {} : { transform: ["translateY(0px)", "translateY(6px)", "translateY(0px)"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: [0.32, 0.72, 0, 1] }}
             className="flex"
           >
-            <ArrowDown size={14} className="text-(--accent)" />
+            <ArrowDown size={14} strokeWidth={1.5} className="text-[#000000]" />
           </motion.span>
         </div>
       </div>

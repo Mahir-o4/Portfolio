@@ -23,16 +23,16 @@ export default function Home() {
     >
       {/* === Ambient atmosphere layers (CSS only, no WebGL) === */}
 
-      {/* Purple/indigo glow — hero right */}
+      {/* Faint neutral wash — paper depth, no color */}
       <div
         className="fixed pointer-events-none"
         style={{
           inset: 0,
           zIndex: 0,
           background: `
-            radial-gradient(ellipse 65% 55% at 78% 35%, rgba(88, 28, 202, 0.18) 0%, transparent 70%),
-            radial-gradient(ellipse 45% 40% at 65% 50%, rgba(55, 48, 163, 0.20) 0%, transparent 65%),
-            radial-gradient(ellipse 50% 60% at 15% 80%, rgba(61, 252, 202, 0.05) 0%, transparent 60%)
+            radial-gradient(ellipse 65% 55% at 78% 35%, rgba(22, 19, 14, 0.05) 0%, transparent 70%),
+            radial-gradient(ellipse 45% 40% at 65% 50%, rgba(22, 19, 14, 0.04) 0%, transparent 65%),
+            radial-gradient(ellipse 50% 60% at 15% 80%, rgba(22, 19, 14, 0.05) 0%, transparent 60%)
           `,
         }}
         aria-hidden="true"

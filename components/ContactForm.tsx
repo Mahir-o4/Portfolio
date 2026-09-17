@@ -8,6 +8,12 @@ export default function ContactForm() {
   const [msg, setMsg] = useState("");
   const [st, setSt] = useState<"idle" | "verifying" | "sending" | "ok" | "err">("idle");
 
+  // Multimodal commit feedback: one light haptic on the causal event
+  // (delivered), same frame as the visual state flip. No-op where unsupported.
+  const hapticCommit = () => {
+    try { navigator.vibrate?.(12); } catch { /* unsupported — visual only */ }
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSt("verifying");
@@ -47,6 +53,7 @@ export default function ContactForm() {
 
           setSt(res.ok ? "ok" : "err");
           if (res.ok) {
+            hapticCommit();
             setMsg("");
             setTimeout(() => setSt("idle"), 4000);
           }
@@ -97,6 +104,7 @@ export default function ContactForm() {
 
           setSt(res.ok ? "ok" : "err");
           if (res.ok) {
+            hapticCommit();
             setMsg("");
             setTimeout(() => setSt("idle"), 4000);
           }
@@ -111,16 +119,18 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="relative rounded-2xl sm:rounded-3xl bg-[#06070a] border border-white/8 p-6 sm:p-8 shadow-[0_24px_70px_rgba(0,0,0,0.95)] overflow-hidden">
+    <div className="bezel">
+      <div className="bezel-core relative p-6 sm:p-8 overflow-hidden">
       {/* Sleek top ambient hairline */}
-      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[rgba(22,19,14,0.25)] to-transparent pointer-events-none" />
 
       <div className="mb-6">
-        <h3 className="type-heading text-xl sm:text-2xl text-[#f8fafc] mb-2 tracking-tight">
-          Ready to <span className="text-(--accent)">collaborate</span>?
+        <h3 className="type-heading text-xl sm:text-2xl mb-2 tracking-tight" style={{ color: "var(--text)" }}>
+          Ready to collaborate?
         </h3>
-        <p className="text-[#94a3b8] font-sans text-sm leading-relaxed">
-          Send a direct message. Verified via Google OAuth, delivered directly to my inbox.
+        <p className="font-sans text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+          Skip the noise. Reach me directly. <br />
+          Verified. Delivered. Done.
         </p>
       </div>
 
@@ -137,31 +147,31 @@ export default function ContactForm() {
               setMsg(e.target.value);
               if (st === "err") setSt("idle");
             }}
-            placeholder="Tell me about your project, team, or opportunity..."
+            placeholder="What's worth building together?"
             rows={5}
-            className="w-full rounded-xl sm:rounded-2xl bg-[#0a0c11] border border-white/8 p-4 text-[#f8fafc] placeholder-[#94a3b8] outline-none focus:border-(--accent) focus:bg-[#0d1017] transition-all resize-none text-sm leading-relaxed shadow-inner"
+            className="w-full rounded-xl sm:rounded-2xl bg-[#FFFDF7] border border-[rgba(22,19,14,0.14)] p-4 text-[#000000] placeholder-[#6E6A61] outline-none focus:border-[#000000] transition-[border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] resize-none text-sm leading-relaxed shadow-inner"
           />
         </div>
 
         <div className="flex items-center justify-between flex-wrap gap-3 pt-1">
-          <p role="status" aria-live="polite" className="code-text text-xs text-[#64748b]">
-            {st === "verifying" && "Authenticating with Google..."}
-            {st === "sending" && "Dispatching message to Mahir..."}
-            {st === "ok" && "Delivered successfully! I will reply soon."}
-            {st === "err" && "Send failed — popup blocked or network error. Allow popups and try again."}
-            {st === "idle" && "Google 1-click verified • Anti-spam protected"}
+          <p
+            role="status"
+            aria-live="polite"
+            className="code-text text-xs"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {st === "verifying" && "Verifying you..."}
+            {st === "sending" && "Sending it straight to Mahir..."}
+            {st === "ok" && "Delivered. You're in."}
+            {st === "err" && "That didn't go through. Try again."}
+            {st === "idle" && "Verified • Direct • Spam protected"}
           </p>
 
           <button
             type="submit"
             disabled={st === "verifying" || st === "sending" || !msg.trim()}
-            className="btn-primary flex items-center gap-2 py-3 px-6 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_4px_20px_rgba(61,252,202,0.25)] hover:shadow-[0_6px_28px_rgba(61,252,202,0.4)]"
+            className="btn-primary group flex items-center gap-2 py-2 pl-6 pr-2 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {st === "verifying" && <Loader2 size={16} className="animate-spin" />}
-            {st === "sending" && <Loader2 size={16} className="animate-spin" />}
-            {st === "ok" && <CheckCircle2 size={16} className="text-[#08090d]" />}
-            {st === "err" && <AlertCircle size={16} />}
-            {st === "idle" && <Send size={16} />}
             <span>
               {st === "verifying"
                 ? "Verifying..."
@@ -171,9 +181,17 @@ export default function ContactForm() {
                     ? "Sent!"
                     : "Send Message"}
             </span>
+            <span className="btn-circle !w-7 !h-7">
+              {st === "verifying" && <Loader2 size={14} strokeWidth={1.5} className="animate-spin" />}
+              {st === "sending" && <Loader2 size={14} strokeWidth={1.5} className="animate-spin" />}
+              {st === "ok" && <CheckCircle2 size={14} strokeWidth={1.5} className="text-[#F3F0E9]" />}
+              {st === "err" && <AlertCircle size={14} strokeWidth={1.5} />}
+              {st === "idle" && <Send size={14} strokeWidth={1.5} />}
+            </span>
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LogoIcon from "@/components/LogoIcon";
 import ContactForm from "./ContactForm";
 
 export default function Footer() {
@@ -8,50 +8,56 @@ export default function Footer() {
     <footer
       id="contacts"
       className="relative py-24 md:py-36 overflow-hidden"
-      style={{ borderTop: "1px solid var(--border-subtle)" }}
+      style={{ backgroundColor: "var(--panel)", color: "var(--panel-text)" }}
     >
-      {/* Ambient glow */}
+      {/* Faint paper wash on the dark anchor */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 70% 60% at 50% 70%, rgba(99, 102, 241, 0.12) 0%, transparent 65%),
-            radial-gradient(ellipse 45% 45% at 50% 85%, rgba(61, 252, 202, 0.08) 0%, transparent 60%)
+            radial-gradient(ellipse 70% 60% at 50% 70%, rgba(243, 240, 233, 0.05) 0%, transparent 65%)
           `,
         }}
         aria-hidden="true"
       />
 
+      {/* ASCII colonnade elevation — decorative line art only */}
+      <div className="absolute inset-x-0 top-[24%] flex justify-center pointer-events-none" aria-hidden="true">
+        <pre className="ascii-elevation">{`            ________________________________________________
+           /                                                \\
+          |    ||        ||        ||        ||        ||    |
+          |    ||        ||        ||        ||        ||    |
+          |    ||        ||        ||        ||        ||    |
+          |    ||        ||        ||        ||        ||    |
+          |____||________||________||________||________||____|
+          |==================================================|
+         _|__________________________________________________|_
+        |______________________________________________________|`}</pre>
+      </div>
+      <span className="sr-only">Classical colonnade line illustration</span>
+
       <div className="container-page relative">
-        {/* Section label */}
+        {/* Sheet header: eyebrow badge + rule + path code */}
         <div className="flex items-center gap-3 mb-12">
-          <span className="code-text text-xs text-(--accent) font-mono">
+          <span className="eyebrow" style={{ borderColor: "rgba(243,240,233,0.25)", color: "var(--panel-muted)" }}>
             #contact
           </span>
-          <span className="w-12 h-px bg-white/15" />
-          <span className="code-text text-xs text-[#94a3b8] uppercase tracking-wider">
+          <span className="h-px flex-1 max-w-12 bg-[rgba(243,240,233,0.25)]" />
+          <span className="code-text text-xs uppercase tracking-wider" style={{ color: "var(--panel-muted)" }}>
             Let&apos;s Connect
+          </span>
+          <span className="ml-auto code-text text-xs" style={{ color: "var(--panel-muted)" }}>
+            ~/contact
           </span>
         </div>
 
         {/* Brandmark Emblem Token */}
         <div className="flex flex-col items-center justify-center mb-8">
-          <div className="relative group">
-            <div className="absolute -inset-3 rounded-2xl bg-(--accent) opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-300" aria-hidden="true" />
-            <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-black border border-white/15 shadow-2xl group-hover:scale-105 transition-transform duration-300">
-              <Image
-                src="/logoicon.png"
-                alt="Sk Mahir Ashef — monogram"
-                width={102}
-                height={102}
-                unoptimized
-                className="absolute max-w-none invert"
-                style={{ left: "-29%", top: "-13%" }}
-              />
-            </div>
+          <div className="group-hover:scale-105 transition-transform duration-300">
+            <LogoIcon size={64} />
           </div>
-          <p className="code-text text-xs text-[#94a3b8] mt-3 tracking-wider uppercase">
-            Sk Mahir Ashef • AI Systems Architecture
+          <p className="code-text text-xs mt-3 tracking-wider uppercase" style={{ color: "var(--panel-muted)" }}>
+            Sk Mahir Ashef • AI Systems Engineering
           </p>
         </div>
 
@@ -65,9 +71,9 @@ export default function Footer() {
               letterSpacing: "-0.04em",
             }}
           >
-            <span className="text-[#f8fafc]">Let&apos;s build</span>
+            <span style={{ color: "var(--panel-text)" }}>Let&apos;s build</span>
             <br />
-            <span style={{ color: "var(--accent)" }}>
+            <span style={{ color: "var(--panel-text)" }}>
               something.
             </span>
           </h2>
@@ -77,10 +83,13 @@ export default function Footer() {
         <div className="text-center mb-16">
           <a
             href="mailto:skmahirashef04@gmail.com"
-            className="type-heading inline-flex items-center gap-2 group text-base sm:text-xl md:text-2xl text-[#cbd5e1] hover:text-(--accent) transition-colors duration-200"
+            className="type-heading inline-flex items-center gap-3 group text-base sm:text-xl md:text-2xl transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            style={{ color: "var(--panel-text)" }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
           >
             skmahirashef04@gmail.com
-            <span className="code-text text-sm opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-(--accent)">
+            <span className="btn-circle btn-circle-ink code-text text-sm text-white">
               ↗
             </span>
           </a>
@@ -92,9 +101,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex items-center justify-between flex-wrap gap-4 pt-8 border-t border-white/10">
-          <p className="code-text text-xs text-[#94a3b8]">
-            © {year} Sk Mahir Ashef • Engineered with Next.js & React
+        <div className="flex items-center justify-between flex-wrap gap-4 pt-8 border-t border-[rgba(243,240,233,0.15)]">
+          <p className="code-text text-xs" style={{ color: "var(--panel-muted)" }}>
+            © {year} Sk Mahir Ashef • Engineered with <br />
+            hope, coffee & code
           </p>
           <div className="flex items-center gap-6">
             {[
@@ -107,7 +117,8 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="code-text text-xs text-[#94a3b8] hover:text-(--accent) transition-colors duration-150"
+                className="code-text text-xs transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
+                style={{ color: "var(--panel-muted)" }}
               >
                 {label}
               </a>

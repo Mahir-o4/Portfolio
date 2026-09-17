@@ -13,8 +13,8 @@ export default function AuthSuccess() {
   }, []);
 
   return (
-    <div className="flex h-screen items-center justify-center bg-slate-950 code-text text-accent-cyan animate-pulse">
-      Verifying...
+    <div className="flex h-screen items-center justify-center bg-[#F3F0E9] code-text text-[#000000]">
+      Signed in — closing…
     </div>
   );
 }

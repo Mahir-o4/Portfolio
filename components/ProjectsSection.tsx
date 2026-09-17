@@ -1,9 +1,10 @@
 "use client";
 
 import { motion, useReducedMotion, type Transition } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import ProjectCard from "./ProjectCard";
 
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
 const projects = [
   {
@@ -33,27 +34,36 @@ export default function ProjectsSection() {
   const reduced = useReducedMotion();
 
   const reveal = (delay: number) => ({
-    initial: reduced ? {} : { opacity: 0, y: 16 },
-    whileInView: { opacity: 1, y: 0 },
+    initial: reduced ? {} : { opacity: 0, y: 64, filter: "blur(12px)" },
+    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
     viewport: { once: true, amount: 0.2 },
-    transition: { duration: 0.6, delay, ease: EASE } satisfies Transition,
+    transition: { duration: 0.9, delay, ease: EASE } satisfies Transition,
   });
 
   return (
-    <section id="work" className="py-24 md:py-36 relative">
-      {/* Subtle glow behind section */}
+    <section id="work" className="py-24 md:py-36 relative cv-auto">
+      {/* Faint neutral wash behind section */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 60% 40% at 50% 40%, rgba(61,252,202,0.04) 0%, transparent 70%)",
+          background:             "radial-gradient(ellipse 60% 40% at 50% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />
+      {/* Drafting grid — ink theme */}
+      <div className="absolute inset-0 pointer-events-none texture-grid-ink" aria-hidden="true" />
 
       <div className="container-page relative">
-        <motion.p {...reveal(0)} className="code-text text-xs mb-8" style={{ color: "var(--text-dim)" }}>
-          @work
-        </motion.p>
+        {/* Sheet header: eyebrow badge + rule + path code */}
+        <motion.div {...reveal(0)} className="flex items-center gap-3 mb-8">
+          <span className="eyebrow eyebrow-ink">
+            @work
+          </span>
+          <span className="h-px flex-1 max-w-12 bg-[rgba(255,255,255,0.25)]" />
+          <span className="ml-auto code-text text-xs" style={{ color: "var(--text-dim)" }}>
+            ~/work
+          </span>
+        </motion.div>
 
         <motion.div {...reveal(0.05)} className="flex items-end justify-between mb-2 flex-wrap gap-4">
           <h2
@@ -66,17 +76,25 @@ export default function ProjectsSection() {
             href="https://github.com/Mahir-o4?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="code-text text-xs transition-colors duration-150"
+            className="group inline-flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-full border border-[rgba(255,255,255,0.22)] code-text text-xs transition-[border-color,color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-[#FFFFFF] active:scale-[0.98]"
             style={{ color: "var(--text-muted)" }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--accent)")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-muted)")}
           >
-            view all →
+            <span>view all</span>
+            <span className="btn-circle btn-circle-ink !w-6 !h-6">
+              <ArrowUpRight size={13} strokeWidth={1.5} />
+            </span>
           </a>
         </motion.div>
 
-        {/* Top rule */}
-        <motion.div {...reveal(0.1)} className="rule-accent mb-0" />
+        {/* Top rule — draws itself */}
+        <motion.div
+          initial={reduced ? {} : { scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="rule-accent mb-0"
+          aria-hidden="true"
+        />
 
         <div>
           {projects.map((project, i) => (
@@ -85,7 +103,7 @@ export default function ProjectsSection() {
               initial={reduced ? {} : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.55, delay: 0.1 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, delay: 0.1 + i * 0.07, ease: [0.32, 0.72, 0, 1] }}
             >
               <ProjectCard index={i} {...project} />
             </motion.div>

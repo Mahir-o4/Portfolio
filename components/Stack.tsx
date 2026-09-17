@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform, type PanInfo } from 'motion/react';
+import { motion, useMotionValue, useReducedMotion, useTransform, animate, type PanInfo } from 'motion/react';
 import { useState, useEffect } from 'react';
 
 interface CardRotateProps {
@@ -14,12 +14,19 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
   const rotateY = useTransform(x, [-100, 100], [-60, 60]);
 
+  // Apple velocity handoff: a flick commits by velocity sign even under the
+  // distance threshold (momentum projection); otherwise the card springs home
+  // carrying release velocity — never a hard set (no brick wall).
+  const FLICK_VELOCITY = 500; // px/s
   function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
-    if (Math.abs(info.offset.x) > sensitivity || Math.abs(info.offset.y) > sensitivity) {
+    const flicked =
+      Math.abs(info.velocity.x) > FLICK_VELOCITY ||
+      Math.abs(info.velocity.y) > FLICK_VELOCITY;
+    if (Math.abs(info.offset.x) > sensitivity || Math.abs(info.offset.y) > sensitivity || flicked) {
       onSendToBack();
     } else {
-      x.set(0);
-      y.set(0);
+      animate(x, 0, { type: 'spring', stiffness: 300, damping: 34, velocity: info.velocity.x });
+      animate(y, 0, { type: 'spring', stiffness: 300, damping: 34, velocity: info.velocity.y });
     }
   }
 
@@ -33,7 +40,7 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
 
   return (
     <motion.div
-      className="absolute inset-0 cursor-grab"
+      className="absolute inset-0 cursor-grab touch-pan-y"
       style={{ x, y, rotateX, rotateY }}
       drag
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
@@ -63,7 +70,9 @@ export default function Stack({
   randomRotation = false,
   sensitivity = 200,
   cards = [],
-  animationConfig = { stiffness: 260, damping: 20 },
+  // Critically damped reorder (Apple default: bounce only when the gesture
+  // itself carried momentum — a deck cycle isn't momentum-driven).
+  animationConfig = { stiffness: 300, damping: 34 },
   sendToBackOnClick = false,
   autoplay = false,
   autoplayDelay = 3000,
@@ -73,6 +82,7 @@ export default function Stack({
 }: StackProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -153,7 +163,7 @@ export default function Stack({
   };
 
   useEffect(() => {
-    if (autoplay && stack.length > 1 && !isPaused) {
+    if (autoplay && !reduced && stack.length > 1 && !isPaused) {
       const interval = setInterval(() => {
         const topCardId = stack[stack.length - 1].id;
         sendToBack(topCardId);
@@ -161,7 +171,7 @@ export default function Stack({
 
       return () => clearInterval(interval);
     }
-  }, [autoplay, autoplayDelay, stack, isPaused]);
+  }, [autoplay, autoplayDelay, stack, isPaused, reduced]);
 
   return (
     <div

@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Syne, Inter } from "next/font/google";
+import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const syne = Syne({
-  variable: "--font-syne",
+const grotesk = Space_Grotesk({
+  variable: "--font-grotesk",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -37,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${syne.variable} ${inter.variable} ${jetBrains.variable}`}
+        className={`${grotesk.variable} ${jetBrains.variable}`}
         style={{ overflowX: "clip" }}
       >
         {children}
