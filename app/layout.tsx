@@ -24,9 +24,9 @@ const jetBrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mahir — AI Engineer & Builder",
+  title: "Mahir - Portfolio",
   description:
-    "Portfolio of Sk Mahir Ashef — AI/ML engineer and full-stack developer building intelligent web applications.",
+    "Portfolio of Sk Mahir Ashef - AI/ML engineer and full-stack developer building intelligent web applications.",
 };
 
 export default function RootLayout({

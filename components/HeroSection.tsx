@@ -197,7 +197,7 @@ export default function HeroSection() {
       style={{ height: SCROLL_DISTANCE }}
     >
       {/* ── Pinned Full-Screen Stage ─────────────────────────── */}
-      <div className="sticky top-0 h-[100svh] w-full overflow-hidden flex items-center justify-center">
+      <div className="sticky top-0 h-svh w-full overflow-hidden flex items-center justify-center">
 
         {/* ── Atmospheric Ambient Lighting ─────────────────────── */}
         <div className="absolute inset-0 pointer-events-none z-0">
@@ -232,7 +232,7 @@ export default function HeroSection() {
                 SK MAHIR
               </div>
             </div>
-            <div ref={line2Ref} className="-mt-[2.5vw] md:-mt-[4vw] will-change-transform" style={{ transform: "translateY(100vh)" }}>
+            <div ref={line2Ref} className="mt-[-2.5vw] md:mt-[-4vw] will-change-transform" style={{ transform: "translateY(100vh)" }}>
               <div
                 className="text-giant-bg"
                 style={{ fontSize: "clamp(4.8rem, 15.5vw, 18.5rem)" }}
@@ -244,7 +244,7 @@ export default function HeroSection() {
         </div>
 
         {/* ── ROLE LAYER: Accent Statement + Flanking CTAs ── */}
-        <div className="absolute inset-0 z-[5] pointer-events-none select-none overflow-hidden">
+        <div className="absolute inset-0 z-5 pointer-events-none select-none overflow-hidden">
           <div ref={roleRef} className="relative w-full h-full will-change-transform" style={{ transform: "translateY(75vh)", opacity: 0 }}>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
               <h2
@@ -256,8 +256,8 @@ export default function HeroSection() {
                 }}
               >
                 <span className="block">AI ENGINEER</span>
-                <span className="block -mt-[1vw]">FULL-STACK</span>
-                <span className="block -mt-[1vw]">ARCHITECT</span>
+                <span className="block mt-[-1vw]">FULL-STACK</span>
+                <span className="block mt-[-1vw]">ARCHITECT</span>
               </h2>
             </div>
             {/* CTAs ride with the role block: flanks on desktop, one docked row on mobile */}
@@ -267,7 +267,7 @@ export default function HeroSection() {
                 ref={ctaRef}
                 href="#contacts"
                 style={{ x: sx, y: sy }}
-                className="group inline-flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-full bg-[var(--accent)] text-[#06080b] font-semibold text-xs transition-all duration-300 hover:shadow-[0_0_24px_rgba(61,252,202,0.4)] active:scale-[0.97]"
+                className="group inline-flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-full bg-(--accent) text-[#06080b] font-semibold text-xs transition-all duration-300 hover:shadow-[0_0_24px_rgba(61,252,202,0.4)] active:scale-[0.97]"
                 aria-label="Get in touch"
                 id="hero-cta"
               >
@@ -280,7 +280,7 @@ export default function HeroSection() {
             <div className="md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 pointer-events-auto">
               <a
                 href="#work"
-                className="inline-flex items-center px-4 py-2 rounded-full border border-white/10 bg-white/[0.03] text-xs font-medium text-[#cbd5e1] hover:text-white hover:border-white/20 hover:bg-white/[0.06] transition-all duration-200 active:scale-[0.97]"
+                className="inline-flex items-center px-4 py-2 rounded-full border border-white/10 bg-white/3 text-xs font-medium text-[#cbd5e1] hover:text-white hover:border-white/20 hover:bg-white/6 transition-all duration-200 active:scale-[0.97]"
               >
                 View Work
               </a>
@@ -292,7 +292,7 @@ export default function HeroSection() {
         {/* ── FRONT LAYER: Uncarded Transparent PNG Cutout ── */}
         <div ref={personRef} className="relative z-10 will-change-transform">
           <motion.div
-            className="relative flex items-end justify-center pointer-events-none select-none h-[100svh] pb-0 will-change-transform"
+            className="relative flex items-end justify-center pointer-events-none select-none h-svh pb-0 will-change-transform"
             style={{
               x: reduced ? 0 : subjectX,
               y: reduced ? 0 : subjectY,
@@ -302,7 +302,7 @@ export default function HeroSection() {
             }}
           >
             {/* Transparent cutout, no frame/box, ample headroom below navbar, gentle floor feather */}
-            <div className="relative h-[78vh] max-h-[720px] aspect-[9/16] sm:aspect-[10/16] md:h-[86vh] md:max-h-[820px] md:aspect-[3/4] mb-0 mask-feather-bottom">
+            <div className="relative h-[78vh] max-h-[720px] aspect-9/16 sm:aspect-10/16 md:h-[86vh] md:max-h-[820px] md:aspect-3/4 mb-0 mask-feather-bottom">
               <Image
                 src="/myimage.png"
                 alt="Sk Mahir Ashef"
@@ -336,7 +336,7 @@ export default function HeroSection() {
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             className="flex"
           >
-            <ArrowDown size={14} className="text-[var(--accent)]" />
+            <ArrowDown size={14} className="text-(--accent)" />
           </motion.span>
         </div>
       </div>

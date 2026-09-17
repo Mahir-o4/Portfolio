@@ -1,4 +1,4 @@
-import BrandLogo from "@/components/BrandLogo";
+import Image from "next/image";
 import ContactForm from "./ContactForm";
 
 export default function Footer() {
@@ -25,7 +25,7 @@ export default function Footer() {
       <div className="container-page relative">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-12">
-          <span className="code-text text-xs text-[var(--accent)] font-mono">
+          <span className="code-text text-xs text-(--accent) font-mono">
             #contact
           </span>
           <span className="w-12 h-px bg-white/15" />
@@ -37,9 +37,17 @@ export default function Footer() {
         {/* Brandmark Emblem Token */}
         <div className="flex flex-col items-center justify-center mb-8">
           <div className="relative group">
-            <div className="absolute -inset-3 rounded-2xl bg-[var(--accent)] opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-300" aria-hidden="true" />
-            <div className="relative w-16 h-16 rounded-2xl flex items-center justify-center bg-[#0d0f18] border border-white/15 shadow-2xl group-hover:scale-105 transition-transform duration-300">
-              <BrandLogo size={36} />
+            <div className="absolute -inset-3 rounded-2xl bg-(--accent) opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-300" aria-hidden="true" />
+            <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-black border border-white/15 shadow-2xl group-hover:scale-105 transition-transform duration-300">
+              <Image
+                src="/logoicon.png"
+                alt="Sk Mahir Ashef — monogram"
+                width={102}
+                height={102}
+                unoptimized
+                className="absolute max-w-none invert"
+                style={{ left: "-29%", top: "-13%" }}
+              />
             </div>
           </div>
           <p className="code-text text-xs text-[#94a3b8] mt-3 tracking-wider uppercase">
@@ -69,10 +77,10 @@ export default function Footer() {
         <div className="text-center mb-16">
           <a
             href="mailto:skmahirashef04@gmail.com"
-            className="type-heading inline-flex items-center gap-2 group text-base sm:text-xl md:text-2xl text-[#cbd5e1] hover:text-[var(--accent)] transition-colors duration-200"
+            className="type-heading inline-flex items-center gap-2 group text-base sm:text-xl md:text-2xl text-[#cbd5e1] hover:text-(--accent) transition-colors duration-200"
           >
             skmahirashef04@gmail.com
-            <span className="code-text text-sm opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-[var(--accent)]">
+            <span className="code-text text-sm opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-(--accent)">
               ↗
             </span>
           </a>
@@ -99,7 +107,7 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="code-text text-xs text-[#94a3b8] hover:text-[var(--accent)] transition-colors duration-150"
+                className="code-text text-xs text-[#94a3b8] hover:text-(--accent) transition-colors duration-150"
               >
                 {label}
               </a>

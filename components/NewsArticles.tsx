@@ -87,14 +87,14 @@ const NewsArticles = () => {
             {item.snippet}
           </p>
           <div className="mt-auto flex items-center justify-between">
-            <span className="code-text text-[10px] max-md:text-[8px] uppercase tracking-wide text-[var(--accent)]">
+            <span className="code-text text-[10px] max-md:text-[8px] uppercase tracking-wide text-(--accent)">
               {item.source || "Tech"}
             </span>
             <a
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs max-md:text-[10px] font-medium text-[var(--accent)] hover:text-[var(--accent-hover)]"
+              className="text-xs max-md:text-[10px] font-medium text-(--accent) hover:text-(--accent-hover)"
             >
               Read more...
             </a>

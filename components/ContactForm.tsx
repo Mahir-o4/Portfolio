@@ -111,13 +111,13 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="relative rounded-2xl sm:rounded-3xl bg-[#06070a] border border-white/[0.08] p-6 sm:p-8 shadow-[0_24px_70px_rgba(0,0,0,0.95)] overflow-hidden">
+    <div className="relative rounded-2xl sm:rounded-3xl bg-[#06070a] border border-white/8 p-6 sm:p-8 shadow-[0_24px_70px_rgba(0,0,0,0.95)] overflow-hidden">
       {/* Sleek top ambient hairline */}
-      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
 
       <div className="mb-6">
         <h3 className="type-heading text-xl sm:text-2xl text-[#f8fafc] mb-2 tracking-tight">
-          Ready to <span className="text-[var(--accent)]">collaborate</span>?
+          Ready to <span className="text-(--accent)">collaborate</span>?
         </h3>
         <p className="text-[#94a3b8] font-sans text-sm leading-relaxed">
           Send a direct message. Verified via Google OAuth, delivered directly to my inbox.
@@ -139,7 +139,7 @@ export default function ContactForm() {
             }}
             placeholder="Tell me about your project, team, or opportunity..."
             rows={5}
-            className="w-full rounded-xl sm:rounded-2xl bg-[#0a0c11] border border-white/[0.08] p-4 text-[#f8fafc] placeholder-[#94a3b8] outline-none focus:border-[var(--accent)] focus:bg-[#0d1017] transition-all resize-none text-sm leading-relaxed shadow-inner"
+            className="w-full rounded-xl sm:rounded-2xl bg-[#0a0c11] border border-white/8 p-4 text-[#f8fafc] placeholder-[#94a3b8] outline-none focus:border-(--accent) focus:bg-[#0d1017] transition-all resize-none text-sm leading-relaxed shadow-inner"
           />
         </div>
 

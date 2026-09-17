@@ -15,13 +15,11 @@ import {
   SiGit,
 } from "react-icons/si";
 import { FaHtml5 } from "react-icons/fa6";
-import { Brain, Code2, Cpu, Wrench } from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const SKILL_CATEGORIES = [
   {
-    icon: <Brain className="text-[var(--accent)]" size={22} />,
     title: "AI & Machine Learning",
     description: "Deep learning models, agent workflows, and intelligent pipeline architectures.",
     highlight: "Primary Focus",
@@ -34,7 +32,6 @@ const SKILL_CATEGORIES = [
     ],
   },
   {
-    icon: <Code2 className="text-[#38bdf8]" size={22} />,
     title: "Full-Stack Web Engineering",
     description: "Production-grade, highly responsive web apps with fluid motion & direct manipulation.",
     highlight: "Daily Stack",
@@ -47,7 +44,6 @@ const SKILL_CATEGORIES = [
     ],
   },
   {
-    icon: <Cpu className="text-[#a78bfa]" size={22} />,
     title: "Systems & Core Languages",
     description: "Algorithmic thinking, memory efficiency, and low-level software fundamentals.",
     highlight: "Foundation",
@@ -59,7 +55,6 @@ const SKILL_CATEGORIES = [
     ],
   },
   {
-    icon: <Wrench className="text-[#fb923c]" size={22} />,
     title: "DevOps & Developer Tools",
     description: "Continuous deployment, version control workflows, and rapid development environments.",
     highlight: "Tooling",
@@ -143,44 +138,46 @@ export default function SkillsSection() {
           structured for maximum execution speed and production durability.
         </motion.p>
 
-        {/* ── Apple-Grade Bento Grid ────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        {/* ── Tech-stack index: editorial rows, no cards ── */}
+        <div className="border-t border-white/10 mb-16">
           {SKILL_CATEGORIES.map((category, idx) => (
             <motion.div
               key={category.title}
               {...reveal(0.2 + idx * 0.08)}
-              className="glass-card p-7 sm:p-8 flex flex-col justify-between group transition-all duration-300"
+              className="py-8 md:py-10 grid grid-cols-1 md:grid-cols-[280px_1fr] gap-4 md:gap-10 items-start border-b border-white/10 group"
             >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    {category.icon}
-                  </div>
-                  <span className="code-text text-[11px] px-3 py-1 rounded-full glass-pill text-[#94a3b8] border border-white/10">
-                    {category.highlight}
-                  </span>
-                </div>
-
-                <h3 className="type-heading text-xl sm:text-2xl text-[#f8fafc] mb-2">
+              {/* Category voice */}
+              <div className="flex flex-col gap-2">
+                <span className="code-text text-[11px] uppercase tracking-wider text-[var(--accent)] font-semibold">
+                  {category.highlight}
+                </span>
+                <h3 className="type-heading text-xl sm:text-2xl text-[#f8fafc]">
                   {category.title}
                 </h3>
-                <p className="text-sm text-[#cbd5e1] leading-relaxed mb-6 font-sans">
+                <p className="text-sm text-[#94a3b8] leading-relaxed font-sans max-w-[38ch]">
                   {category.description}
                 </p>
               </div>
 
-              {/* Skills pill chips */}
-              <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
-                {category.skills.map((skill) => (
-                  <span
-                    key={skill.name}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/[0.04] border border-white/10 text-[#f1f5f9] group-hover:border-white/20 transition-colors"
-                  >
-                    {skill.icon && <span className="text-sm opacity-80">{skill.icon}</span>}
-                    <span>{skill.name}</span>
+              {/* The stack itself, set large */}
+              <p className="type-heading font-medium text-[#f8fafc] leading-snug tracking-tight"
+                 style={{ fontSize: "clamp(1.35rem, 2.6vw, 2rem)" }}>
+                {category.skills.map((skill, i) => (
+                  <span key={skill.name}>
+                    <span className="inline-flex items-baseline gap-2 whitespace-nowrap">
+                      {skill.icon && (
+                        <span className="text-[0.85em] text-[var(--accent)] opacity-80 translate-y-[0.08em]">
+                          {skill.icon}
+                        </span>
+                      )}
+                      <span className="text-[#cbd5e1] hover:text-[#f8fafc] transition-colors duration-150">{skill.name}</span>
+                    </span>
+                    {i < category.skills.length - 1 && (
+                      <span className="text-[#475569] mx-3 select-none" aria-hidden="true">/</span>
+                    )}
                   </span>
                 ))}
-              </div>
+              </p>
             </motion.div>
           ))}
         </div>
@@ -207,7 +204,7 @@ export default function SkillsSection() {
           {doubledLogos.map((logo, i) => (
             <div
               key={i}
-              className="flex items-center gap-2.5 mx-6 sm:mx-10 flex-shrink-0 opacity-80 hover:opacity-100 transition-opacity cursor-default"
+              className="flex items-center gap-2.5 mx-6 sm:mx-10 shrink-0 opacity-80 hover:opacity-100 transition-opacity cursor-default"
             >
               <span className="text-xl text-[var(--accent)]">{logo.node}</span>
               <span className="code-text text-xs text-[#cbd5e1] font-medium tracking-wide">
