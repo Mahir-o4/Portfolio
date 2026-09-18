@@ -1,6 +1,3 @@
-// Architect Art System — seeded drafting textures (flat, static, monochrome).
-// Same seed always yields the same sheet. No content, no color, no copy.
-
 export type ArchVariant =
   | "cut"
   | "field"
@@ -18,12 +15,10 @@ export function hashString(input: string): number {
   return h >>> 0;
 }
 
-/** Deterministic seed per section (stable across loads). */
 export function seedFor(section: string): number {
   return (hashString(section) + 418) >>> 0;
 }
 
-/** Seeded PRNG (mulberry32) — tiny, reproducible, no deps. */
 export function mulberry32(seed: number): () => number {
   let a = seed >>> 0;
   return () => {
@@ -36,13 +31,9 @@ export function mulberry32(seed: number): () => number {
 }
 
 export interface ArchMotifParams {
-  /** Arcade columns (cut) / wall bubbles (beam). */
   bays: number;
-  /** Topographic contour lines (field). */
   contours: number;
-  /** Stipple dots. */
   stipple: number;
-  /** Grid bubbles / brick courses are derived from canvas size. */
   bubbles: number;
 }
 

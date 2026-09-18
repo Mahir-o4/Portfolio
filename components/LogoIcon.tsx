@@ -5,11 +5,6 @@ interface LogoIconProps {
   className?: string;
 }
 
-/**
- * Monogram chip — shows only the M mark from logoicon.png.
- * Uses object-fit cover + object-position to frame the M centrally,
- * cutting out the "SK MAHIR ASHEF" text and surrounding whitespace.
- */
 export default function LogoIcon({ size = 36, className = "" }: LogoIconProps) {
   return (
     <span
@@ -31,9 +26,9 @@ export default function LogoIcon({ size = 36, className = "" }: LogoIconProps) {
         className="invert"
         style={{
           objectFit: "cover",
-          objectPosition: "50% 32%",
+          objectPosition: "50% 30%",
           transform: "scale(1.55)",
-          transformOrigin: "50% 32%",
+          transformOrigin: "50% 30%",
         }}
       />
     </span>

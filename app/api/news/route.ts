@@ -5,14 +5,7 @@ const API_KEY = process.env.NEWS_API;
 const TECH_QUERY =
   "(technology OR tech OR AI OR software OR cybersecurity OR startup OR gadgets OR cloud)";
 
-// ── In-memory cache ──────────────────────────────────────────────────────────
-// Budget: 200 calls/day → 1 call per 7.2 min minimum.
-// TTL set to 8 min (480s) = max 180 calls/day, leaving a 20-call safety buffer.
-// This cache lives for the lifetime of the server process (dev hot-reload safe
-// because the timestamp gate prevents double-fetching within the same window).
-// In production on Vercel, ISR revalidate below also caches at the CDN edge.
-
-const CACHE_TTL_MS = 8 * 60 * 1000; // 8 minutes
+const CACHE_TTL_MS = 8 * 60 * 1000;
 
 type CachedPayload = {
   status: "success";
@@ -26,14 +19,29 @@ type CacheEntry = {
   fetchedAt: number; // Date.now()
 };
 
-// Module-level singleton — shared across requests in the same process
-let cache: CacheEntry | null = null;
+const caches = new Map<string, CacheEntry>();
 
-// ── ISR: also cache at the Next.js / CDN edge (production only) ───────────────
-// 480 seconds aligns with the in-memory TTL above.
+const NEWS_IP_WINDOW_MS = 60 * 1000;
+const NEWS_IP_MAX_HITS = 30;
+const ipLog = new Map<string, number[]>();
+
+function isIpRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entries = ipLog.get(ip) ?? [];
+  const fresh = entries.filter((t) => now - t < NEWS_IP_WINDOW_MS);
+  if (fresh.length >= NEWS_IP_MAX_HITS) {
+    ipLog.set(ip, fresh);
+    return true;
+  }
+  fresh.push(now);
+  ipLog.set(ip, fresh);
+  return false;
+}
+
+const LANGUAGE_RE = /^[a-z]{2}(-[A-Z]{2})?$/;
+const PAGE_TOKEN_RE = /^[\w-]{1,128}$/;
+
 export const revalidate = 480;
-
-// ── Types ────────────────────────────────────────────────────────────────────
 type NewsDataArticle = {
   article_id?: string;
   title?: string;
@@ -59,7 +67,6 @@ function toSnippet(text: string, maxLength = 200) {
   return `${text.slice(0, maxLength).trimEnd()}...`;
 }
 
-// ── Handler ──────────────────────────────────────────────────────────────────
 export async function GET(request: Request) {
   if (!API_KEY) {
     return NextResponse.json(
@@ -71,7 +78,24 @@ export async function GET(request: Request) {
     );
   }
 
-  // 1. Serve from in-memory cache if still fresh
+  const forwarded = request.headers.get("x-forwarded-for");
+  const ip = forwarded?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown";
+  if (isIpRateLimited(ip)) {
+    return NextResponse.json(
+      { status: "error", message: "Too many requests — try again later." },
+      { status: 429 }
+    );
+  }
+
+  const incomingUrl = new URL(request.url);
+  const rawLanguage = incomingUrl.searchParams.get("language")?.trim() || "en";
+  const language = LANGUAGE_RE.test(rawLanguage) ? rawLanguage : "en";
+  const rawPage = incomingUrl.searchParams.get("page")?.trim() || "";
+  const page = PAGE_TOKEN_RE.test(rawPage) ? rawPage : "";
+
+  const cacheKey = `${language}:${page}`;
+  const cache = caches.get(cacheKey) ?? null;
+
   const now = Date.now();
   if (cache && now - cache.fetchedAt < CACHE_TTL_MS) {
     return NextResponse.json(cache.payload, {
@@ -84,12 +108,7 @@ export async function GET(request: Request) {
     });
   }
 
-  // 2. Cache miss — call newsdata.io
   try {
-    const incomingUrl = new URL(request.url);
-    const language = incomingUrl.searchParams.get("language")?.trim() || "en";
-    const page = incomingUrl.searchParams.get("page")?.trim();
-
     const upstreamParams = new URLSearchParams({
       apikey: API_KEY,
       q: TECH_QUERY,
@@ -105,7 +124,6 @@ export async function GET(request: Request) {
     const response = await fetch(upstreamUrl, {
       method: "GET",
       headers: { Accept: "application/json" },
-      // Let Next.js ISR handle CDN-level caching; no "no-store" here
       next: { revalidate },
     });
 
@@ -142,8 +160,7 @@ export async function GET(request: Request) {
       news,
     };
 
-    // 3. Store in-memory cache
-    cache = { payload, fetchedAt: Date.now() };
+    caches.set(cacheKey, { payload, fetchedAt: Date.now() });
 
     return NextResponse.json(payload, {
       status: 200,

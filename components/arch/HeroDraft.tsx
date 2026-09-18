@@ -2,8 +2,6 @@
 
 import { useEffect, useRef } from "react";
 
-// Hero-minimal: one wide shallow elliptical vault ring floating high in the
-// stage, clear of the portrait. Static, no motion, no grid.
 export default function HeroDraft() {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -58,15 +56,12 @@ function drawVault(
     ctx.strokeStyle = "rgba(22, 19, 14, 0.07)";
     ctx.lineWidth = dpr;
 
-    // Shallow elliptical vault — crown guaranteed in-frame:
-    // crown = springY - ry stays positive by construction.
     const cx = w * 0.5;
     const rx = w * 0.38;
     const ry = h * 0.16;
     const springY = h * 0.52;
     const baseY = h * 0.78;
 
-    // Double vault ring (upper ellipses only).
     ctx.beginPath();
     ctx.ellipse(cx, springY, rx, ry, 0, Math.PI, 0);
     ctx.stroke();
@@ -82,7 +77,6 @@ function drawVault(
     );
     ctx.stroke();
 
-    // Jambs — meet the ring where the ellipse passes overhead.
     const jx = w * 0.2;
     const jy = springY - ry * Math.sqrt(Math.max(1 - (jx / rx) ** 2, 0));
     for (const sx of [-1, 1]) {
@@ -93,7 +87,6 @@ function drawVault(
       ctx.stroke();
     }
 
-    // Threshold — twin ground rules.
     ctx.beginPath();
     ctx.moveTo(w * 0.14, baseY);
     ctx.lineTo(w * 0.86, baseY);

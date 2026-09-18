@@ -11,10 +11,8 @@ export default function Footer() {
       className="relative py-24 md:py-36 overflow-hidden"
       style={{ backgroundColor: "var(--panel)", color: "var(--panel-text)" }}
     >
-      {/* Architect art first (colonnade, ink, static) */}
       <SectionDraft section="footer" variant="colonnade" tone="ink" />
 
-      {/* Faint paper wash on the dark anchor */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -25,7 +23,6 @@ export default function Footer() {
         aria-hidden="true"
       />
 
-      {/* ASCII colonnade elevation — decorative line art only */}
       <div className="absolute inset-x-0 top-[24%] flex justify-center pointer-events-none" aria-hidden="true">
         <pre className="ascii-elevation">{`            ________________________________________________
            /                                                \\
@@ -41,7 +38,6 @@ export default function Footer() {
       <span className="sr-only">Classical colonnade line illustration</span>
 
       <div className="container-page relative">
-        {/* Sheet header: eyebrow badge + rule + path code */}
         <div className="flex items-center gap-3 mb-12">
           <span className="eyebrow" style={{ borderColor: "rgba(243,240,233,0.25)", color: "var(--panel-muted)" }}>
             #contact
@@ -55,9 +51,8 @@ export default function Footer() {
           </span>
         </div>
 
-        {/* Brandmark Emblem Token */}
         <div className="flex flex-col items-center justify-center mb-8">
-          <div className="group-hover:scale-105 transition-transform duration-300">
+          <div className="transition-transform duration-200">
             <LogoIcon size={64} />
           </div>
           <p className="code-text text-xs mt-3 tracking-wider uppercase" style={{ color: "var(--panel-muted)" }}>
@@ -65,7 +60,6 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Giant headline — centered */}
         <div className="text-center mb-8">
           <h2
             className="type-display"
@@ -83,11 +77,10 @@ export default function Footer() {
           </h2>
         </div>
 
-        {/* Email — large, centered */}
         <div className="text-center mb-16">
           <a
             href="mailto:skmahirashef04@gmail.com"
-            className="type-heading inline-flex items-center gap-3 group text-base sm:text-xl md:text-2xl transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            className="type-heading inline-flex items-center gap-3 group text-base sm:text-xl md:text-2xl transition-colors duration-200 ease-[cubic-bezier(0.32,0.72,0,1)]"
             style={{ color: "var(--panel-text)" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
@@ -99,12 +92,10 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Contact form */}
         <div className="max-w-xl mx-auto mb-20">
           <ContactForm />
         </div>
 
-        {/* Bottom bar */}
         <div className="flex items-center justify-between flex-wrap gap-4 pt-8 border-t border-[rgba(243,240,233,0.15)]">
           <p className="code-text text-xs" style={{ color: "var(--panel-muted)" }}>
             © {year} Sk Mahir Ashef • Engineered with <br />
@@ -121,7 +112,7 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="code-text text-xs transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
+                className="code-text text-xs transition-colors duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
                 style={{ color: "var(--panel-muted)" }}
               >
                 {label}

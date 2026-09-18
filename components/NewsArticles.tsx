@@ -28,10 +28,10 @@ const NewsArticles = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const reveal = (delay: number) => ({
-    initial: reduced ? {} : { opacity: 0, y: 64, filter: "blur(12px)" },
-    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    initial: reduced ? {} : { opacity: 0, transform: "translateY(16px)" },
+    whileInView: { opacity: 1, transform: "translateY(0px)" },
     viewport: { once: true, amount: 0.15 },
-    transition: { duration: 0.9, delay, ease: [0.32, 0.72, 0, 1] } satisfies Transition,
+    transition: { duration: 0.28, delay, ease: [0.32, 0.72, 0, 1] } satisfies Transition,
   });
 
   useEffect(() => {
@@ -120,10 +120,8 @@ const NewsArticles = () => {
       id="articles"
       className="relative w-full cv-auto px-16 max-md:px-4 py-24 md:py-36 mb-10 max-md:mb-16 overflow-hidden"
     >
-      {/* Architect art (News sheet border, paper, scroll glow) */}
       <SectionDraft section="news" variant="sheet" tone="paper" />
 
-      {/* Sheet header: eyebrow badge + rule + path code */}
       <div className="container-page">
         <motion.div {...reveal(0)} className="flex items-center gap-3 mb-8">
           <span className="eyebrow">

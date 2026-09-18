@@ -37,18 +37,16 @@ export default function AboutSection() {
   }, []);
 
   const reveal = (delay: number) => ({
-    initial: reduced ? {} : { opacity: 0, y: 64, filter: "blur(12px)" },
-    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    initial: reduced ? {} : { opacity: 0, transform: "translateY(16px)" },
+    whileInView: { opacity: 1, transform: "translateY(0px)" },
     viewport: { once: true, amount: 0.2 },
-    transition: { duration: 0.9, delay, ease: FLUID_EASE } satisfies Transition,
+    transition: { duration: 0.28, delay, ease: FLUID_EASE } satisfies Transition,
   });
 
   return (
     <section id="about-me" className="py-28 md:py-40 relative cv-auto">
-      {/* Architect art first (About cut-bays, ink, scroll glow) */}
       <SectionDraft section="about" variant="cut" tone="ink" />
 
-      {/* Faint neutral wash */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -58,7 +56,6 @@ export default function AboutSection() {
         aria-hidden="true"
       />
 
-      {/* Faint colonnade elevation — the single statement texture, static */}
       <svg
         className="absolute right-0 top-1/2 -translate-y-1/2 h-[80%] w-auto pointer-events-none hidden lg:block"
         viewBox="0 0 400 600"
@@ -75,7 +72,6 @@ export default function AboutSection() {
       </svg>
 
       <div className="container-page relative">
-        {/* Sheet header: mono label + rule + path code (no pill chrome) */}
         <motion.div {...reveal(0)} className="flex items-center gap-4 mb-12">
           <span className="code-text text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--text)" }}>
             ~about
@@ -89,9 +85,7 @@ export default function AboutSection() {
           </span>
         </motion.div>
 
-        {/* Asymmetric grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-14 lg:gap-20 items-start">
-          {/* Left — pull quote + principle card + stats */}
           <div className="flex flex-col gap-8">
             <motion.div {...reveal(0.1)}>
               {quote ? (
@@ -115,7 +109,6 @@ export default function AboutSection() {
 
 
 
-            {/* Quick stats — ruled index strip, no bezel hardware */}
             <motion.div
               {...reveal(0.3)}
               className="grid grid-cols-3 border-y border-[rgba(255,255,255,0.14)] divide-x divide-[rgba(255,255,255,0.14)] mt-2"
@@ -137,7 +130,6 @@ export default function AboutSection() {
             </motion.div>
           </div>
 
-          {/* Right — bio + statements */}
           <div className="flex flex-col gap-10">
             <motion.div {...reveal(0.15)} className="flex flex-col gap-5">
               <p
@@ -161,13 +153,12 @@ export default function AboutSection() {
               </p>
             </motion.div>
 
-            {/* Statements list */}
             <div className="border-t border-[rgba(255,255,255,0.14)]">
               {STATEMENTS.map((s, i) => (
                 <motion.div
                   key={s.label}
-                  {...reveal(0.25 + i * 0.08)}
-                  className="py-6 grid grid-cols-[100px_1fr] gap-4 items-start border-b border-[rgba(255,255,255,0.14)] hover:bg-[rgba(255,255,255,0.04)] transition-[background-color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] px-2 rounded-lg"
+                  {...reveal(Math.min(0.25 + i * 0.06, 0.37))}
+                  className="py-6 grid grid-cols-[100px_1fr] gap-4 items-start border-b border-[rgba(255,255,255,0.14)] hover:bg-[rgba(255,255,255,0.04)] transition-[background-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] px-2 rounded-lg"
                 >
                   <div className="flex items-center gap-2 pt-0.5">
                     {s.icon}

@@ -8,10 +8,8 @@ export default function ContactForm() {
   const [msg, setMsg] = useState("");
   const [st, setSt] = useState<"idle" | "verifying" | "sending" | "ok" | "err">("idle");
 
-  // Multimodal commit feedback: one light haptic on the causal event
-  // (delivered), same frame as the visual state flip. No-op where unsupported.
   const hapticCommit = () => {
-    try { navigator.vibrate?.(12); } catch { /* unsupported — visual only */ }
+    try { navigator.vibrate?.(12); } catch {}
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -121,7 +119,6 @@ export default function ContactForm() {
   return (
     <div className="bezel">
       <div className="bezel-core relative p-6 sm:p-8 overflow-hidden">
-      {/* Sleek top ambient hairline */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[rgba(22,19,14,0.25)] to-transparent pointer-events-none" />
 
       <div className="mb-6">
@@ -149,7 +146,7 @@ export default function ContactForm() {
             }}
             placeholder="What's worth building together?"
             rows={5}
-            className="w-full rounded-xl sm:rounded-2xl bg-[#FFFDF7] border border-[rgba(22,19,14,0.14)] p-4 text-[#000000] placeholder-[#6E6A61] outline-hidden focus:border-[#000000] transition-[border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] resize-none text-sm leading-relaxed shadow-inner"
+            className="w-full rounded-xl sm:rounded-2xl bg-[#FFFDF7] border border-[rgba(22,19,14,0.14)] p-4 text-[#000000] placeholder-[#6E6A61] outline-hidden focus:border-[#000000] transition-[border-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] resize-none text-sm leading-relaxed shadow-inner"
           />
         </div>
 

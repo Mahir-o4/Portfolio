@@ -1,6 +1,3 @@
-/* Architect Art System (§11) — flat drafting textures only, monochrome.
-   No glows, no radials, no motion. Texture alphas 0.03–0.055. */
-
 .arch-layer {
   position: absolute;
   inset: 0;
@@ -41,7 +38,3 @@
   );
   mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
 }
-
-/* Mobile keeps textures: static draw-once canvas is cheap, so the art stays
-   mounted below 768px. Tappables and scrolling are unaffected
-   (pointer-events: none, no listeners). */

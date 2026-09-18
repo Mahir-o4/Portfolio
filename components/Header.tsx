@@ -50,20 +50,18 @@ export default function Header() {
 
   return (
     <>
-      {/* ─── Fluid Island — one detached floating pill ─────────── */}
       <header className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 pt-4 md:pt-6 pointer-events-none">
         <div
-          className={`nav-pill pointer-events-auto flex items-center gap-1 rounded-full pl-2 pr-2 py-2 transition-[background-color,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          className={`nav-pill pointer-events-auto flex items-center gap-1 rounded-full pl-2 pr-2 py-2 transition-[background-color,box-shadow,border-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] ${
             scrolled ? "shadow-[0_24px_70px_-20px_rgba(22,19,14,0.35)]" : ""
           }`}
         >
-          {/* Brand mark */}
           <a
             href="#home"
             aria-label="Mahir — home"
             className="group flex items-center gap-2.5 pl-2 pr-3 shrink-0"
           >
-            <span className="block transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105 group-active:scale-[0.98]">
+            <span className="block transition-transform duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105 group-active:scale-[0.98]">
               <LogoIcon size={30} />
             </span>
             <span
@@ -76,7 +74,6 @@ export default function Header() {
 
           <span className="hidden md:block w-px h-6 bg-[rgba(22,19,14,0.12)]" aria-hidden="true" />
 
-          {/* Centre links — desktop */}
           <nav className="hidden md:flex items-center gap-1" aria-label="Site sections">
             {navItems.map((item) => {
               const isActive = activeSection === item.id;
@@ -107,7 +104,6 @@ export default function Header() {
 
           <span className="hidden md:block w-px h-6 bg-[rgba(22,19,14,0.12)]" aria-hidden="true" />
 
-          {/* Socials — desktop */}
           <div className="hidden md:flex items-center gap-1 shrink-0 pr-1">
             {socials.map(({ href, icon, label }) => (
               <a
@@ -124,7 +120,6 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Mobile hamburger — morphs to X */}
           <button
             type="button"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -135,31 +130,32 @@ export default function Header() {
             <motion.span
               className="absolute block w-5 h-[1.5px] rounded-full"
               style={{ backgroundColor: "var(--text)" }}
-              animate={isMenuOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -3.5 }}
-              transition={{ duration: 0.45, ease: FLUID_EASE }}
+              animate={isMenuOpen ? { transform: "rotate(45deg) translateY(0px)" } : { transform: "rotate(0deg) translateY(-3.5px)" }}
+              transition={{ duration: 0.22, ease: FLUID_EASE }}
             />
             <motion.span
               className="absolute block w-5 h-[1.5px] rounded-full"
               style={{ backgroundColor: "var(--text)" }}
-              animate={isMenuOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 3.5 }}
-              transition={{ duration: 0.45, ease: FLUID_EASE }}
+              animate={isMenuOpen ? { transform: "rotate(-45deg) translateY(0px)" } : { transform: "rotate(0deg) translateY(3.5px)" }}
+              transition={{ duration: 0.22, ease: FLUID_EASE }}
             />
           </button>
         </div>
       </header>
 
-      {/* ─── Mobile overlay — heavy glass + staggered mask reveal ─ */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
             key="mobile-menu"
-            initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.03, backdropFilter: "blur(0px) saturate(100%)" }}
-            animate={reduced ? { opacity: 1 } : { opacity: 1, scale: 1, backdropFilter: "blur(32px) saturate(160%)" }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.015, backdropFilter: "blur(0px) saturate(100%)" }}
-            transition={{ duration: 0.5, ease: FLUID_EASE }}
-            className="fixed inset-0 z-40 md:hidden flex flex-col justify-center px-8 min-h-dvh will-change-transform"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.28, ease: FLUID_EASE }}
+            className="fixed inset-0 z-40 md:hidden flex flex-col justify-center px-8 min-h-dvh"
             style={{
               backgroundColor: "rgba(243, 240, 233, 0.82)",
+              backdropFilter: "blur(32px) saturate(160%)",
+              WebkitBackdropFilter: "blur(32px) saturate(160%)",
             }}
             role="dialog"
             aria-modal="true"
@@ -170,10 +166,10 @@ export default function Header() {
                 <motion.a
                   href={`#${item.id}`}
                   onClick={() => setIsMenuOpen(false)}
-                  initial={{ opacity: 0, y: 48 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 24 }}
-                  transition={{ duration: 0.7, delay: 0.08 + i * 0.06, ease: FLUID_EASE }}
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, transform: "translateY(24px)" }}
+                  animate={reduced ? { opacity: 1 } : { opacity: 1, transform: "translateY(0px)" }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.28, delay: reduced ? 0 : 0.05 + i * 0.06, ease: FLUID_EASE }}
                   className="type-heading py-4 flex items-center justify-between"
                   style={{
                     fontSize: "clamp(2rem, 8vw, 3rem)",
@@ -191,8 +187,8 @@ export default function Header() {
             ))}
             <motion.div
               className="flex gap-5 mt-10"
-              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, delay: 0.42, ease: FLUID_EASE }}
+              initial={reduced ? { opacity: 0 } : { opacity: 0, transform: "translateY(16px)" }} animate={{ opacity: 1, transform: "translateY(0px)" }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.28, delay: reduced ? 0 : 0.25, ease: FLUID_EASE }}
             >
               {socials.map(({ href, icon, label }) => (
                 <a

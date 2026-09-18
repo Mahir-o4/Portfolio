@@ -18,17 +18,11 @@ import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// One master choreography: a pinned editorial sequence. Person holds the
-// foreground, the name climbs behind them and yields upward, then the role
-// statement rises in ink type with a CTA on either side. Scrub-driven,
-// no autoplay, no decorative loops.
 const SCROLL_DISTANCE = "600svh";
 
 function useMagnetic(strength = 0.2) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  // Near-critically-damped pointer follow (Apple move/reposition table):
-  // tracks the finger with no bounce, settles clean on release.
   const sx = useSpring(x, { stiffness: 240, damping: 30 });
   const sy = useSpring(y, { stiffness: 240, damping: 30 });
   const ref = useRef<HTMLAnchorElement>(null);
@@ -58,9 +52,6 @@ function useMagnetic(strength = 0.2) {
 
 export default function HeroSection() {
   const reduced = useReducedMotion();
-  // Mobile gets a shorter pin + tighter scrub so the sequence plays faster
-  // on small screens. null (undetermined) falls back to desktop values to
-  // avoid an SSR/hydration mismatch.
   const isMobile = useIsDesktop() === false;
   const { ref: ctaRef, sx, sy } = useMagnetic();
 
@@ -71,7 +62,6 @@ export default function HeroSection() {
   const roleRef = useRef<HTMLDivElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
 
-  // Pointer parallax runs only where a fine pointer exists.
   const canHover = useRef(false);
   useEffect(() => {
     canHover.current = window.matchMedia(
@@ -79,13 +69,9 @@ export default function HeroSection() {
     ).matches;
   }, []);
 
-  // ── Critically Damped Mouse Parallax (Apple Physical Dynamics) ──
-  // Lives on nested wrappers so it never fights the scrub transforms.
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Background Text Parallax (moves opposite to pointer) — critically
-  // damped, stiffened for near-1:1 tracking (Apple direct manipulation).
   const bgTextX = useSpring(useTransform(mouseX, [-0.5, 0.5], [14, -14]), {
     stiffness: 150,
     damping: 27,
@@ -95,7 +81,6 @@ export default function HeroSection() {
     damping: 27,
   });
 
-  // Subject Cutout Parallax (moves subtly with pointer)
   const subjectX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
     stiffness: 170,
     damping: 26,
@@ -105,7 +90,6 @@ export default function HeroSection() {
     damping: 26,
   });
 
-  // 3D Subject Tilt
   const tiltRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3.5, -3.5]), {
     stiffness: 200,
     damping: 27,
@@ -133,7 +117,6 @@ export default function HeroSection() {
   useGSAP(
     () => {
       if (reduced) {
-        // Static final composition: name out, role and CTAs in place.
         gsap.set(line1Ref.current, { y: () => -window.innerHeight * 1.2 });
         gsap.set(line2Ref.current, { y: () => -window.innerHeight * 1.2 });
         gsap.set(roleRef.current, { y: 0, opacity: 1 });
@@ -150,8 +133,6 @@ export default function HeroSection() {
         },
       });
 
-      // Person barely settles, then yields immediately: the hold is the dead
-      // zone, so it is cut to a beat and the name starts at ~5% of the pin.
       tl.fromTo(
         personRef.current,
         { scale: 1, y: 0 },
@@ -159,25 +140,16 @@ export default function HeroSection() {
         0
       );
 
-      // Scroll cue bows out immediately.
       tl.fromTo(cueRef.current, { opacity: 1 }, { opacity: 0, duration: 0.06 }, 0);
 
-      // The name climbs up from below, behind the silhouette — starting at
-      // ~8% of the pin instead of ~15%, so no dead scroll up front.
-      // Viewport-relative travel so layers fully clear the frame on
-      // every breakpoint (percent-of-self can't guarantee that).
       const below = () => window.innerHeight;
       const above = () => -window.innerHeight * 1.2;
       tl.fromTo(line1Ref.current, { y: below }, { y: 0, duration: 0.2 }, 0.03);
       tl.fromTo(line2Ref.current, { y: below }, { y: 0, duration: 0.13 }, 0.14);
 
-      // Reading hold: the completed name sits in full view for a beat
-      // before yielding, so it reads as a statement rather than a flash.
       tl.to(line1Ref.current, { y: above, duration: 0.2 }, 0.42);
       tl.to(line2Ref.current, { y: above, duration: 0.2 }, 0.42);
 
-      // The role statement rises with a CTA riding on either side.
-      // Vertical travel carries the block; opacity only assists late.
       tl.fromTo(
         roleRef.current,
         { y: () => window.innerHeight * 0.75, opacity: 0 },
@@ -205,29 +177,24 @@ export default function HeroSection() {
         backgroundColor: "var(--bg)",
       }}
     >
-      {/* ── Pinned Full-Screen Stage ─────────────────────────── */}
       <div className="sticky top-0 h-svh w-full overflow-hidden flex items-center justify-center">
 
-        {/* ── Architect art (hero-minimal, static, no timeline contact) ── */}
         <HeroDraft />
 
-        {/* ── Atmospheric Ambient Lighting ─────────────────────── */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 0.7, scale: 1 }}
-            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            initial={reduced ? { opacity: 0.7 } : { opacity: 0, transform: "scale(0.96)" }}
+            animate={{ opacity: 0.7, transform: "scale(1)" }}
+            transition={{ duration: reduced ? 0.2 : 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-180 rounded-full chiaroscuro-halo"
             aria-hidden="true"
           />
-          {/* Subtle bottom fade into page background */}
           <div
             className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none z-20"
             style={{ background: "linear-gradient(to top, var(--bg) 20%, transparent 100%)" }}
           />
         </div>
 
-        {/* ── BACK LAYER: Giant Name (climbs, then yields upward) ── */}
         <div className="absolute inset-0 z-0 flex flex-col items-center justify-center pointer-events-none select-none overflow-hidden">
           <motion.div
             className="w-full text-center px-4 pt-10 will-change-transform"
@@ -255,7 +222,6 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* ── ROLE LAYER: Ink Statement + Flanking CTAs ── */}
         <div className="absolute inset-0 z-5 pointer-events-none select-none overflow-hidden">
           <div ref={roleRef} className="relative size-full will-change-transform" style={{ transform: "translateY(75vh)", opacity: 0 }}>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 max-md:justify-start max-md:pt-[11svh]">
@@ -270,14 +236,13 @@ export default function HeroSection() {
                 <span className="block mt-[-1.5vw]">DEVELOPER</span>
               </h2>
             </div>
-            {/* CTAs ride with the role block: flanks on desktop, one docked row on mobile */}
             <div className="absolute inset-x-0 bottom-[calc(7rem+env(safe-area-inset-bottom,0px))] flex items-center justify-center gap-3 pointer-events-none md:contents">
             <div className="md:absolute md:left-12 md:top-1/2 md:-translate-y-1/2 pointer-events-auto">
               <motion.a
                 ref={ctaRef}
                 href="#contacts"
                 style={{ x: sx, y: sy }}
-                className="group inline-flex items-center gap-2 pl-5 pr-2 py-2 rounded-full bg-[#000000] text-[#F3F0E9] font-semibold text-sm transition-[box-shadow,background-color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_24px_60px_-18px_rgba(22,19,14,0.45)] active:scale-[0.98]"
+                className="group inline-flex items-center gap-2 pl-5 pr-2 py-2 rounded-full bg-[#000000] text-[#F3F0E9] font-semibold text-sm transition-[box-shadow,background-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_24px_60px_-18px_rgba(22,19,14,0.45)] active:scale-[0.98]"
                 aria-label="Get in touch"
                 id="hero-cta"
               >
@@ -290,7 +255,7 @@ export default function HeroSection() {
             <div className="md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 pointer-events-auto">
               <a
                 href="#work"
-                className="group inline-flex items-center gap-2 pl-6 pr-2 py-2 rounded-full border border-[rgba(22,19,14,0.16)] bg-transparent text-sm font-medium text-[#4A463D] hover:text-[#000000] hover:border-[#000000] hover:bg-[rgba(22,19,14,0.05)] transition-[border-color,background-color,color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"
+                className="group inline-flex items-center gap-2 pl-6 pr-2 py-2 rounded-full border border-[rgba(22,19,14,0.16)] bg-transparent text-sm font-medium text-[#4A463D] hover:text-[#000000] hover:border-[#000000] hover:bg-[rgba(22,19,14,0.05)] transition-[border-color,background-color,color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"
               >
                 <span>View Work</span>
                 <span className="btn-circle btn-circle-ghost">
@@ -302,10 +267,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Warm floor shadow grounding the figure */}
         <div className="absolute inset-x-0 bottom-0 h-[32%] z-9 pointer-events-none hero-floor-shadow" aria-hidden="true" />
 
-        {/* ── FRONT LAYER: Uncarded Transparent PNG Cutout ── */}
         <div ref={personRef} className="relative z-10 will-change-transform">
           <motion.div
             className="relative flex items-end justify-center pointer-events-none select-none h-svh pb-0 will-change-transform"
@@ -317,7 +280,6 @@ export default function HeroSection() {
               rotateY: reduced ? 0 : tiltRotateY,
             }}
           >
-            {/* Transparent cutout, no frame/box, ample headroom below navbar, gentle floor feather */}
             <div className="relative h-[84svh] max-h-180 aspect-9/16 sm:aspect-10/16 md:h-[86vh] md:max-h-205 md:aspect-3/4 mb-0 mask-feather-bottom">
               <Image
                 src="/myimage.png"
@@ -332,14 +294,12 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* ── Availability micro-label (static, no pulse) ── */}
         <div className="absolute left-6 md:left-12 bottom-[calc(1.75rem+env(safe-area-inset-bottom,0px))] z-20 pointer-events-none">
           <span className="code-text text-[10px] tracking-widest uppercase" style={{ color: "var(--text-dim)" }}>
             Available for Q1–Q4
           </span>
         </div>
 
-        {/* ── Scroll Cue (invites the sequence, then bows out) ──── */}
         <div
           ref={cueRef}
           className="absolute bottom-[calc(1.75rem+env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-1.5"
@@ -349,7 +309,7 @@ export default function HeroSection() {
           </span>
           <motion.span
             animate={reduced ? {} : { transform: ["translateY(0px)", "translateY(6px)", "translateY(0px)"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: [0.32, 0.72, 0, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
             className="flex"
           >
             <ArrowDown size={14} strokeWidth={1.5} className="text-[#000000]" />

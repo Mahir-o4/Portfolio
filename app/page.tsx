@@ -21,9 +21,6 @@ export default function Home() {
       className="relative min-h-screen"
       style={{ backgroundColor: "var(--bg)", overflowX: "clip" }}
     >
-      {/* === Ambient atmosphere layers (CSS only, no WebGL) === */}
-
-      {/* Faint neutral wash — paper depth, no color */}
       <div
         className="fixed pointer-events-none"
         style={{
@@ -38,7 +35,6 @@ export default function Home() {
         aria-hidden="true"
       />
 
-      {/* Subtle noise grain */}
       <div
         className="fixed pointer-events-none"
         style={{
@@ -51,7 +47,6 @@ export default function Home() {
         aria-hidden="true"
       />
 
-      {/* === Page content === */}
       <div className="relative" style={{ zIndex: 10 }}>
         <Header />
         <HeroSection />

@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from "motion/react";
 import { ArrowUpRight, Clapperboard, MessageCircle, Terminal, Video } from "lucide-react";
 
 export type ProjectIcon = "video" | "terminal" | "chat" | "film";
@@ -35,6 +35,9 @@ export default function ProjectCard({
   const [hovered, setHovered] = useState(false);
   const reduced = useReducedMotion();
   const played = useRef(false);
+  const numeralRef = useRef<HTMLSpanElement>(null);
+
+  const numeralInView = useInView(numeralRef, { once: true, amount: 0.6 });
 
   // Measured numeral: counts 00 → index+1 once, on first view.
   // Motionvalue-driven (no scroll listener, no per-frame React state).
@@ -42,6 +45,18 @@ export default function ProjectCard({
   const numeralText = useTransform(numeral, (v) =>
     String(Math.round(v)).padStart(2, "0")
   );
+
+  useEffect(() => {
+    if (!numeralInView || played.current) return;
+    played.current = true;
+    if (reduced) {
+      // Reduced motion: final value, no slide/count — never blank.
+      numeral.set(index + 1);
+      return;
+    }
+    const controls = animate(numeral, index + 1, { duration: 0.5, ease: [0.16, 1, 0.3, 1] });
+    return () => controls.stop();
+  }, [numeralInView, reduced, numeral, index]);
   const Glyph = ICONS[icon];
 
   return (
@@ -60,21 +75,16 @@ export default function ProjectCard({
 
         {/* Outline index numeral — fills on hover */}
         <motion.span
+          ref={numeralRef}
           className="type-display font-bold select-none"
           style={{
             fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
             lineHeight: 1,
           }}
-          onViewportEnter={() => {
-            if (reduced || played.current) return;
-            played.current = true;
-            animate(numeral, index + 1, { duration: 0.9, ease: [0.16, 1, 0.3, 1] });
-          }}
-          viewport={{ once: true, amount: 0.6 }}
           aria-hidden="true"
         >
           <span
-            className="transition-[color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            className="transition-[color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)]"
             style={
               hovered
                 ? { color: "#FFFFFF", WebkitTextStroke: "0px transparent" }
@@ -98,7 +108,7 @@ export default function ProjectCard({
           </div>
           <div className="flex items-center gap-3 mb-3">
             <h3
-              className="type-heading tracking-tight transition-[color,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-3"
+              className="type-heading tracking-tight transition-[color,transform] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-3"
               style={{
                 fontSize: "clamp(1.75rem, 3.6vw, 3rem)",
                 color: "var(--text)",
@@ -106,7 +116,7 @@ export default function ProjectCard({
             >
               {title}
             </h3>
-            <span className="btn-circle btn-circle-ink shrink-0 opacity-0 text-[#FFFFFF] transition-opacity duration-500 group-hover:opacity-100">
+            <span className="btn-circle btn-circle-ink shrink-0 opacity-0 text-[#FFFFFF] transition-opacity duration-200 group-hover:opacity-100">
               <ArrowUpRight size={18} strokeWidth={1.5} />
             </span>
           </div>

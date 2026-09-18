@@ -38,7 +38,6 @@ function hline(
   ctx.stroke();
 }
 
-/** Diagonal hatch clipped to a rect — the classic cut-material poche. */
 function hatch(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -60,8 +59,6 @@ function hatch(
   ctx.restore();
 }
 
-/** Arcade elevation: columns + semicircular arches + keystones + entablature
- *  + stepped base with hatched core. */
 function paintCut(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -71,8 +68,8 @@ function paintCut(
   dpr: number,
 ) {
   const margin = w * 0.07;
-  const springY = h * 0.3; // arch springing line
-  const footY = h * 0.82; // column feet
+  const springY = h * 0.3;
+  const footY = h * 0.82;
   const xs: number[] = [];
   for (let i = 0; i < bays; i++) {
     xs.push(
@@ -81,15 +78,12 @@ function paintCut(
         (rand() - 0.5) * w * 0.012,
     );
   }
-  // Entablature — twin beams above the arcade.
   hline(ctx, margin * 0.6, w - margin * 0.6, h * 0.1);
   hline(ctx, margin * 0.6, w - margin * 0.6, h * 0.14);
-  // Columns with base moldings.
   for (const x of xs) {
     vline(ctx, x, springY, footY);
     hline(ctx, x - 6 * dpr, x + 6 * dpr, footY);
   }
-  // Arches + keystone ticks at each crown.
   for (let i = 0; i < xs.length - 1; i++) {
     const cx = (xs[i] + xs[i + 1]) / 2;
     const r = (xs[i + 1] - xs[i]) / 2;
@@ -98,7 +92,6 @@ function paintCut(
     ctx.stroke();
     vline(ctx, cx, springY - r - 9 * dpr, springY - r);
   }
-  // Stepped base — three spreading rules, hatched core step.
   hline(ctx, margin * 0.8, w - margin * 0.8, footY + h * 0.03);
   hline(ctx, margin * 0.55, w - margin * 0.55, footY + h * 0.07);
   hline(ctx, margin * 0.3, w - margin * 0.3, footY + h * 0.11);
@@ -112,8 +105,6 @@ function paintCut(
   );
 }
 
-/** Topographic contours (indexed every fourth) + density stipple + spot
- *  markers + hatched poche swatch. */
 function paintField(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -144,7 +135,6 @@ function paintField(
   }
   lines.forEach((ln, i) => {
     ctx.save();
-    // Index contours read heavier, like a surveyed sheet.
     ctx.lineWidth = i % 4 === 3 ? dpr * 1.75 : dpr;
     ctx.beginPath();
     for (let x = 0; x <= w; x += 8 * dpr) {
@@ -158,7 +148,6 @@ function paintField(
     ctx.stroke();
     ctx.restore();
   });
-  // Spot markers — small survey crosses.
   for (let i = 0; i < 3; i++) {
     const x = w * (0.15 + rand() * 0.7);
     const y = h * (0.15 + rand() * 0.7);
@@ -166,13 +155,11 @@ function paintField(
     hline(ctx, x - a, x + a, y);
     vline(ctx, x, y - a, y + a);
   }
-  // Stipple — density grows toward the right edge like a shade gradient.
   for (let i = 0; i < stipple * 3; i++) {
     const x = rand() * w;
     if (rand() > (x / w) * 0.85 + 0.15) continue;
     ctx.fillRect(x, rand() * h, 2, 2);
   }
-  // Poche swatch — 45° section hatch clipped to a small plaque.
   const px = w * 0.08;
   const py = h * 0.66;
   const pw = w * 0.15;
@@ -181,8 +168,6 @@ function paintField(
   ctx.strokeRect(px, py, pw, ph);
 }
 
-/** Floor-plan fragment: poche'd double walls, window, door swing,
- *  grid bubbles, centerline. */
 function paintBeam(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -192,33 +177,28 @@ function paintBeam(
   dpr: number,
 ) {
   void rand;
-  const t = 9 * dpr; // wall thickness
+  const t = 9 * dpr;
   const x0 = w * 0.12;
   const x1 = w * 0.88;
   const y0 = h * 0.24;
   const y1 = h * 0.8;
-  // Poche the top + left wall cores (cut-wall fill).
   hatch(ctx, x0, y0, x1 - x0, t, 6 * dpr);
   hatch(ctx, x0, y0, t, y1 - y0, 6 * dpr);
-  // Double-line outer walls.
   ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
   ctx.strokeRect(x0 + t, y0 + t, x1 - x0 - t * 2, y1 - y0 - t * 2);
-  // Window in the right wall — bridged lines + sill ticks.
   const wa = y0 + (y1 - y0) * 0.32;
   const wb = y0 + (y1 - y0) * 0.52;
   hline(ctx, x1 - t, x1 + t, wa);
   hline(ctx, x1 - t, x1 + t, wb);
   vline(ctx, x1 - t, wa - 4 * dpr, wa + 4 * dpr);
   vline(ctx, x1 + t, wb - 4 * dpr, wb + 4 * dpr);
-  // Door opening in the bottom wall — threshold, open leaf, swing arc.
   const hingeX = w * 0.52;
   const doorW = w * 0.11;
-  hline(ctx, hingeX, hingeX + doorW, y1); // threshold
-  vline(ctx, hingeX, y1, y1 - doorW); // open leaf (90°)
+  hline(ctx, hingeX, hingeX + doorW, y1);
+  vline(ctx, hingeX, y1, y1 - doorW);
   ctx.beginPath();
-  ctx.arc(hingeX, y1, doorW, -Math.PI / 2, 0); // swing quarter-arc
+  ctx.arc(hingeX, y1, doorW, -Math.PI / 2, 0);
   ctx.stroke();
-  // Grid bubbles — empty column markers with drop lines to the plan.
   const r = 11 * dpr;
   for (let i = 0; i < bubbles; i++) {
     const x = x0 + ((x1 - x0) * (i + 0.5)) / bubbles;
@@ -227,15 +207,12 @@ function paintBeam(
     ctx.stroke();
     vline(ctx, x, h * 0.1 + r, y0);
   }
-  // Centerline — long-short dash vertical through the room.
   ctx.save();
   ctx.setLineDash([16 * dpr, 5 * dpr, 3 * dpr, 5 * dpr]);
   vline(ctx, w * 0.3, y0 + t, y1 - t);
   ctx.restore();
 }
 
-/** Masonry + fenestration: brick coursing, lintel/sill window bay,
- *  cross-hatched footing swatch, centerlines. */
 function paintSheet(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -244,7 +221,6 @@ function paintSheet(
   dpr: number,
 ) {
   void rand;
-  // Brick coursing — running bond in a lower band.
   const bx = w * 0.08;
   const by = h * 0.58;
   const bw = w * 0.42;
@@ -265,7 +241,6 @@ function paintSheet(
   }
   ctx.restore();
   ctx.strokeRect(bx, by, bw, bh);
-  // Mullioned window — frame, center mullion, two transoms.
   const wx = w * 0.6;
   const wy = h * 0.22;
   const ww = w * 0.3;
@@ -274,13 +249,11 @@ function paintSheet(
   vline(ctx, wx + ww / 2, wy, wy + wh);
   hline(ctx, wx, wx + ww, wy + wh / 3);
   hline(ctx, wx, wx + ww, wy + (wh * 2) / 3);
-  // Lintel + sill — heavier bearing lines.
   ctx.save();
   ctx.lineWidth = dpr * 2;
   hline(ctx, wx - 6 * dpr, wx + ww + 6 * dpr, wy - 5 * dpr);
   hline(ctx, wx - 6 * dpr, wx + ww + 6 * dpr, wy + wh + 5 * dpr);
   ctx.restore();
-  // Footing swatch — cross-hatch (both diagonals) clipped to a plaque.
   const fx = w * 0.62;
   const fy = h * 0.7;
   const fw = w * 0.12;
@@ -298,7 +271,6 @@ function paintSheet(
   ctx.stroke();
   ctx.restore();
   ctx.strokeRect(fx, fy, fw, fh);
-  // Centerlines — long-short dash cross through the window, overshooting.
   ctx.save();
   ctx.setLineDash([16 * dpr, 5 * dpr, 3 * dpr, 5 * dpr]);
   hline(ctx, wx - w * 0.06, wx + ww + w * 0.06, wy + wh / 2);
@@ -306,8 +278,6 @@ function paintSheet(
   ctx.restore();
 }
 
-/** Colonnade — tall sparse verticals + threshold + base rule + light
- *  stipple. Quieter than the arcade; built for the footer anchor. */
 function paintColonnade(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -323,13 +293,10 @@ function paintColonnade(
       ((w - margin * 2) * i) / (n - 1) +
       (rand() - 0.5) * w * 0.01;
     vline(ctx, x, h * 0.08, h * 0.86);
-    // Capital tick.
     hline(ctx, x - 5 * dpr, x + 5 * dpr, h * 0.08);
   }
-  // Threshold + base rule.
   hline(ctx, margin * 0.7, w - margin * 0.7, h * 0.9);
   hline(ctx, margin * 0.4, w - margin * 0.4, h * 0.94);
-  // Light stipple drift.
   for (let i = 0; i < 60; i++) {
     ctx.fillRect(rand() * w, rand() * h, 2, 2);
   }
@@ -383,7 +350,6 @@ export default function SectionDraft({
     if (!base) return;
 
     const paint = () => {
-      // Cap DPR lower on coarse pointers — cheap static draw everywhere.
       const coarse =
         window.matchMedia?.("(pointer: coarse)").matches ?? false;
       const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 1.5);
@@ -401,8 +367,6 @@ export default function SectionDraft({
     };
 
     paint();
-    // Redraw on viewport changes (rotation, URL-bar collapse) — debounced,
-    // still zero cost while scrolling.
     let t: ReturnType<typeof setTimeout> | null = null;
     const onResize = () => {
       if (t) clearTimeout(t);

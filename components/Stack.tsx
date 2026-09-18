@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useReducedMotion, useTransform, animate, type PanInfo } from 'motion/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface CardRotateProps {
   children: React.ReactNode;
@@ -13,20 +13,53 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
   const rotateY = useTransform(x, [-100, 100], [-60, 60]);
+  // Multi-touch guard: motion's drag tracks one pointer; ignore extras so a
+  // second finger can't yank the card mid-gesture (no visual change).
+  const activePointer = useRef<number | null>(null);
+
+  // Apple momentum projection (Designing Fluid Interfaces sample code):
+  // project where the finger is *going*, then snap to the target nearest
+  // that point — a flick throws the card even from a small offset.
+  // decelerationRate 0.998 = normal scroll feel.
+  function project(initialVelocity: number, decelerationRate = 0.998) {
+    return (initialVelocity / 1000) * decelerationRate / (1 - decelerationRate);
+  }
 
   // Apple velocity handoff: a flick commits by velocity sign even under the
-  // distance threshold (momentum projection); otherwise the card springs home
-  // carrying release velocity — never a hard set (no brick wall).
+  // distance threshold; otherwise the card springs home carrying release
+  // velocity — never a hard set (no brick wall). 10px hysteresis keeps taps
+  // from reading as drags.
   const FLICK_VELOCITY = 500; // px/s
+  const HYSTERESIS = 10; // px
   function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
+    activePointer.current = null;
+    const offsetX = Math.abs(info.offset.x);
+    const offsetY = Math.abs(info.offset.y);
+    if (Math.max(offsetX, offsetY) < HYSTERESIS) {
+      // Tap jitter, not a drag — settle home, carrying velocity (no jump).
+      animate(x, 0, { type: 'spring', bounce: 0, duration: 0.4, velocity: info.velocity.x });
+      animate(y, 0, { type: 'spring', bounce: 0, duration: 0.4, velocity: info.velocity.y });
+      return;
+    }
+    const projectedX = info.offset.x + project(info.velocity.x);
+    const projectedY = info.offset.y + project(info.velocity.y);
     const flicked =
       Math.abs(info.velocity.x) > FLICK_VELOCITY ||
       Math.abs(info.velocity.y) > FLICK_VELOCITY;
-    if (Math.abs(info.offset.x) > sensitivity || Math.abs(info.offset.y) > sensitivity || flicked) {
+    if (
+      offsetX > sensitivity ||
+      offsetY > sensitivity ||
+      Math.abs(projectedX) > sensitivity ||
+      Math.abs(projectedY) > sensitivity ||
+      flicked
+    ) {
       onSendToBack();
     } else {
-      animate(x, 0, { type: 'spring', stiffness: 300, damping: 34, velocity: info.velocity.x });
-      animate(y, 0, { type: 'spring', stiffness: 300, damping: 34, velocity: info.velocity.y });
+      // Critically damped home (Apple default: damping 1.0, no overshoot —
+      // a deck snap isn't momentum-driven, so no bounce). Starts from the
+      // live presentation value, blending velocity through the retarget.
+      animate(x, 0, { type: 'spring', bounce: 0, duration: 0.4, velocity: info.velocity.x });
+      animate(y, 0, { type: 'spring', bounce: 0, duration: 0.4, velocity: info.velocity.y });
     }
   }
 
@@ -45,7 +78,19 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
       drag
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
       dragElastic={0.6}
+      dragMomentum={false}
       whileTap={{ cursor: 'grabbing' }}
+      onPointerDown={(e) => {
+        // Ignore a second finger mid-drag; keep tracking on the element even
+        // if the pointer leaves bounds (direct manipulation, no visual change).
+        if (activePointer.current !== null) return;
+        activePointer.current = e.pointerId;
+        try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* noop */ }
+        // Kill any in-flight home spring so the grab starts from the live
+        // on-screen value — no jump, no lockout mid-motion.
+        x.stop();
+        y.stop();
+      }}
       onDragEnd={handleDragEnd}
     >
       {children}
@@ -197,7 +242,7 @@ export default function Stack({
               animate={{
                 rotateZ: (stack.length - index - 1) * 4 + randomRotate,
                 scale: 1 + index * 0.06 - stack.length * 0.06,
-                transformOrigin: '90% 90%'
+                transformOrigin: '50% 50%'
               }}
               initial={false}
               transition={{

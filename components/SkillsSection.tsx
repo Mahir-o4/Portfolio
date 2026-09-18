@@ -96,11 +96,11 @@ export default function SkillsSection() {
   const reduced = useReducedMotion();
 
   const reveal = (delay: number) => ({
-    initial: reduced ? {} : { opacity: 0, y: 64, filter: "blur(12px)" },
-    whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+    initial: reduced ? {} : { opacity: 0, transform: "translateY(16px)" },
+    whileInView: { opacity: 1, transform: "translateY(0px)" },
     viewport: { once: true, amount: 0.15 },
     transition: {
-      duration: 0.9,
+      duration: 0.28,
       delay,
       ease: EASE,
     } satisfies Transition,
@@ -111,10 +111,8 @@ export default function SkillsSection() {
       id="skills"
       className="py-28 md:py-36 relative overflow-hidden cv-auto"
     >
-      {/* Architect art first (Skills stipple field, paper, scroll glow) */}
       <SectionDraft section="skills" variant="field" tone="paper" />
 
-      {/* Ambient background glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -124,14 +122,12 @@ export default function SkillsSection() {
         aria-hidden="true"
       />
 
-      {/* Drafting grid — paper theme */}
       <div
         className="absolute inset-0 pointer-events-none texture-grid-paper"
         aria-hidden="true"
       />
 
       <div className="container-page relative">
-        {/* Sheet header: eyebrow badge + rule + path code */}
         <motion.div
           {...reveal(0)}
           className="flex items-center gap-3 mb-6"
@@ -154,7 +150,6 @@ export default function SkillsSection() {
           </span>
         </motion.div>
 
-        {/* Section Heading */}
         <motion.h2
           {...reveal(0.1)}
           className="type-heading text-3xl sm:text-5xl lg:text-6xl mb-6 tracking-tight"
@@ -172,25 +167,22 @@ export default function SkillsSection() {
           and building again.
         </motion.p>
 
-        {/* Drawn rule — the section's drafting gesture */}
         <motion.div
-          initial={reduced ? {} : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
+          initial={reduced ? {} : { transform: "scaleX(0)" }}
+          whileInView={{ transform: "scaleX(1)" }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: EASE }}
+          transition={{ duration: 0.3, ease: EASE }}
           className="rule-accent mb-12"
           aria-hidden="true"
         />
 
-        {/* ── Ruled index: one full-width row after another, no cards ── */}
         <div className="border-t border-[rgba(22,19,14,0.1)] mb-16">
           {SKILL_CATEGORIES.map((category, idx) => (
             <motion.div
               key={category.title}
-              {...reveal(0.2 + idx * 0.08)}
+              {...reveal(Math.min(0.2 + idx * 0.06, 0.32))}
               className="py-8 md:py-10 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4 md:gap-10 items-start border-b border-[rgba(22,19,14,0.1)]"
             >
-              {/* Category voice */}
               <div className="flex flex-col gap-3 items-start">
                 <span className="eyebrow">
                   {category.highlight}
@@ -211,7 +203,6 @@ export default function SkillsSection() {
                 </p>
               </div>
 
-              {/* The stack itself, set large — primary keywords ink, secondary muted */}
               <p
                 className="type-heading font-medium leading-snug tracking-tight"
                 style={{
@@ -259,9 +250,7 @@ export default function SkillsSection() {
         </div>
       </div>
 
-      {/* ── Ambient Technology Strip (Marquee Ticker) ── */}
       <div className="relative overflow-hidden py-5 border-y border-[rgba(22,19,14,0.1)] bg-[rgba(22,19,14,0.03)]">
-        {/* Left fade */}
         <div
           className="absolute left-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none"
           style={{
@@ -270,7 +259,6 @@ export default function SkillsSection() {
           }}
         />
 
-        {/* Right fade */}
         <div
           className="absolute right-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none"
           style={{
@@ -287,7 +275,7 @@ export default function SkillsSection() {
           {doubledLogos.map((logo, i) => (
             <div
               key={i}
-              className="flex items-center gap-2.5 mx-6 sm:mx-10 shrink-0 opacity-80 hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] cursor-default"
+              className="flex items-center gap-2.5 mx-6 sm:mx-10 shrink-0 opacity-80 hover:opacity-100 transition-opacity duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] cursor-default"
             >
               <span className="text-2xl text-[#000000]">
                 {logo.node}

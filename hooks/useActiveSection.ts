@@ -2,12 +2,6 @@
 
 import { useEffect, useState, useMemo } from "react";
 
-/**
- * Robust, high-performance scroll spy for single-page portfolios.
- * Uses viewport focus-line detection rather than flaky intersection ratios,
- * guaranteeing accurate detection for both tall sections (e.g. #work)
- * and compact sections (e.g. #skills).
- */
 export function useActiveSection(sectionIds: string[]): string {
   const [activeSection, setActiveSection] = useState<string>(sectionIds[0] ?? "");
   const idsKey = useMemo(() => sectionIds.join("|"), [sectionIds]);
@@ -20,21 +14,18 @@ export function useActiveSection(sectionIds: string[]): string {
       const windowHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
 
-      // 1. Top of page boundary: always highlight the first section
       if (scrollY < 120) {
         setActiveSection(sectionIds[0] ?? "");
         ticking = false;
         return;
       }
 
-      // 2. Bottom of page boundary: always highlight the last section (e.g. contact)
       if (windowHeight + scrollY >= docHeight - 80) {
         setActiveSection(sectionIds[sectionIds.length - 1] ?? "");
         ticking = false;
         return;
       }
 
-      // 3. Focal line: 35% down from top of viewport (where user reading attention lands)
       const focalLine = windowHeight * 0.35;
 
       const elements = sectionIds
@@ -46,7 +37,6 @@ export function useActiveSection(sectionIds: string[]): string {
         return;
       }
 
-      // Find section containing focal line
       let matchedId = "";
       for (const { id, el } of elements) {
         const rect = el.getBoundingClientRect();
@@ -56,7 +46,6 @@ export function useActiveSection(sectionIds: string[]): string {
         }
       }
 
-      // Fallback: find element closest to the focal line
       if (!matchedId) {
         let minDistance = Infinity;
         for (const { id, el } of elements) {
@@ -83,7 +72,6 @@ export function useActiveSection(sectionIds: string[]): string {
       }
     };
 
-    // Run on mount
     determineActive();
 
     window.addEventListener("scroll", onScroll, { passive: true });
