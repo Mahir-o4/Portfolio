@@ -17,8 +17,10 @@ import HeroDraft from "@/components/arch/HeroDraft";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const SCROLL_DISTANCE = "600svh";
+const MOBILE_TEXT_TRAVEL = 1400;
 
 function useMagnetic(strength = 0.2) {
   const x = useMotionValue(0);
@@ -52,7 +54,8 @@ function useMagnetic(strength = 0.2) {
 
 export default function HeroSection() {
   const reduced = useReducedMotion();
-  const isMobile = useIsDesktop() === false;
+  const isDesktop = useIsDesktop();
+  const isMobile = isDesktop === false;
   const { ref: ctaRef, sx, sy } = useMagnetic();
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -116,11 +119,23 @@ export default function HeroSection() {
 
   useGSAP(
     () => {
+      if (isDesktop === null) return;
       if (reduced) {
-        gsap.set(line1Ref.current, { y: () => -window.innerHeight * 1.2 });
-        gsap.set(line2Ref.current, { y: () => -window.innerHeight * 1.2 });
-        gsap.set(roleRef.current, { y: 0, opacity: 1 });
+        if (isMobile) {
+          gsap.set([line1Ref.current, line2Ref.current, roleRef.current], { clearProps: "transform" });
+          gsap.set([line1Ref.current, line2Ref.current], { y: 0, yPercent: -MOBILE_TEXT_TRAVEL, opacity: 0 });
+          gsap.set(roleRef.current, { y: 0, yPercent: 0, opacity: 1 });
+        } else {
+          gsap.set(line1Ref.current, { y: () => -window.innerHeight * 1.2 });
+          gsap.set(line2Ref.current, { y: () => -window.innerHeight * 1.2 });
+          gsap.set(roleRef.current, { y: 0, opacity: 1 });
+        }
         return;
+      }
+      if (isMobile) {
+        gsap.set([line1Ref.current, line2Ref.current, roleRef.current], { clearProps: "transform" });
+        gsap.set([line1Ref.current, line2Ref.current], { y: 0, yPercent: MOBILE_TEXT_TRAVEL, opacity: 1 });
+        gsap.set(roleRef.current, { y: 0, yPercent: 75, opacity: 0 });
       }
       const tl = gsap.timeline({
         defaults: { ease: "none" },
@@ -129,7 +144,7 @@ export default function HeroSection() {
           start: "top top",
           end: "bottom bottom",
           scrub: isMobile ? 0.6 : 0.7,
-          invalidateOnRefresh: !isMobile,
+          invalidateOnRefresh: isMobile,
         },
       });
 
@@ -142,27 +157,28 @@ export default function HeroSection() {
 
       tl.fromTo(cueRef.current, { opacity: 1 }, { opacity: 0, duration: 0.06 }, 0);
 
-      const below = () => window.innerHeight;
-      const above = () => -window.innerHeight * 1.2;
-      tl.fromTo(line1Ref.current, { y: below }, { y: 0, duration: 0.2 }, 0.03);
-      tl.fromTo(line2Ref.current, { y: below }, { y: 0, duration: 0.13 }, 0.14);
-
-      tl.to(line1Ref.current, { y: above, duration: 0.2 }, 0.42);
-      tl.to(line2Ref.current, { y: above, duration: 0.2 }, 0.42);
-
-      tl.fromTo(
-        roleRef.current,
-        { y: () => window.innerHeight * 0.75, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.18 },
-        0.52
-      );
+      if (isMobile) {
+        tl.fromTo(line1Ref.current, { yPercent: MOBILE_TEXT_TRAVEL }, { yPercent: 0, duration: 0.2 }, 0.03);
+        tl.fromTo(line2Ref.current, { yPercent: MOBILE_TEXT_TRAVEL }, { yPercent: 0, duration: 0.13 }, 0.14);
+        tl.to(line1Ref.current, { yPercent: -MOBILE_TEXT_TRAVEL, duration: 0.2 }, 0.42);
+        tl.to(line2Ref.current, { yPercent: -MOBILE_TEXT_TRAVEL, duration: 0.2 }, 0.42);
+        tl.fromTo(roleRef.current, { yPercent: 75, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.18 }, 0.52);
+      } else {
+        const below = () => window.innerHeight;
+        const above = () => -window.innerHeight * 1.2;
+        tl.fromTo(line1Ref.current, { y: below }, { y: 0, duration: 0.2 }, 0.03);
+        tl.fromTo(line2Ref.current, { y: below }, { y: 0, duration: 0.13 }, 0.14);
+        tl.to(line1Ref.current, { y: above, duration: 0.2 }, 0.42);
+        tl.to(line2Ref.current, { y: above, duration: 0.2 }, 0.42);
+        tl.fromTo(roleRef.current, { y: () => window.innerHeight * 0.75, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18 }, 0.52);
+      }
 
       return () => {
         tl.scrollTrigger?.kill();
         tl.kill();
       };
     },
-    { scope: sectionRef, dependencies: [reduced, isMobile] }
+    { scope: sectionRef, dependencies: [reduced, isDesktop], revertOnUpdate: true }
   );
 
   return (
@@ -173,11 +189,11 @@ export default function HeroSection() {
       onMouseLeave={handleMouseLeave}
       className="relative w-full overflow-x-clip"
       style={{
-        height: isMobile ? "300svh" : SCROLL_DISTANCE,
+        height: isMobile ? "300lvh" : SCROLL_DISTANCE,
         backgroundColor: "var(--bg)",
       }}
     >
-      <div className="sticky top-0 h-svh w-full overflow-hidden flex items-center justify-center">
+      <div className={`sticky top-0 ${isMobile ? "h-lvh" : "h-svh"} w-full overflow-hidden flex items-center justify-center`}>
 
         <HeroDraft />
 
@@ -203,7 +219,7 @@ export default function HeroSection() {
               y: reduced ? 0 : bgTextY,
             }}
           >
-            <div ref={line1Ref} className="will-change-transform" style={{ transform: "translateY(100vh)" }}>
+            <div ref={line1Ref} className="will-change-transform" style={isMobile ? undefined : { transform: "translateY(100vh)" }}>
               <div
                 className="text-giant-bg"
                 style={{ fontSize: "clamp(4.8rem, 13vw, 16rem)" }}
@@ -211,7 +227,7 @@ export default function HeroSection() {
                 SK MAHIR
               </div>
             </div>
-            <div ref={line2Ref} className="mt-[-1.5vw] md:mt-[-2.0vw] will-change-transform" style={{ transform: "translateY(100vh)" }}>
+            <div ref={line2Ref} className="mt-[-1.5vw] md:mt-[-2.0vw] will-change-transform" style={isMobile ? undefined : { transform: "translateY(100vh)" }}>
               <div
                 className="text-giant-bg"
                 style={{ fontSize: "clamp(4.8rem, 13vw, 16rem)" }}
@@ -223,8 +239,8 @@ export default function HeroSection() {
         </div>
 
         <div className="absolute inset-0 z-5 pointer-events-none select-none overflow-hidden">
-          <div ref={roleRef} className="relative size-full will-change-transform" style={{ transform: "translateY(75vh)", opacity: 0 }}>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 max-md:justify-start max-md:pt-[11svh]">
+          <div ref={roleRef} className="relative size-full will-change-transform" style={isMobile ? { opacity: 0 } : { transform: "translateY(75vh)", opacity: 0 }}>
+            <div className={`absolute inset-0 flex flex-col items-center justify-center text-center px-4 max-md:justify-start ${isMobile ? "max-md:pt-[11lvh]" : "max-md:pt-[11svh]"}`}>
               <h2
                 className="text-giant-bg"
                 style={{
@@ -271,7 +287,7 @@ export default function HeroSection() {
 
         <div ref={personRef} className="relative z-10 will-change-transform">
           <motion.div
-            className="relative flex items-end justify-center pointer-events-none select-none h-svh pb-0 will-change-transform"
+            className={`relative flex items-end justify-center pointer-events-none select-none ${isMobile ? "h-lvh" : "h-svh"} pb-0 will-change-transform`}
             style={{
               x: reduced ? 0 : subjectX,
               y: reduced ? 0 : subjectY,
@@ -280,7 +296,7 @@ export default function HeroSection() {
               rotateY: reduced ? 0 : tiltRotateY,
             }}
           >
-            <div className="relative h-[84svh] max-h-180 aspect-9/16 sm:aspect-10/16 md:h-[86vh] md:max-h-205 md:aspect-3/4 mb-0 mask-feather-bottom">
+            <div className={`relative ${isMobile ? "h-[84lvh] md:h-[86lvh]" : "h-[84svh] md:h-[86vh]"} max-h-180 aspect-9/16 sm:aspect-10/16 md:max-h-205 md:aspect-3/4 mb-0 mask-feather-bottom`}>
               <Image
                 src="/myimage.png"
                 alt="Sk Mahir Ashef"
