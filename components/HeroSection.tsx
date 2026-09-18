@@ -13,6 +13,8 @@ import {
   useReducedMotion,
 } from "motion/react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
+import HeroDraft from "@/components/arch/HeroDraft";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,6 +58,10 @@ function useMagnetic(strength = 0.2) {
 
 export default function HeroSection() {
   const reduced = useReducedMotion();
+  // Mobile gets a shorter pin + tighter scrub so the sequence plays faster
+  // on small screens. null (undetermined) falls back to desktop values to
+  // avoid an SSR/hydration mismatch.
+  const isMobile = useIsDesktop() === false;
   const { ref: ctaRef, sx, sy } = useMagnetic();
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -78,34 +84,35 @@ export default function HeroSection() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Background Text Parallax (moves opposite to pointer)
+  // Background Text Parallax (moves opposite to pointer) — critically
+  // damped, stiffened for near-1:1 tracking (Apple direct manipulation).
   const bgTextX = useSpring(useTransform(mouseX, [-0.5, 0.5], [14, -14]), {
-    stiffness: 110,
-    damping: 26,
+    stiffness: 150,
+    damping: 27,
   });
   const bgTextY = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
-    stiffness: 110,
-    damping: 26,
+    stiffness: 150,
+    damping: 27,
   });
 
   // Subject Cutout Parallax (moves subtly with pointer)
   const subjectX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
-    stiffness: 130,
-    damping: 25,
+    stiffness: 170,
+    damping: 26,
   });
   const subjectY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-6, 6]), {
-    stiffness: 130,
-    damping: 25,
+    stiffness: 170,
+    damping: 26,
   });
 
   // 3D Subject Tilt
   const tiltRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3.5, -3.5]), {
-    stiffness: 160,
-    damping: 26,
+    stiffness: 200,
+    damping: 27,
   });
   const tiltRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3.5, 3.5]), {
-    stiffness: 160,
-    damping: 26,
+    stiffness: 200,
+    damping: 27,
   });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -138,41 +145,44 @@ export default function HeroSection() {
           trigger: sectionRef.current,
           start: "top top",
           end: "bottom bottom",
-          scrub: 1.5,
+          scrub: isMobile ? 0.6 : 0.7,
           invalidateOnRefresh: true,
         },
       });
 
-      // Person holds foreground: barely-there scale and lift.
+      // Person barely settles, then yields immediately: the hold is the dead
+      // zone, so it is cut to a beat and the name starts at ~5% of the pin.
       tl.fromTo(
         personRef.current,
         { scale: 1, y: 0 },
-        { scale: 1.045, y: -20, duration: 1 },
+        { scale: 1.045, y: -20, duration: 0.35 },
         0
       );
 
       // Scroll cue bows out immediately.
       tl.fromTo(cueRef.current, { opacity: 1 }, { opacity: 0, duration: 0.06 }, 0);
 
-      // The name climbs up from below, behind the silhouette.
+      // The name climbs up from below, behind the silhouette — starting at
+      // ~8% of the pin instead of ~15%, so no dead scroll up front.
       // Viewport-relative travel so layers fully clear the frame on
       // every breakpoint (percent-of-self can't guarantee that).
       const below = () => window.innerHeight;
       const above = () => -window.innerHeight * 1.2;
-      tl.fromTo(line1Ref.current, { y: below }, { y: 0, duration: 0.25 }, 0.15);
-      tl.fromTo(line2Ref.current, { y: below }, { y: 0, duration: 0.15 }, 0.4);
+      tl.fromTo(line1Ref.current, { y: below }, { y: 0, duration: 0.2 }, 0.03);
+      tl.fromTo(line2Ref.current, { y: below }, { y: 0, duration: 0.13 }, 0.14);
 
-      // The completed name exits upward and out as a single rigid block.
-      tl.to(line1Ref.current, { y: above, duration: 0.3 }, 0.55);
-      tl.to(line2Ref.current, { y: above, duration: 0.3 }, 0.55);
+      // Reading hold: the completed name sits in full view for a beat
+      // before yielding, so it reads as a statement rather than a flash.
+      tl.to(line1Ref.current, { y: above, duration: 0.2 }, 0.42);
+      tl.to(line2Ref.current, { y: above, duration: 0.2 }, 0.42);
 
       // The role statement rises with a CTA riding on either side.
       // Vertical travel carries the block; opacity only assists late.
       tl.fromTo(
         roleRef.current,
         { y: () => window.innerHeight * 0.75, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.26 },
-        0.62
+        { y: 0, opacity: 1, duration: 0.18 },
+        0.52
       );
 
       return () => {
@@ -180,7 +190,7 @@ export default function HeroSection() {
         tl.kill();
       };
     },
-    { scope: sectionRef, dependencies: [reduced] }
+    { scope: sectionRef, dependencies: [reduced, isMobile] }
   );
 
   return (
@@ -190,10 +200,16 @@ export default function HeroSection() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="relative w-full overflow-x-clip"
-      style={{ height: SCROLL_DISTANCE, backgroundColor: "var(--bg)" }}
+      style={{
+        height: isMobile ? "300svh" : SCROLL_DISTANCE,
+        backgroundColor: "var(--bg)",
+      }}
     >
       {/* ── Pinned Full-Screen Stage ─────────────────────────── */}
       <div className="sticky top-0 h-svh w-full overflow-hidden flex items-center justify-center">
+
+        {/* ── Architect art (hero-minimal, static, no timeline contact) ── */}
+        <HeroDraft />
 
         {/* ── Atmospheric Ambient Lighting ─────────────────────── */}
         <div className="absolute inset-0 pointer-events-none z-0">
@@ -223,15 +239,15 @@ export default function HeroSection() {
             <div ref={line1Ref} className="will-change-transform" style={{ transform: "translateY(100vh)" }}>
               <div
                 className="text-giant-bg"
-                style={{ fontSize: "clamp(4.8rem, 15.5vw, 18.5rem)" }}
+                style={{ fontSize: "clamp(4.8rem, 13vw, 16rem)" }}
               >
                 SK MAHIR
               </div>
             </div>
-            <div ref={line2Ref} className="mt-[-2.5vw] md:mt-[-4vw] will-change-transform" style={{ transform: "translateY(100vh)" }}>
+            <div ref={line2Ref} className="mt-[-1.5vw] md:mt-[-2.0vw] will-change-transform" style={{ transform: "translateY(100vh)" }}>
               <div
                 className="text-giant-bg"
-                style={{ fontSize: "clamp(4.8rem, 15.5vw, 18.5rem)" }}
+                style={{ fontSize: "clamp(4.8rem, 13vw, 16rem)" }}
               >
                 ASHEF
               </div>
@@ -251,11 +267,11 @@ export default function HeroSection() {
               >
                 <span className="block">AI ENGINEER</span>
                 <span className="block mt-[-1vw]">FULL-STACK</span>
-                <span className="block mt-[-1vw]">DEVELOPER</span>
+                <span className="block mt-[-1.5vw]">DEVELOPER</span>
               </h2>
             </div>
             {/* CTAs ride with the role block: flanks on desktop, one docked row on mobile */}
-            <div className="absolute inset-x-0 bottom-28 flex items-center justify-center gap-3 pointer-events-none md:contents">
+            <div className="absolute inset-x-0 bottom-[calc(7rem+env(safe-area-inset-bottom,0px))] flex items-center justify-center gap-3 pointer-events-none md:contents">
             <div className="md:absolute md:left-12 md:top-1/2 md:-translate-y-1/2 pointer-events-auto">
               <motion.a
                 ref={ctaRef}
@@ -317,7 +333,7 @@ export default function HeroSection() {
         </div>
 
         {/* ── Availability micro-label (static, no pulse) ── */}
-        <div className="absolute left-6 md:left-12 bottom-7 z-20 pointer-events-none">
+        <div className="absolute left-6 md:left-12 bottom-[calc(1.75rem+env(safe-area-inset-bottom,0px))] z-20 pointer-events-none">
           <span className="code-text text-[10px] tracking-widest uppercase" style={{ color: "var(--text-dim)" }}>
             Available for Q1–Q4
           </span>
@@ -326,7 +342,7 @@ export default function HeroSection() {
         {/* ── Scroll Cue (invites the sequence, then bows out) ──── */}
         <div
           ref={cueRef}
-          className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-1.5"
+          className="absolute bottom-[calc(1.75rem+env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-1.5"
         >
           <span className="code-text text-[10px] tracking-widest uppercase" style={{ color: "var(--text-dim)" }}>
             Scroll

@@ -15,6 +15,7 @@ import {
   SiGit,
 } from "react-icons/si";
 import { FaHtml5 } from "react-icons/fa6";
+import SectionDraft from "@/components/arch/SectionDraft";
 
 const EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
@@ -110,6 +111,9 @@ export default function SkillsSection() {
       id="skills"
       className="py-28 md:py-36 relative overflow-hidden cv-auto"
     >
+      {/* Architect art first (Skills stipple field, paper, scroll glow) */}
+      <SectionDraft section="skills" variant="field" tone="paper" />
+
       {/* Ambient background glow */}
       <div
         className="absolute inset-0 pointer-events-none"

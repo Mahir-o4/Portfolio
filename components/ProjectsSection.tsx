@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, type Transition } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import ProjectCard from "./ProjectCard";
+import SectionDraft from "@/components/arch/SectionDraft";
 
 const EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
@@ -42,6 +43,9 @@ export default function ProjectsSection() {
 
   return (
     <section id="work" className="py-24 md:py-36 relative cv-auto">
+      {/* Architect art first (Work beams, ink, scroll glow) */}
+      <SectionDraft section="work" variant="beam" tone="ink" />
+
       {/* Faint neutral wash behind section */}
       <div
         className="absolute inset-0 pointer-events-none"

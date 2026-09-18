@@ -1,4 +1,5 @@
 import LogoIcon from "@/components/LogoIcon";
+import SectionDraft from "@/components/arch/SectionDraft";
 import ContactForm from "./ContactForm";
 
 export default function Footer() {
@@ -10,6 +11,9 @@ export default function Footer() {
       className="relative py-24 md:py-36 overflow-hidden"
       style={{ backgroundColor: "var(--panel)", color: "var(--panel-text)" }}
     >
+      {/* Architect art first (colonnade, ink, static) */}
+      <SectionDraft section="footer" variant="colonnade" tone="ink" />
+
       {/* Faint paper wash on the dark anchor */}
       <div
         className="absolute inset-0 pointer-events-none"

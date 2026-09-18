@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, type Transition } from "motion/react";
 import { Terminal, Cpu, Layers } from "lucide-react";
 import { useState, useEffect } from "react";
+import SectionDraft from "@/components/arch/SectionDraft";
 
 const FLUID_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
@@ -44,6 +45,9 @@ export default function AboutSection() {
 
   return (
     <section id="about-me" className="py-28 md:py-40 relative cv-auto">
+      {/* Architect art first (About cut-bays, ink, scroll glow) */}
+      <SectionDraft section="about" variant="cut" tone="ink" />
+
       {/* Faint neutral wash */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -71,12 +75,12 @@ export default function AboutSection() {
       </svg>
 
       <div className="container-page relative">
-        {/* Sheet header: eyebrow badge + rule + path code */}
-        <motion.div {...reveal(0)} className="flex items-center gap-3 mb-12">
-          <span className="eyebrow eyebrow-ink">
+        {/* Sheet header: mono label + rule + path code (no pill chrome) */}
+        <motion.div {...reveal(0)} className="flex items-center gap-4 mb-12">
+          <span className="code-text text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--text)" }}>
             ~about
           </span>
-          <span className="h-px flex-1 max-w-12 bg-[rgba(255,255,255,0.25)]" />
+          <span className="h-px w-12 bg-[rgba(255,255,255,0.25)]" aria-hidden="true" />
           <span className="code-text text-xs text-(--text-muted) uppercase tracking-wider">
             Philosophy & Engineering
           </span>
@@ -111,25 +115,23 @@ export default function AboutSection() {
 
 
 
-            {/* Quick stats */}
+            {/* Quick stats — ruled index strip, no bezel hardware */}
             <motion.div
               {...reveal(0.3)}
-              className="grid grid-cols-3 gap-3 pt-2"
+              className="grid grid-cols-3 border-y border-[rgba(255,255,255,0.14)] divide-x divide-[rgba(255,255,255,0.14)] mt-2"
             >
               {[
                 { value: "5+", label: "Years Coding" },
                 { value: "10+", label: "Projects Built" },
                 { value: "100%", label: "Focus & Craft" },
               ].map((stat) => (
-                <div key={stat.label} className="bezel">
-                  <div className="bezel-core p-3 text-center flex flex-col items-center justify-center">
-                    <span className="type-display text-xl font-bold" style={{ color: "var(--text)" }}>
-                      {stat.value}
-                    </span>
-                    <span className="code-text text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>
-                      {stat.label}
-                    </span>
-                  </div>
+                <div key={stat.label} className="py-5 px-2 sm:px-4 text-left flex flex-col gap-1">
+                  <span className="type-display text-xl sm:text-2xl font-bold" style={{ color: "var(--text)" }}>
+                    {stat.value}
+                  </span>
+                  <span className="code-text text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--text-muted)" }}>
+                    {stat.label}
+                  </span>
                 </div>
               ))}
             </motion.div>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion, type Transition } from "motion/react";
 import Stack from "./Stack";
+import SectionDraft from "@/components/arch/SectionDraft";
 
 type NewsItem = {
   id: string;
@@ -117,8 +118,11 @@ const NewsArticles = () => {
     <section
       ref={ref}
       id="articles"
-      className="w-full cv-auto px-16 max-md:px-4 py-24 md:py-36 mb-10 max-md:mb-16"
+      className="relative w-full cv-auto px-16 max-md:px-4 py-24 md:py-36 mb-10 max-md:mb-16 overflow-hidden"
     >
+      {/* Architect art (News sheet border, paper, scroll glow) */}
+      <SectionDraft section="news" variant="sheet" tone="paper" />
+
       {/* Sheet header: eyebrow badge + rule + path code */}
       <div className="container-page">
         <motion.div {...reveal(0)} className="flex items-center gap-3 mb-8">
