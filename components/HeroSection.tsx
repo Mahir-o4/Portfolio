@@ -129,7 +129,7 @@ export default function HeroSection() {
           start: "top top",
           end: "bottom bottom",
           scrub: isMobile ? 0.6 : 0.7,
-          invalidateOnRefresh: true,
+          invalidateOnRefresh: !isMobile,
         },
       });
 
