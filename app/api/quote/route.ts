@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const res = await fetch("https://zenquotes.io/api/today", {
-      next: { revalidate: 86400 },
+      next: { revalidate: 43200 },
     });
 
     if (!res.ok) {

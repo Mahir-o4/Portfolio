@@ -1,134 +1,123 @@
-import { Send } from "lucide-react";
+import LogoIcon from "@/components/LogoIcon";
+import SectionDraft from "@/components/arch/SectionDraft";
 import ContactForm from "./ContactForm";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
   return (
     <footer
       id="contacts"
-      className="md:ml-20 bg-linear-to-b from-slate-900 to-slate-950 border-t border-slate-700/30 py-10 md:py-16 mt-8"
+      className="relative py-24 md:py-36 overflow-hidden"
+      style={{ backgroundColor: "var(--panel)", color: "var(--panel-text)" }}
     >
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mb-10 md:mb-12">
-          {/* Left Section */}
-          <div>
-            <h3 className="text-xl md:text-2xl font-bold text-accent-purple code-text mb-4">
-              ◇ MAHIR
-            </h3>
-            <p className="text-slate-400 text-xs md:text-sm code-text mb-5 md:mb-6 leading-relaxed">
-              An AI fanatic building gorgeous frontends, wrestling with GenAI,
-              and quietly praying my backend architecture doesn't spontaneously
-              catch fire.
-            </p>
-          </div>
+      <SectionDraft section="footer" variant="colonnade" tone="ink" />
 
-          {/* Right Section - Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 gap-5 md:gap-8">
-            <div>
-              <h4 className="text-slate-100 font-semibold mb-3 md:mb-4 code-text text-sm md:text-base">
-                quick_links
-              </h4>
-              <ul className="space-y-1.5 md:space-y-2 code-text text-xs md:text-sm">
-                <li>
-                  <a
-                    href="#home"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; home
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#work"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; work
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#skills"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; skills
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#about-me"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; about_me
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-slate-100 font-semibold mb-3 md:mb-4 code-text text-sm md:text-base">
-                social_links
-              </h4>
-              <ul className="space-y-1.5 md:space-y-2 code-text text-xs md:text-sm">
-                <li>
-                  <a
-                    href="https://github.com/Mahir-o4"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; github
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/in/mahir-ashef-011776290/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; linkedin
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="mailto:skmahirashef04@gmail.com"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; email
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://x.com/skmahirashef04"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-400 hover:text-[#00ff88] transition-colors"
-                  >
-                    &gt; twitter
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse 70% 60% at 50% 70%, rgba(243, 240, 233, 0.05) 0%, transparent 65%)
+          `,
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="absolute inset-x-0 top-[24%] flex justify-center pointer-events-none" aria-hidden="true">
+        <pre className="ascii-elevation">{`            ________________________________________________
+           /                                                \\
+          |    ||        ||        ||        ||        ||    |
+          |    ||        ||        ||        ||        ||    |
+          |    ||        ||        ||        ||        ||    |
+          |    ||        ||        ||        ||        ||    |
+          |____||________||________||________||________||____|
+          |==================================================|
+         _|__________________________________________________|_
+        |______________________________________________________|`}</pre>
+      </div>
+      <span className="sr-only">Classical colonnade line illustration</span>
+
+      <div className="container-page relative">
+        <div className="flex items-center gap-3 mb-12">
+          <span className="eyebrow" style={{ borderColor: "rgba(243,240,233,0.25)", color: "var(--panel-muted)" }}>
+            #contact
+          </span>
+          <span className="h-px flex-1 max-w-12 bg-[rgba(243,240,233,0.25)]" />
+          <span className="code-text text-xs uppercase tracking-wider" style={{ color: "var(--panel-muted)" }}>
+            Let&apos;s Connect
+          </span>
+          <span className="ml-auto code-text text-xs" style={{ color: "var(--panel-muted)" }}>
+            ~/contact
+          </span>
         </div>
 
-        {/* Contact CTA */}
-        <ContactForm />
+        <div className="flex flex-col items-center justify-center mb-8">
+          <div className="transition-transform duration-200">
+            <LogoIcon size={64} />
+          </div>
+          <p className="code-text text-xs mt-3 tracking-wider uppercase" style={{ color: "var(--panel-muted)" }}>
+            Sk Mahir Ashef • AI Systems Engineering
+          </p>
+        </div>
 
-        {/* Divider */}
-        <div className="border-t border-slate-700/30 pt-6 md:pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center code-text text-[11px] md:text-xs text-slate-500">
-            <p>© {currentYear} Mahir. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
+        <div className="text-center mb-8">
+          <h2
+            className="type-display"
+            style={{
+              fontSize: "clamp(3.5rem, 8.5vw, 8.5rem)",
+              lineHeight: 0.92,
+              letterSpacing: "-0.04em",
+            }}
+          >
+            <span style={{ color: "var(--panel-text)" }}>Let&apos;s build</span>
+            <br />
+            <span style={{ color: "var(--panel-text)" }}>
+              something.
+            </span>
+          </h2>
+        </div>
+
+        <div className="text-center mb-16">
+          <a
+            href="mailto:skmahirashef04@gmail.com"
+            className="type-heading inline-flex items-center gap-3 group text-base sm:text-xl md:text-2xl transition-colors duration-200 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            style={{ color: "var(--panel-text)" }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
+          >
+            skmahirashef04@gmail.com
+            <span className="btn-circle btn-circle-ink code-text text-sm text-white">
+              ↗
+            </span>
+          </a>
+        </div>
+
+        <div className="max-w-xl mx-auto mb-20">
+          <ContactForm />
+        </div>
+
+        <div className="flex items-center justify-between flex-wrap gap-4 pt-8 border-t border-[rgba(243,240,233,0.15)]">
+          <p className="code-text text-xs" style={{ color: "var(--panel-muted)" }}>
+            © {year} Sk Mahir Ashef • Engineered with <br />
+            hope, coffee & code
+          </p>
+          <div className="flex items-center gap-6">
+            {[
+              { href: "https://github.com/Mahir-o4", label: "github ↗" },
+              { href: "https://www.linkedin.com/in/mahir-ashef-011776290/", label: "linkedin ↗" },
+              { href: "https://x.com/skmahirashef04", label: "twitter ↗" },
+            ].map(({ href, label }) => (
               <a
-                href="https://github.com/Mahir-o4/Portfolio?tab=MIT-1-ov-file"
+                key={label}
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-accent-cyan transition-colors"
+                className="code-text text-xs transition-colors duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
+                style={{ color: "var(--panel-muted)" }}
               >
-                github
+                {label}
               </a>
-            </div>
+            ))}
           </div>
         </div>
       </div>

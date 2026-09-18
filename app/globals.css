@@ -2,238 +2,645 @@
 
 @layer base {
   :root {
-    --primary-dark: #030609;
-    --secondary-dark: #0f1219;
-    --tertiary-dark: #1a1f2e;
-    --accent-purple: #b66bff;
-    --accent-cyan: #00d9ff;
-    --accent-pink: #ff006e;
-    --accent-green: #00ff88;
-    --accent-yellow: #ffd60a;
+    --bg: #F3F0E9;
+    --bg-secondary: #EAE6DA;
+    --surface: #FBF9F4;
+    --surface-raised: #FFFDF7;
+    --border: rgba(22, 19, 14, 0.16);
+    --border-subtle: rgba(22, 19, 14, 0.08);
+    --border-glass: rgba(22, 19, 14, 0.12);
+
+    --text: #000000;
+    --text-secondary: #4A463D;
+    --text-muted: #6E6A61;
+    --text-dim: #8A857A;
+
+    --glow-amber: rgba(22, 19, 14, 0.05);
+    --glow-purple: rgba(22, 19, 14, 0.05);
+    --glow-indigo: rgba(22, 19, 14, 0.06);
+    --glow-teal: rgba(22, 19, 14, 0.05);
+
+    --panel: #000000;
+    --panel-text: #FFFFFF;
+    --panel-muted: #A8A29A;
+
+    --error: #9A2B1E;
+
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
   }
 }
 
-body {
-  font-family: var(--font-jetbrains-mono), 'Courier New', monospace;
-}
-
+/* =========================================================
+   BASE
+   ========================================================= */
 html {
   scroll-behavior: smooth;
-}
-
-body {
-  color: #e0e0e0;
-  overflow-x: hidden;
-}
-
-/* Minimal animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes glow-subtle {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(182, 107, 255, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(182, 107, 255, 0.5);
-  }
-}
-
-/* Utility animations */
-.fade-in-up {
-  opacity: 0;
-  animation: fadeInUp 0.5s ease-out both;
-}
-
-.fade-in {
-  opacity: 0;
-  animation: fadeIn 0.5s ease-out both;
-}
-
-.slide-in-left {
-  opacity: 0;
-  animation: slideInLeft 0.5s ease-out both;
-}
-
-.slide-in-right {
-  opacity: 0;
-  animation: slideInRight 0.5s ease-out both;
-}
-
-.slide-in-up {
-  opacity: 0;
-  animation: slideInUp 0.6s ease-out both;
-}
-
-.pop-in {
-  opacity: 0;
-  animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
-}
-
-.scale-in {
-  opacity: 0;
-  animation: scaleIn 0.4s ease-out both;
-}
-
-/* Card/element visibility */
-.scroll-element {
-  opacity: 0;
-  animation: fadeInUp 1s ease-out both;
-}
-
-/* Minimal border/accent system */
-.border-accent {
-  border-color: var(--accent-purple);
-}
-
-.border-accent-cyan {
-  border-color: var(--accent-cyan);
-}
-
-.text-accent {
-  color: var(--accent-purple);
-}
-
-.text-accent-cyan {
-  color: var(--accent-cyan);
-}
-
-.text-accent-pink {
-  color: var(--accent-pink);
-}
-
-.text-accent-green {
-  color: var(--accent-green);
-}
-
-/* Minimal card style */
-.card-minimal {
-  background: var(--secondary-dark);
-  /* border: 1px solid var(--tertiary-dark); */
-  transition: all 0.3s ease;
-}
-
-.card-minimal:hover {
-  background: var(--tertiary-dark);
-  box-shadow: 0 0 15px rgba(182, 107, 255, 0.2);
-}
-
-/* Code-like styling */
-.code-text {
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
-}
-
-/* Grid system for layout */
-.grid-minimal {
-  display: grid;
-  gap: 1.5rem;
-  grid-auto-flow: dense;
-}
-
-/* Accent line */
-.accent-line {
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
-}
-
-.accent-line-left {
-  width: 3px;
-  height: auto;
-  background: var(--accent-purple);
-}
-
-/* Smooth transitions */
-a, button {
-  transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-html {
   -ms-overflow-style: none;
-  scrollbar-width: none;
+  background-color: var(--bg);
+  overscroll-behavior: none;
 }
 
 html::-webkit-scrollbar {
   display: none;
+}
+
+body {
+  --font-display: var(--font-grotesk), system-ui, sans-serif;
+  --font-sans: var(--font-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'Courier New', monospace;
+
+  font-family: var(--font-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================================
+   AMBIENT WASH BACKGROUND LAYERS
+   ========================================================= */
+.ambient-glow-hero {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 35%, var(--glow-indigo) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 75% 55%, var(--glow-amber) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 70%, var(--glow-purple) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 40% 90%, var(--glow-teal) 0%, transparent 65%);
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+@keyframes clip-reveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+
+  to {
+    clip-path: inset(0 0 0% 0);
+    opacity: 1;
+  }
+}
+
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-subtle {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   TYPOGRAPHY UTILITIES
+   ========================================================= */
+.type-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+
+.type-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.code-text {
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+/* =========================================================
+   POSTER TYPE & EDITORIAL DEPTH UTILITIES
+   ========================================================= */
+.text-giant-bg {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.82;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.92;
+  user-select: none;
+  pointer-events: none;
+}
+
+.mask-feather-bottom {
+  mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.55) 26%, black 55%, black 100%);
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.55) 26%, black 55%, black 100%);
+}
+
+.hero-floor-shadow {
+  background: radial-gradient(ellipse 46% 12% at 50% 100%, rgba(22, 19, 14, 0.14) 0%, transparent 70%);
+}
+
+.chiaroscuro-halo {
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(22, 19, 14, 0.08) 0%, transparent 70%);
+  filter: blur(55px);
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.container-page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding: 0 4rem;
+  }
+}
+
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1200px;
+}
+
+/* =========================================================
+   ALTERNATING INK SECTIONS — About + Work read as black blocks.
+   Scoped token overrides: every var(--text*) reference follows
+   automatically; only hardcoded dark alphas need per-file edits.
+   ========================================================= */
+#about-me,
+#work {
+  --text: #FFFFFF;
+  --text-secondary: #D8D3C6;
+  --text-muted: #A8A29A;
+  --text-dim: #7E7970;
+  --bg: #000000;
+  background-color: #000000;
+  color: #FFFFFF;
+}
+#about-me .glass-card,
+#work .glass-card,
+#about-me .bezel-core,
+#work .bezel-core {
+  --text: #000000;
+  --text-secondary: #4A463D;
+  --text-muted: #6E6A61;
+  --text-dim: #8A857A;
+}
+
+#work .project-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+#work .project-row::before {
+  background: #FFFFFF;
+}
+
+/* =========================================================
+   DRAFTING GRID TEXTURES — one family, two inks. Static CSS,
+   zero JS cost. Restraint: Skills gets paper grid, Work gets
+   ink grid; everywhere else stays flat wash.
+   ========================================================= */
+.texture-grid-paper {
+  background-image:
+    linear-gradient(rgba(22, 19, 14, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 19, 14, 0.045) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.texture-grid-ink {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.ascii-elevation {
+  font-family: var(--font-mono);
+  white-space: pre;
+  line-height: 1.3;
+  font-size: clamp(8px, 2vw, 18px);
+  color: rgba(243, 240, 233, 0.42);
+  user-select: none;
+}
+
+/* =========================================================
+   PAPER CHROME & EDITORIAL SURFACES
+   ========================================================= */
+.nav-pill {
+  background: rgba(251, 249, 244, 0.85);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: 0 8px 32px rgba(22, 19, 14, 0.10);
+}
+
+.glass-card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 30px -12px rgba(22, 19, 14, 0.18);
+  transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.glass-card:hover {
+  border-color: var(--border);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .glass-card:hover {
+    box-shadow: 0 18px 44px -14px rgba(22, 19, 14, 0.24);
+  }
+}
+
+.glass-pill {
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.925rem;
+  letter-spacing: -0.01em;
+  border-radius: 9999px;
+  transition: transform 120ms ease-out, box-shadow 200ms var(--ease-out), background-color 200ms var(--ease-out);
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 24px 60px -18px rgba(22, 19, 14, 0.4);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .btn-primary:hover, .btn-ghost:hover {
+    transform: none;
+  }
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.925rem;
+  letter-spacing: -0.01em;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  transition: transform 120ms ease-out, background-color 200ms var(--ease-out), border-color 200ms var(--ease-out), color 200ms var(--ease-out);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-ghost:hover {
+  background: rgba(22, 19, 14, 0.05);
+  border-color: var(--text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-ghost:hover, .btn-primary:hover {
+    transform: translateY(-1px);
+  }
+  .bezel:hover {
+    border-color: var(--border);
+  }
+  .bezel-ink:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+  .group:hover .btn-circle {
+    transform: translate(2px, -2px) scale(1.06);
+  }
+}
+
+.btn-ghost:active {
+  transform: scale(0.98);
+}
+
+/* =========================================================
+   DOUBLE-BEZEL (Doppelrand) — machined nested architecture.
+   Outer shell: tinted tray + hairline ring + p-1.5 + 2rem radius.
+   Inner core: distinct fill + inner highlight + concentric radius.
+   ========================================================= */
+.bezel {
+  background: rgba(22, 19, 14, 0.05);
+  border: 1px solid var(--border-subtle);
+  padding: 0.375rem;
+  border-radius: 2rem;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    0 30px 70px -30px rgba(22, 19, 14, 0.25);
+  transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.bezel-core {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: calc(2rem - 0.375rem);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  transition: border-color 200ms var(--ease-out);
+}
+
+.bezel:hover {
+  border-color: var(--border-subtle);
+}
+
+/* Ink variants for black sections */
+.bezel-ink {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.375rem;
+  border-radius: 2rem;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 30px 70px -30px rgba(0, 0, 0, 0.8);
+  transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.bezel-core-ink {
+  background: #0D0D0D;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: calc(2rem - 0.375rem);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  transition: border-color 200ms var(--ease-out);
+}
+
+.bezel-ink:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* =========================================================
+   EYEBROW TAGS — microscopic pill badges preceding H1/H2s
+   ========================================================= */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.3rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  background: transparent;
+  white-space: nowrap;
+}
+
+.eyebrow-ink {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--text-secondary);
+}
+
+/* =========================================================
+   ISLAND BUTTON ICON — the button-in-button trailing circle.
+   Never sits naked: flush inside the pill's right padding,
+   drifts diagonally + scales on group-hover (kinetic tension).
+   ========================================================= */
+.btn-circle {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.16);
+  transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out);
+}
+
+.group:hover .btn-circle {
+  transform: none;
+}
+
+.group:active .btn-circle {
+  transform: translate(0, 0) scale(0.96);
+}
+
+.btn-circle-ghost {
+  background: rgba(22, 19, 14, 0.06);
+}
+
+.btn-circle-ink {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* =========================================================
+   PROJECT ROWS
+   ========================================================= */
+.project-row {
+  border-top: 1px solid var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+  transition: background-color 220ms var(--ease-out);
+}
+
+.project-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--text);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 260ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .project-row:hover {
+    background-color: rgba(22, 19, 14, 0.03);
+  }
+
+  .project-row:hover::before {
+    transform: scaleY(1);
+  }
+}
+
+/* =========================================================
+   RULES & MARQUEE
+   ========================================================= */
+.rule-accent {
+  height: 1px;
+  background: linear-gradient(90deg, var(--text) 0%, transparent 100%);
+  opacity: 0.2;
+  transform-origin: left;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-left var(--marquee-speed, 60s) linear infinite;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY & INTERACTIONS
+   ========================================================= */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button,
+[role="button"] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+::selection {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+input,
+textarea {
+  caret-color: var(--text);
+}
+
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+    transform: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .marquee-track {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav-pill {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass-card, .bezel, .bezel-ink {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .nav-pill, .glass-card {
+    background: var(--surface-raised);
+    border-color: var(--text);
+  }
+  .bezel, .bezel-ink {
+    border-color: currentColor;
+  }
 }

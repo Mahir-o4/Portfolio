@@ -1,69 +1,87 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 
-export function useActiveSection(sectionIds: string[]) {
-  const [activeSection, setActiveSection] = useState(sectionIds[0] ?? "");
-  const pendingRef = useRef<number | null>(null);
-  const activeSectionRef = useRef(activeSection);
-
-  const idsKey = useMemo(() => sectionIds.join("|"), [sectionIds]); // avoid uncessary lags with same useless array
-
-  const ratiosRef = useRef<Record<string, number>>({});
+export function useActiveSection(sectionIds: string[]): string {
+  const [activeSection, setActiveSection] = useState<string>(sectionIds[0] ?? "");
+  const idsKey = useMemo(() => sectionIds.join("|"), [sectionIds]);
 
   useEffect(() => {
-    activeSectionRef.current = activeSection;
-  }, [activeSection]);
+    let ticking = false;
 
-  useEffect(() => {
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el));
+    const determineActive = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
 
-    if (!elements.length) return;
+      if (scrollY < 120) {
+        setActiveSection(sectionIds[0] ?? "");
+        ticking = false;
+        return;
+      }
 
-    ratiosRef.current = Object.fromEntries(sectionIds.map((id) => [id, 0]));
+      if (windowHeight + scrollY >= docHeight - 80) {
+        setActiveSection(sectionIds[sectionIds.length - 1] ?? "");
+        ticking = false;
+        return;
+      }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const id = (entry.target as HTMLElement).id;
-          ratiosRef.current[id] = entry.isIntersecting ? entry.intersectionRatio : 0;
+      const focalLine = windowHeight * 0.35;
+
+      const elements = sectionIds
+        .map((id) => ({ id, el: document.getElementById(id) }))
+        .filter((item): item is { id: string; el: HTMLElement } => item.el !== null);
+
+      if (elements.length === 0) {
+        ticking = false;
+        return;
+      }
+
+      let matchedId = "";
+      for (const { id, el } of elements) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= focalLine && rect.bottom > focalLine) {
+          matchedId = id;
+          break;
         }
+      }
 
-        // compute from maximum visible section
-        let nextId = activeSectionRef.current;
-        let best = 0;
-
-        for (const id of sectionIds) {
-          const ratio = ratiosRef.current[id] ?? 0;
-          if (ratio > best) {
-            best = ratio;
-            nextId = id;
+      if (!matchedId) {
+        let minDistance = Infinity;
+        for (const { id, el } of elements) {
+          const rect = el.getBoundingClientRect();
+          const dist = Math.abs(rect.top - focalLine);
+          if (dist < minDistance) {
+            minDistance = dist;
+            matchedId = id;
           }
         }
-
-        if (!nextId || nextId === activeSectionRef.current) return;
-
-        if (pendingRef.current) window.clearTimeout(pendingRef.current);
-        pendingRef.current = window.setTimeout(() => {
-          setActiveSection(nextId);
-          pendingRef.current = null;
-        }, 160);
-      },
-      {
-        threshold: [0.25, 0.5, 0.75],
-        rootMargin: '-20% 0px -35% 0px',
       }
-    );
 
-    elements.forEach((el) => observer.observe(el));
+      if (matchedId) {
+        setActiveSection((prev) => (prev !== matchedId ? matchedId : prev));
+      }
+
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(determineActive);
+        ticking = true;
+      }
+    };
+
+    determineActive();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
 
     return () => {
-      observer.disconnect();
-      if (pendingRef.current) window.clearTimeout(pendingRef.current);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
-  }, [idsKey]);
+  }, [idsKey, sectionIds]);
 
   return activeSection;
 }

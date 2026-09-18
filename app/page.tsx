@@ -6,7 +6,6 @@ import ProjectsSection from "@/components/ProjectsSection";
 import SkillsSection from "@/components/SkillsSection";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
-import PixelBlast from "@/components/PixelBlast";
 import dynamic from "next/dynamic";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 
@@ -16,40 +15,39 @@ const NewsArticles = dynamic(() => import("@/components/NewsArticles"), {
 
 export default function Home() {
   const isDesktop = useIsDesktop();
+
   return (
-    <main className="relative min-h-screen">
-      {isDesktop && (
-        <div className="fixed inset-0 z-0 hidden md:block">
-          <PixelBlast
-            variant="diamond"
-            pixelSize={4}
-            color="#B19EEF"
-            patternScale={2}
-            patternDensity={2}
-            pixelSizeJitter={1}
-            enableRipples
-            rippleSpeed={0.4}
-            rippleThickness={0.12}
-            rippleIntensityScale={1.5}
-            liquid={false}
-            liquidStrength={0.12}
-            liquidRadius={1.2}
-            liquidWobbleSpeed={5}
-            speed={0.5}
-            edgeFade={0.25}
-            transparent
-          />
-        </div>
-      )}
+    <main
+      className="relative min-h-screen"
+      style={{ backgroundColor: "var(--bg)", overflowX: "clip" }}
+    >
       <div
-        className="hidden md:block fixed inset-0 z-10 pointer-events-none bg-slate-950/60 backdrop-blur-[1px]"
+        className="fixed pointer-events-none"
+        style={{
+          inset: 0,
+          zIndex: 0,
+          background: `
+            radial-gradient(ellipse 65% 55% at 78% 35%, rgba(22, 19, 14, 0.05) 0%, transparent 70%),
+            radial-gradient(ellipse 45% 40% at 65% 50%, rgba(22, 19, 14, 0.04) 0%, transparent 65%),
+            radial-gradient(ellipse 50% 60% at 15% 80%, rgba(22, 19, 14, 0.05) 0%, transparent 60%)
+          `,
+        }}
         aria-hidden="true"
-      ></div>
+      />
+
       <div
-        className="fixed inset-0 z-10 pointer-events-none md:hidden bg-linear-to-b from-slate-950 via-slate-950/80 to-transparent"
+        className="fixed pointer-events-none"
+        style={{
+          inset: 0,
+          zIndex: 1,
+          opacity: 0.03,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "180px 180px",
+        }}
         aria-hidden="true"
-      ></div>
-      <div className="relative z-20">
+      />
+
+      <div className="relative" style={{ zIndex: 10 }}>
         <Header />
         <HeroSection />
         <AboutSection />

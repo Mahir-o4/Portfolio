@@ -1,91 +1,294 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { motion, useReducedMotion, type Transition } from "motion/react";
 import { FaPython, FaJava, FaCss3Alt } from "react-icons/fa";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-
 import {
   SiReact,
   SiNextdotjs,
   SiTypescript,
   SiTailwindcss,
   SiJavascript,
-  SiC
-
+  SiC,
+  SiPytorch,
+  SiHuggingface,
+  SiDocker,
+  SiGit,
 } from "react-icons/si";
 import { FaHtml5 } from "react-icons/fa6";
-import LogoLoop from "./LogoLoop";
+import SectionDraft from "@/components/arch/SectionDraft";
+
+const EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
+
+const SKILL_CATEGORIES = [
+  {
+    title: "AI & Machine Learning",
+    description:
+      "I work with models, data, and the machinery that makes AI actually do something.",
+    highlight: "Core",
+    skills: [
+      { name: "Python", icon: <FaPython /> },
+      { name: "PyTorch", icon: <SiPytorch /> },
+      { name: "Hugging Face", icon: <SiHuggingface /> },
+      { name: "NumPy", icon: null },
+      { name: "Pandas", icon: null },
+      { name: "Scikit-learn", icon: null },
+      { name: "LLM Agents", icon: null },
+      { name: "FastAPI", icon: null },
+    ],
+  },
+  {
+    title: "Full-Stack Web Engineering",
+    description:
+      "I build the interface, wire up the logic, and make the whole thing work together.",
+    highlight: "Build",
+    skills: [
+      { name: "Next.js 15", icon: <SiNextdotjs /> },
+      { name: "React 19", icon: <SiReact /> },
+      { name: "TypeScript", icon: <SiTypescript /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+      { name: "JavaScript", icon: <SiJavascript /> },
+    ],
+  },
+  {
+    title: "Systems & Core Languages",
+    description:
+      "The fundamentals that make me care about what happens under the hood.",
+    highlight: "Foundation",
+    skills: [
+      { name: "C Programming", icon: <SiC /> },
+      { name: "Java", icon: <FaJava /> },
+      { name: "Data Structures", icon: null },
+      { name: "Algorithms", icon: null },
+    ],
+  },
+  {
+    title: "DevOps & Developer Tools",
+    description:
+      "The tools I use to turn an idea into code, keep it moving, and ship it.",
+    highlight: "Tooling",
+    skills: [
+      { name: "Git & GitHub", icon: <SiGit /> },
+      { name: "REST APIs", icon: null },
+    ],
+  },
+];
+
+const marqueeLogos = [
+  { node: <FaPython size={34} />, title: "Python" },
+  { node: <SiPytorch size={34} />, title: "PyTorch" },
+  { node: <SiNextdotjs size={34} />, title: "Next.js" },
+  { node: <SiReact size={34} />, title: "React" },
+  { node: <SiTypescript size={34} />, title: "TypeScript" },
+  { node: <SiTailwindcss size={34} />, title: "Tailwind" },
+  { node: <SiHuggingface size={34} />, title: "Hugging Face" },
+  { node: <FaJava size={34} />, title: "Java" },
+  { node: <SiC size={34} />, title: "C" },
+  { node: <SiDocker size={34} />, title: "Docker" },
+  { node: <SiGit size={34} />, title: "Git" },
+  { node: <SiJavascript size={34} />, title: "JavaScript" },
+  { node: <FaHtml5 size={34} />, title: "HTML5" },
+  { node: <FaCss3Alt size={34} />, title: "CSS3" },
+];
+
+const doubledLogos = [...marqueeLogos, ...marqueeLogos];
 
 export default function SkillsSection() {
-  const { ref, isVisible } = useScrollAnimation();
+  const reduced = useReducedMotion();
 
-
-  const skillCategories = [
-    { node: <FaPython />, title: "Python", href: "https://www.python.org/" },
-    {node: <FaJava />, title: "Java", href:"https://www.java.com/en/"},
-    {node: <SiC />, title: "C", href:"https://www.c-language.org/"},
-    {node: <FaHtml5 />, title: "HTML", href:"https://developer.mozilla.org/en-US/docs/Web/HTML"},
-    {node: <FaCss3Alt />, title: "CSS", href:"https://developer.mozilla.org/en-US/docs/Web/CSS"},
-    {node: <SiJavascript />, title: "JavaScript", href:"https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript"},
-    { node: <SiReact />, title: "React", href: "https://react.dev" },
-    { node: <SiNextdotjs />, title: "Next.js", href: "https://nextjs.org" },
-    {
-      node: <SiTypescript />,
-      title: "TypeScript",
-      href: "https://www.typescriptlang.org",
-    },
-    {
-      node: <SiTailwindcss />,
-      title: "Tailwind CSS",
-      href: "https://tailwindcss.com",
-    },
-  ];
+  const reveal = (delay: number) => ({
+    initial: reduced ? {} : { opacity: 0, transform: "translateY(16px)" },
+    whileInView: { opacity: 1, transform: "translateY(0px)" },
+    viewport: { once: true, amount: 0.15 },
+    transition: {
+      duration: 0.28,
+      delay,
+      ease: EASE,
+    } satisfies Transition,
+  });
 
   return (
-    <section ref={ref} id="skills" className="py-14 md:py-20 md:ml-20 relative mx-4 md:mx-20">
-      <div className={`max-w-6xl mx-auto px-3 md:px-8 ${isVisible ? "scale-in" : "opacity-0"}`} style={{ animationDelay: '0.2s' }}>
-        {/* Section Header */}
-        <div className={`mb-10 md:mb-16 `}>
-          <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-accent-cyan">
-              #skills
-            </h2>
-          </div>
-          <p className="text-slate-400 text-sm md:text-xl ml-2 md:ml-8 mt-2 text-accent code-text font-bold">
-            Technologies I work with
-          </p>
-        </div>
+    <section
+      id="skills"
+      className="py-28 md:py-36 relative overflow-hidden cv-auto"
+    >
+      <SectionDraft section="skills" variant="field" tone="paper" />
 
-        {/* Skills Grid */}
-        <div className={`w-full ${isVisible ? "slide-in-up": "opacity-0"}`} style={{animationDelay: '0.2s'}}>
-          <div className="md:hidden">
-            <LogoLoop
-              logos={skillCategories}
-              speed={60}
-              direction="left"
-              logoHeight={60}
-              gap={36}
-              hoverSpeed={0}
-              scaleOnHover
-              fadeOut
-              fadeOutColor="#01040f"
-              ariaLabel="skills"
-            />
-          </div>
-          <div className="hidden md:block">
-            <LogoLoop
-              logos={skillCategories}
-              speed={100}
-              direction="left"
-              logoHeight={100}
-              gap={60}
-              hoverSpeed={0}
-              scaleOnHover
-              fadeOut
-              fadeOutColor="#01040f"
-              ariaLabel="skills"
-            />
-          </div>
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 65% 50% at 50% 50%, rgba(22, 19, 14, 0.05) 0%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
+
+      <div
+        className="absolute inset-0 pointer-events-none texture-grid-paper"
+        aria-hidden="true"
+      />
+
+      <div className="container-page relative">
+        <motion.div
+          {...reveal(0)}
+          className="flex items-center gap-3 mb-6"
+        >
+          <span className="eyebrow">
+            #skills
+          </span>
+
+          <span className="h-px flex-1 max-w-12 bg-[rgba(22,19,14,0.2)]" />
+
+          <span className="code-text text-xs text-(--text-muted) uppercase tracking-wider">
+            Stack
+          </span>
+
+          <span
+            className="ml-auto code-text text-xs"
+            style={{ color: "var(--text-dim)" }}
+          >
+            ~/skills
+          </span>
+        </motion.div>
+
+        <motion.h2
+          {...reveal(0.1)}
+          className="type-heading text-3xl sm:text-5xl lg:text-6xl mb-6 tracking-tight"
+          style={{ color: "var(--text)" }}
+        >
+          What I work with.
+        </motion.h2>
+
+        <motion.p
+          {...reveal(0.15)}
+          className="text-base sm:text-lg max-w-2xl mb-10 leading-relaxed font-sans"
+          style={{ color: "var(--text-secondary)" }}
+        >
+          A mix of things I&apos;ve learned by building, breaking, fixing,
+          and building again.
+        </motion.p>
+
+        <motion.div
+          initial={reduced ? {} : { transform: "scaleX(0)" }}
+          whileInView={{ transform: "scaleX(1)" }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.3, ease: EASE }}
+          className="rule-accent mb-12"
+          aria-hidden="true"
+        />
+
+        <div className="border-t border-[rgba(22,19,14,0.1)] mb-16">
+          {SKILL_CATEGORIES.map((category, idx) => (
+            <motion.div
+              key={category.title}
+              {...reveal(Math.min(0.2 + idx * 0.06, 0.32))}
+              className="py-8 md:py-10 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4 md:gap-10 items-start border-b border-[rgba(22,19,14,0.1)]"
+            >
+              <div className="flex flex-col gap-3 items-start">
+                <span className="eyebrow">
+                  {category.highlight}
+                </span>
+
+                <h3
+                  className="type-heading text-xl sm:text-2xl"
+                  style={{ color: "var(--text)" }}
+                >
+                  {category.title}
+                </h3>
+
+                <p
+                  className="text-sm leading-relaxed font-sans max-w-[38ch]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {category.description}
+                </p>
+              </div>
+
+              <p
+                className="type-heading font-medium leading-snug tracking-tight"
+                style={{
+                  fontSize: "clamp(1.35rem, 2.6vw, 2rem)",
+                  color: "var(--text)",
+                }}
+              >
+                {category.skills.map((skill, i) => (
+                  <span key={skill.name}>
+                    <span className="inline-flex items-baseline gap-2 whitespace-nowrap">
+                      {skill.icon && (
+                        <span
+                          className="text-[0.7em] opacity-60 translate-y-[0.08em]"
+                          style={{ color: "var(--text)" }}
+                        >
+                          {skill.icon}
+                        </span>
+                      )}
+
+                      <span
+                        style={{
+                          color: skill.icon
+                            ? "var(--text)"
+                            : "var(--text-muted)",
+                        }}
+                      >
+                        {skill.name}
+                      </span>
+                    </span>
+
+                    {i < category.skills.length - 1 && (
+                      <span
+                        className="mx-3 select-none"
+                        style={{ color: "var(--text-dim)" }}
+                        aria-hidden="true"
+                      >
+                        ·
+                      </span>
+                    )}
+                  </span>
+                ))}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative overflow-hidden py-5 border-y border-[rgba(22,19,14,0.1)] bg-[rgba(22,19,14,0.03)]">
+        <div
+          className="absolute left-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to right, var(--bg), transparent)",
+          }}
+        />
+
+        <div
+          className="absolute right-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to left, var(--bg), transparent)",
+          }}
+        />
+
+        <div
+          className="marquee-track"
+          style={{ "--marquee-speed": "40s" } as React.CSSProperties}
+          aria-label="Technologies Marquee"
+        >
+          {doubledLogos.map((logo, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2.5 mx-6 sm:mx-10 shrink-0 opacity-80 hover:opacity-100 transition-opacity duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] cursor-default"
+            >
+              <span className="text-2xl text-[#000000]">
+                {logo.node}
+              </span>
+
+              <span
+                className="code-text text-xs font-medium tracking-wide"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                {logo.title}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

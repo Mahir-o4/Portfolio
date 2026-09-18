@@ -1,217 +1,211 @@
 "use client";
 
-import Image from "next/image";
-import { Github, Twitter, Linkedin, Menu, X } from "lucide-react";
+import { Github, Twitter, Linkedin } from "lucide-react";
+import LogoIcon from "@/components/LogoIcon";
 import { useActiveSection } from "@/hooks/useActiveSection";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+
+const FLUID_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
 const navItems = [
   { id: "home", label: "#home" },
-  { id: "about-me", label: "~about-me" },
+  { id: "about-me", label: "~about" },
   { id: "skills", label: "#skills" },
   { id: "work", label: "@work" },
-  { id: "contacts", label: "#contacts" },
+  { id: "contacts", label: "#contact" },
+];
+
+const socials = [
+  { href: "https://github.com/Mahir-o4/", icon: <Github size={16} strokeWidth={1.5} />, label: "GitHub" },
+  { href: "https://x.com/skmahirashef04", icon: <Twitter size={16} strokeWidth={1.5} />, label: "Twitter" },
+  { href: "https://www.linkedin.com/in/mahir-ashef-011776290/", icon: <Linkedin size={16} strokeWidth={1.5} />, label: "LinkedIn" },
 ];
 
 export default function Header() {
-  const activeSection = useActiveSection(navItems.map((item) => item.id));
-  const [isArtVis, setIsArtVis] = useState(false);
+  const activeSection = useActiveSection(navItems.map((i) => i.id));
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    audioRef.current = new Audio('/fahhh.mp3');
-    audioRef.current.preload = 'auto';
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    return () => {
-      if (!audioRef.current) return;
-      audioRef.current.pause();
-      audioRef.current.src = '';
-      audioRef.current.load();
-      audioRef.current = null;
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMenuOpen(false);
     };
-  }, []);
-
-  const handleArticlesClick = useCallback(() => {
-    if (!audioRef.current) return;
-    audioRef.current.currentTime = 0;
-    audioRef.current.play().catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    const el = document.getElementById("articles");
-    if (!el) return;
-
-    const obs = new IntersectionObserver(
-      ([ent]) => setIsArtVis(ent.isIntersecting),
-      { threshold: 0.45 },
-    );
-
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isMenuOpen]);
 
   return (
     <>
-      {/* Left Sidebar */}
-      <div className="fixed left-0 top-0 hidden md:flex h-screen w-20 bg-linear-to-b from-slate-900 via-slate-900 to-slate-950 border-r border-slate-700/50 flex-col items-center py-8 gap-8 z-40">
-        {/* Logo */}
-        <div className="text-2xl font-bold text-accent-purple border rounded-3xl border-[#B026FF] bg-black p-2">
-          <Image src="/logo.JPG" alt="logo" width={26} height={26} />
-        </div>
-
-        {/* Social Links */}
-        <div className="flex flex-col gap-5">
+      <header className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 pt-4 md:pt-6 pointer-events-none">
+        <div
+          className={`nav-pill pointer-events-auto flex items-center gap-1 rounded-full pl-2 pr-2 py-2 transition-[background-color,box-shadow,border-color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+            scrolled ? "shadow-[0_24px_70px_-20px_rgba(22,19,14,0.35)]" : ""
+          }`}
+        >
           <a
-            href="https://github.com/Mahir-o4/"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="text-slate-400 hover:text-slate-600 transition-colors text-lg"
-            title="GitHub"
+            href="#home"
+            aria-label="Mahir — home"
+            className="group flex items-center gap-2.5 pl-2 pr-3 shrink-0"
           >
-            <Github />
-          </a>
-          <a
-            href="https://x.com/skmahirashef04"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-slate-600 transition-colors text-lg"
-            title="Twitter"
-          >
-            <Twitter />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/mahir-ashef-011776290/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-slate-600 transition-colors text-lg"
-            title="LinkedIn"
-          >
-            <Linkedin />
-          </a>
-        </div>
-      </div>
-
-      {/* Top Header */}
-      <header className="fixed top-0 left-0 md:left-20 right-0 z-50 bg-linear-to-b from-slate-900/80 to-slate-900/40 backdrop-blur-sm border-b border-slate-700/30">
-        <nav className="max-w-full px-4 md:px-8 py-3 md:py-4">
-          <div className="flex justify-between items-center">
-            {/* Branding */}
-            <div className="flex items-center gap-2">
-              <Image
-                src="/logo.JPG"
-                alt="logo"
-                width={20}
-                height={20}
-                className="md:hidden rounded-full"
-              />
-              <span className="text-accent-purple font-bold text-base md:text-lg">
-                ◇ Mahir
-              </span>
-            </div>
-
-            {/* Desktop Menu */}
-            <nav className="hidden md:flex items-center gap-8 code-text text-sm">
-              {navItems.map((item) => {
-                const isActive = activeSection === item.id;
-
-                return (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    aria-current={isActive ? "page" : undefined}
-                    className={`transition-colors border-b-2 ${
-                      isActive
-                        ? "text-accent-cyan border-accent-cyan"
-                        : "text-slate-300 border-transparent hover:text-[#00d9ff]"
-                    }`}
-                  >
-                    {item.label}
-                  </a>
-                );
-              })}
-            </nav>
-
-            <button
-              type="button"
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isMenuOpen}
-              onClick={() => setIsMenuOpen((prev) => !prev)}
-              className="md:hidden text-slate-300 hover:text-[#00d9ff] transition-colors"
+            <span className="block transition-transform duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105 group-active:scale-[0.98]">
+              <LogoIcon size={30} />
+            </span>
+            <span
+              className="type-heading text-sm tracking-tight hidden sm:block"
+              style={{ color: "var(--text)" }}
             >
-              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+              SK MAHIR ASHEF
+            </span>
+          </a>
 
-            {/* CTA Button */}
-            <a
-              href="#articles"
-              title="Majik Btn"
-              onClick={handleArticlesClick}
-              className={`
-                ${isArtVis ? "text-[#00d9ff]": "text-slate-500"}
-                hidden md:block px-4 py-2 border hover:bg-accent-purple hover:text-[#00d9ff] transition-all code-text text-xs font-semibold`}
-            >
-              &lt;/&gt;
-            </a>
+          <span className="hidden md:block w-px h-6 bg-[rgba(22,19,14,0.12)]" aria-hidden="true" />
+
+          <nav className="hidden md:flex items-center gap-1" aria-label="Site sections">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  aria-current={isActive ? "page" : undefined}
+                  className="relative text-sm px-5 py-2 rounded-full transition-colors duration-300 font-medium tracking-tight"
+                  style={{
+                    color: isActive ? "#FFFFFF" : "var(--text-secondary)",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-pill-bg"
+                      className="absolute inset-0 rounded-full"
+                      style={{ backgroundColor: "#000000" }}
+                      transition={{ type: "spring", stiffness: 350, damping: 37 }}
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
+                </a>
+              );
+            })}
+          </nav>
+
+          <span className="hidden md:block w-px h-6 bg-[rgba(22,19,14,0.12)]" aria-hidden="true" />
+
+          <div className="hidden md:flex items-center gap-1 shrink-0 pr-1">
+            {socials.map(({ href, icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={label}
+                aria-label={label}
+                className="group size-9 rounded-full flex items-center justify-center text-[#4A463D] transition-colors duration-300 hover:text-[#000000] hover:bg-[rgba(22,19,14,0.06)] active:scale-[0.98]"
+              >
+                {icon}
+              </a>
+            ))}
           </div>
 
-          {isMenuOpen && (
-            <div className="md:hidden mt-3 rounded-md border border-slate-700/40 bg-slate-950/95 p-4">
-              <div className="flex flex-col gap-3 code-text text-xs">
-                {navItems.map((item) => {
-                  const isActive = activeSection === item.id;
-
-                  return (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      aria-current={isActive ? "page" : undefined}
-                      onClick={() => setIsMenuOpen(false)}
-                      className={`transition-colors ${
-                        isActive
-                          ? "text-accent-cyan"
-                          : "text-slate-300 hover:text-[#00d9ff]"
-                      }`}
-                    >
-                      {item.label}
-                    </a>
-                  );
-                })}
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-slate-700/40 flex items-center gap-4">
-                <a
-                  href="https://github.com/Mahir-o4/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  className="text-slate-400 hover:text-[#00d9ff] transition-colors"
-                  title="GitHub"
-                >
-                  <Github size={18} />
-                </a>
-                <a
-                  href="https://x.com/skmahirashef04"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-400 hover:text-[#00d9ff] transition-colors"
-                  title="Twitter"
-                >
-                  <Twitter size={18} />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/mahir-ashef-011776290/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-400 hover:text-[#00d9ff] transition-colors"
-                  title="LinkedIn"
-                >
-                  <Linkedin size={18} />
-                </a>
-              </div>
-            </div>
-          )}
-        </nav>
+          <button
+            type="button"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen((p) => !p)}
+            className="md:hidden relative flex items-center justify-center size-10 rounded-full shrink-0 transition-colors duration-300 [@media(hover:hover)]:hover:bg-[rgba(22,19,14,0.06)] active:scale-[0.98]"
+          >
+            <motion.span
+              className="absolute block w-5 h-[1.5px] rounded-full"
+              style={{ backgroundColor: "var(--text)" }}
+              animate={isMenuOpen ? { transform: "rotate(45deg) translateY(0px)" } : { transform: "rotate(0deg) translateY(-3.5px)" }}
+              transition={{ duration: 0.22, ease: FLUID_EASE }}
+            />
+            <motion.span
+              className="absolute block w-5 h-[1.5px] rounded-full"
+              style={{ backgroundColor: "var(--text)" }}
+              animate={isMenuOpen ? { transform: "rotate(-45deg) translateY(0px)" } : { transform: "rotate(0deg) translateY(3.5px)" }}
+              transition={{ duration: 0.22, ease: FLUID_EASE }}
+            />
+          </button>
+        </div>
       </header>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.28, ease: FLUID_EASE }}
+            className="fixed inset-0 z-40 md:hidden flex flex-col justify-center px-8 min-h-dvh"
+            style={{
+              backgroundColor: "rgba(243, 240, 233, 0.82)",
+              backdropFilter: "blur(32px) saturate(160%)",
+              WebkitBackdropFilter: "blur(32px) saturate(160%)",
+            }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+          >
+            {navItems.map((item, i) => (
+              <span key={item.id} className="block overflow-hidden border-b" style={{ borderColor: "var(--border-subtle)" }}>
+                <motion.a
+                  href={`#${item.id}`}
+                  onClick={() => setIsMenuOpen(false)}
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, transform: "translateY(24px)" }}
+                  animate={reduced ? { opacity: 1 } : { opacity: 1, transform: "translateY(0px)" }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.28, delay: reduced ? 0 : 0.05 + i * 0.06, ease: FLUID_EASE }}
+                  className="type-heading py-4 flex items-center justify-between"
+                  style={{
+                    fontSize: "clamp(2rem, 8vw, 3rem)",
+                    color: "var(--text)",
+                  }}
+                >
+                  <span>{item.label}</span>
+                  {activeSection === item.id && (
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-[#000000] text-[#FFFFFF] font-mono">
+                      active
+                    </span>
+                  )}
+                </motion.a>
+              </span>
+            ))}
+            <motion.div
+              className="flex gap-5 mt-10"
+              initial={reduced ? { opacity: 0 } : { opacity: 0, transform: "translateY(16px)" }} animate={{ opacity: 1, transform: "translateY(0px)" }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.28, delay: reduced ? 0 : 0.25, ease: FLUID_EASE }}
+            >
+              {socials.map(({ href, icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="text-[#4A463D] transition-colors duration-300 hover:text-[#000000]"
+                >
+                  {icon}
+                </a>
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

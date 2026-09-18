@@ -1,26 +1,33 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import "./arch-art.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#F3F0E9",
+};
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const grotesk = Space_Grotesk({
+  variable: "--font-grotesk",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
 });
 
 const jetBrains = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
-  display: 'swap'
-})
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Mahir",
-  description: "A Portfolio describing my skill sets and my projects",
+  title: "Mahir - Portfolio",
+  description:
+    "Portfolio of Sk Mahir Ashef - AI/ML engineer and full-stack developer building intelligent web applications.",
 };
 
 export default function RootLayout({
@@ -31,7 +38,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jetBrains.variable} bg-linear-to-b from-slate-950 via-black to-slate-950 overflow-x-hidden`}
+        className={`${grotesk.variable} ${jetBrains.variable}`}
+        style={{ overflowX: "clip" }}
       >
         {children}
       </body>
