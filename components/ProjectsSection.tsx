@@ -2,30 +2,52 @@
 
 import { motion, useReducedMotion, type Transition } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
-import ProjectCard from "./ProjectCard";
+import ProjectCard, { type ProjectIcon } from "./ProjectCard";
 import SectionDraft from "@/components/arch/SectionDraft";
 
 const EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
-const projects = [
+const projects: Array<{
+  title: string;
+  description: string;
+  domain: string;
+  icon: ProjectIcon;
+  technologies: string[];
+  link: string;
+}> = [
+  {
+    title: "UniVibe",
+    description:
+      "Campus communication hub — WebRTC video calls and instant messaging for university communities.",
+    domain: "campus · video + messaging",
+    icon: "video",
+    technologies: ["Next.js", "Hono.js", "PostgreSQL", "WebRTC", "Socket.IO"],
+    link: "https://github.com/Mahir-o4/UniVibe",
+  },
   {
     title: "OuraCode",
-    description: "Real-time collaborative coding platform with integrated cloud terminal and context-aware AI assistance.",
-    gifSrc: "/CodingGIF.mp4",
+    description:
+      "Shared editor in the browser — multi-cursor coding with an integrated cloud terminal and context-aware AI assist.",
+    domain: "devtools · live collab",
+    icon: "terminal",
     technologies: ["React.js", "Express", "WebSocket", "Redis", "Docker"],
     link: "https://github.com/Mahir-o4/OuraCode",
   },
   {
-    title: "Cross Platform Student Management System",
-    description: "Cross-platform app for managing student credentials and organisational data on Android and iOS.",
-    gifSrc: "/StudentDebtDegreeGIF.mp4",
-    technologies: ["React.js", "Express", "MongoDB", "Flutter"],
-    link: "https://github.com/Mahir-o4/Cross-Platform-Student-Management-App",
+    title: "Carbon Chat",
+    description:
+      "Everyday messenger — secure auth, media sharing, and live online presence.",
+    domain: "consumer · chat + presence",
+    icon: "chat",
+    technologies: ["React.js", "Express", "MongoDB", "Socket.IO", "Cloudinary"],
+    link: "https://github.com/Mahir-o4/carbon",
   },
   {
     title: "RAG Web",
-    description: "AI cinephile that scouts the web for movie insights, answering film queries with real-time precision.",
-    gifSrc: "/AiGeneratedAiGIF.mp4",
+    description:
+      "Film-question engine — scouts the live web and answers movie queries with cited, real-time detail.",
+    domain: "ai · web-grounded qa",
+    icon: "film",
     technologies: ["Python", "Ollama", "Streamlit", "GenAI"],
     link: "https://github.com/Mahir-o4/RAG_Web",
   },

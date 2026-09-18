@@ -1,15 +1,24 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Image from "next/image";
 import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Clapperboard, MessageCircle, Terminal, Video } from "lucide-react";
+
+export type ProjectIcon = "video" | "terminal" | "chat" | "film";
+
+const ICONS: Record<ProjectIcon, typeof Video> = {
+  video: Video,
+  terminal: Terminal,
+  chat: MessageCircle,
+  film: Clapperboard,
+};
 
 interface ProjectRowProps {
   index: number;
   title: string;
   description: string;
-  gifSrc: string;
+  domain: string;
+  icon: ProjectIcon;
   technologies: string[];
   link: string;
 }
@@ -18,7 +27,8 @@ export default function ProjectCard({
   index,
   title,
   description,
-  gifSrc,
+  domain,
+  icon,
   technologies,
   link,
 }: ProjectRowProps) {
@@ -32,6 +42,7 @@ export default function ProjectCard({
   const numeralText = useTransform(numeral, (v) =>
     String(Math.round(v)).padStart(2, "0")
   );
+  const Glyph = ICONS[icon];
 
   return (
     <a
@@ -45,7 +56,7 @@ export default function ProjectCard({
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
     >
-      <div className="grid grid-cols-1 md:grid-cols-[88px_1fr_240px] gap-4 md:gap-10 items-start md:items-center">
+      <div className="grid grid-cols-1 md:grid-cols-[88px_1fr] gap-4 md:gap-10 items-start md:items-center">
 
         {/* Outline index numeral — fills on hover */}
         <motion.span
@@ -76,6 +87,15 @@ export default function ProjectCard({
 
         {/* Title + description + stack line */}
         <div className="min-w-0">
+          {/* Domain eyebrow — glyph chip + arena tag, ink tokens only */}
+          <div className="flex items-center gap-2 mb-3">
+            <span className="btn-circle btn-circle-ink size-6!">
+              <Glyph size={13} strokeWidth={1.5} aria-hidden="true" />
+            </span>
+            <span className="code-text text-[11px] uppercase" style={{ color: "var(--text-dim)", letterSpacing: "0.18em" }}>
+              {domain}
+            </span>
+          </div>
           <div className="flex items-center gap-3 mb-3">
             <h3
               className="type-heading tracking-tight transition-[color,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-3"
@@ -99,46 +119,6 @@ export default function ProjectCard({
             <span style={{ color: "var(--text-dim)" }}>~/</span>
             {technologies.join("  ·  ")}
           </p>
-        </div>
-
-        {/* Preview — machined bezel shell, clip-path reveal on hover, desktop only */}
-        <div className="bezel-ink hidden md:block w-full shrink-0">
-          <div className="bezel-core-ink relative w-full h-36 overflow-hidden">
-          {/* Registration ticks — the only place ticks appear */}
-          <span className="absolute top-1.5 left-1.5 size-3 border-t border-l border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
-          <span className="absolute top-1.5 right-1.5 size-3 border-t border-r border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
-          <span className="absolute bottom-1.5 left-1.5 size-3 border-b border-l border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
-          <span className="absolute bottom-1.5 right-1.5 size-3 border-b border-r border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
-
-          {/* Placeholder */}
-          <div
-            className="absolute inset-0 flex items-center justify-center code-text text-xs transition-opacity duration-300 font-medium"
-            style={{ color: "var(--text-dim)", opacity: hovered ? 0 : 1 }}
-          >
-            hover to preview
-          </div>
-
-          {/* Clip-path reveal */}
-          <motion.div
-            className="absolute inset-0"
-            initial={reduced ? {} : {
-              clipPath: "inset(0 100% 0 0 round 16px)",
-            }}
-            animate={reduced ? {} : {
-              clipPath: hovered ? "inset(0 0% 0 0 round 16px)" : "inset(0 100% 0 0 round 16px)",
-            }}
-            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-          >
-            <Image
-              src={gifSrc}
-              alt={`${title} preview`}
-              width={240}
-              height={144}
-              className="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"
-              unoptimized
-            />
-          </motion.div>
-          </div>
         </div>
       </div>
     </a>
