@@ -138,7 +138,7 @@ export default function SkillsSection() {
 
           <span className="h-px flex-1 max-w-12 bg-[rgba(22,19,14,0.2)]" />
 
-          <span className="code-text text-xs text-[var(--text-muted)] uppercase tracking-wider">
+          <span className="code-text text-xs text-(--text-muted) uppercase tracking-wider">
             Stack
           </span>
 

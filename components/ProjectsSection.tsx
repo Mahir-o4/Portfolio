@@ -80,7 +80,7 @@ export default function ProjectsSection() {
             style={{ color: "var(--text-muted)" }}
           >
             <span>view all</span>
-            <span className="btn-circle btn-circle-ink !w-6 !h-6">
+            <span className="btn-circle btn-circle-ink size-6!">
               <ArrowUpRight size={13} strokeWidth={1.5} />
             </span>
           </a>

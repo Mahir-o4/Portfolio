@@ -105,10 +105,10 @@ export default function ProjectCard({
         <div className="bezel-ink hidden md:block w-full shrink-0">
           <div className="bezel-core-ink relative w-full h-36 overflow-hidden">
           {/* Registration ticks — the only place ticks appear */}
-          <span className="absolute top-1.5 left-1.5 w-3 h-3 border-t border-l border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
-          <span className="absolute top-1.5 right-1.5 w-3 h-3 border-t border-r border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
-          <span className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b border-l border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
-          <span className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b border-r border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
+          <span className="absolute top-1.5 left-1.5 size-3 border-t border-l border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
+          <span className="absolute top-1.5 right-1.5 size-3 border-t border-r border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
+          <span className="absolute bottom-1.5 left-1.5 size-3 border-b border-l border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
+          <span className="absolute bottom-1.5 right-1.5 size-3 border-b border-r border-[rgba(255,255,255,0.4)] z-10 pointer-events-none" aria-hidden="true" />
 
           {/* Placeholder */}
           <div
@@ -134,7 +134,7 @@ export default function ProjectCard({
               alt={`${title} preview`}
               width={240}
               height={144}
-              className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"
+              className="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"
               unoptimized
             />
           </motion.div>

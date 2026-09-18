@@ -201,7 +201,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 0.7, scale: 1 }}
             transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] rounded-full chiaroscuro-halo"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-180 rounded-full chiaroscuro-halo"
             aria-hidden="true"
           />
           {/* Subtle bottom fade into page background */}
@@ -241,7 +241,7 @@ export default function HeroSection() {
 
         {/* ── ROLE LAYER: Ink Statement + Flanking CTAs ── */}
         <div className="absolute inset-0 z-5 pointer-events-none select-none overflow-hidden">
-          <div ref={roleRef} className="relative w-full h-full will-change-transform" style={{ transform: "translateY(75vh)", opacity: 0 }}>
+          <div ref={roleRef} className="relative size-full will-change-transform" style={{ transform: "translateY(75vh)", opacity: 0 }}>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 max-md:justify-start max-md:pt-[11svh]">
               <h2
                 className="text-giant-bg"

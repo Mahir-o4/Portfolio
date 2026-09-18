@@ -144,7 +144,7 @@ const NewsArticles = () => {
         {isLoading ? (
           <p className="text-sm max-md:text-xs" style={{ color: "var(--text-secondary)" }}>Loading articles...</p>
         ) : cards.length ? (
-          <div className="w-[380px] h-[460px] max-md:w-60 max-md:h-80">
+          <div className="w-95 h-115 max-md:w-60 max-md:h-80">
             <Stack
               randomRotation={false}
               sensitivity={200}

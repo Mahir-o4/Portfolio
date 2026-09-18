@@ -149,7 +149,7 @@ export default function ContactForm() {
             }}
             placeholder="What's worth building together?"
             rows={5}
-            className="w-full rounded-xl sm:rounded-2xl bg-[#FFFDF7] border border-[rgba(22,19,14,0.14)] p-4 text-[#000000] placeholder-[#6E6A61] outline-none focus:border-[#000000] transition-[border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] resize-none text-sm leading-relaxed shadow-inner"
+            className="w-full rounded-xl sm:rounded-2xl bg-[#FFFDF7] border border-[rgba(22,19,14,0.14)] p-4 text-[#000000] placeholder-[#6E6A61] outline-hidden focus:border-[#000000] transition-[border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] resize-none text-sm leading-relaxed shadow-inner"
           />
         </div>
 
@@ -181,7 +181,7 @@ export default function ContactForm() {
                     ? "Sent!"
                     : "Send Message"}
             </span>
-            <span className="btn-circle !w-7 !h-7">
+            <span className="btn-circle size-7!">
               {st === "verifying" && <Loader2 size={14} strokeWidth={1.5} className="animate-spin" />}
               {st === "sending" && <Loader2 size={14} strokeWidth={1.5} className="animate-spin" />}
               {st === "ok" && <CheckCircle2 size={14} strokeWidth={1.5} className="text-[#F3F0E9]" />}

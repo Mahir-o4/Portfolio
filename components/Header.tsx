@@ -117,7 +117,7 @@ export default function Header() {
                 rel="noopener noreferrer"
                 title={label}
                 aria-label={label}
-                className="group w-9 h-9 rounded-full flex items-center justify-center text-[#4A463D] transition-colors duration-300 hover:text-[#000000] hover:bg-[rgba(22,19,14,0.06)] active:scale-[0.98]"
+                className="group size-9 rounded-full flex items-center justify-center text-[#4A463D] transition-colors duration-300 hover:text-[#000000] hover:bg-[rgba(22,19,14,0.06)] active:scale-[0.98]"
               >
                 {icon}
               </a>
@@ -130,7 +130,7 @@ export default function Header() {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen((p) => !p)}
-            className="md:hidden relative flex items-center justify-center w-10 h-10 rounded-full shrink-0 transition-colors duration-300 [@media(hover:hover)]:hover:bg-[rgba(22,19,14,0.06)] active:scale-[0.98]"
+            className="md:hidden relative flex items-center justify-center size-10 rounded-full shrink-0 transition-colors duration-300 [@media(hover:hover)]:hover:bg-[rgba(22,19,14,0.06)] active:scale-[0.98]"
           >
             <motion.span
               className="absolute block w-5 h-[1.5px] rounded-full"
@@ -157,7 +157,7 @@ export default function Header() {
             animate={reduced ? { opacity: 1 } : { opacity: 1, scale: 1, backdropFilter: "blur(32px) saturate(160%)" }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.015, backdropFilter: "blur(0px) saturate(100%)" }}
             transition={{ duration: 0.5, ease: FLUID_EASE }}
-            className="fixed inset-0 z-40 md:hidden flex flex-col justify-center px-8 min-h-[100dvh] will-change-transform"
+            className="fixed inset-0 z-40 md:hidden flex flex-col justify-center px-8 min-h-dvh will-change-transform"
             style={{
               backgroundColor: "rgba(243, 240, 233, 0.82)",
             }}
