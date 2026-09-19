@@ -153,13 +153,18 @@ const NewsArticles = () => {
               sendToBackOnClick={false}
               cards={cards}
               autoplay={true}
-              autoplayDelay={7000}
+              autoplayDelay={8000}
               pauseOnHover={true}
             />
           </div>
         ) : (
           <p className="text-sm max-md:text-xs" style={{ color: "var(--text-secondary)" }}>No articles available.</p>
         )}
+        {!isLoading && !error && cards.length ? (
+          <p className="code-text mt-3 text-center text-xs" style={{ color: "var(--text-dim)" }}>
+            Swipe through the deck for more
+          </p>
+        ) : null}
       </motion.div>
       </div>
     </section>
