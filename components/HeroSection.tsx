@@ -252,7 +252,7 @@ export default function HeroSection() {
                 <span className="block mt-[-1.5vw]">DEVELOPER</span>
               </h2>
             </div>
-            <div className="absolute inset-x-0 bottom-[calc(7rem+env(safe-area-inset-bottom,0px))] flex items-center justify-center gap-3 pointer-events-none md:contents">
+            <div className="absolute inset-x-0 bottom-[calc(7rem+env(safe-area-inset-bottom,0px))] z-20 flex items-center justify-center gap-3 pointer-events-none md:contents">
             <div className="md:absolute md:left-12 md:top-1/2 md:-translate-y-1/2 pointer-events-auto">
               <motion.a
                 ref={ctaRef}
@@ -285,7 +285,7 @@ export default function HeroSection() {
 
         <div className="absolute inset-x-0 bottom-0 h-[32%] z-9 pointer-events-none hero-floor-shadow" aria-hidden="true" />
 
-        <div ref={personRef} className="relative z-10 will-change-transform">
+        <div ref={personRef} className="relative z-10 will-change-transform pointer-events-none select-none">
           <motion.div
             className={`relative flex items-end justify-center pointer-events-none select-none ${isMobile ? "h-lvh" : "h-svh"} pb-0 will-change-transform`}
             style={{
